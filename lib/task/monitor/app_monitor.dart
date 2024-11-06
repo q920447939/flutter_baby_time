@@ -1,0 +1,3 @@
+mixin AppMonitor {
+  void monitor();
+}
