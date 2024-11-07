@@ -158,6 +158,8 @@ dependencies:
   tdesign_flutter: ^0.1.6
   #轮播图组件
   flutter_swiper_null_safety: ^1.0.2
+  get: ^4.6.6
+
 
 dependency_overrides:
   permission_handler: ^11.2.0
@@ -229,6 +231,7 @@ flutter:
     - .env
     - assets/theme.json
     - assets/img/
+    - assets/svg/
 
   fonts:
     - family: SourceHanSerifCN

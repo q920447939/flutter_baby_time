@@ -38,9 +38,10 @@ final router = GoRouter(
     var loginFlag = isLogin();
     var fullPath = state.fullPath;
     if (fullPath == "/my") {
-      if (!loginFlag) {
+      /*if (!loginFlag) {
         return '/welcomeScreen';
-      }
+      }*/
+      return "/my";
     } else if (fullPath == "/welcomeScreen") {
       if (loginFlag) {
         return '/my';

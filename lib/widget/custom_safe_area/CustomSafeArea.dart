@@ -15,8 +15,9 @@ class CustomerSafeArea extends StatefulWidget {
 class _CustomerSafeAreaState extends State<CustomerSafeArea> {
   @override
   Widget build(BuildContext context) {
-    return Platform.isIOS
+    /*return Platform.isIOS
         ? Padding(padding: EdgeInsets.only(top: 22.h), child: widget.child)
-        : SafeArea(child: widget.child);
+        : SafeArea(child: widget.child);*/
+    return SafeArea(child: widget.child);
   }
 }
