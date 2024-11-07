@@ -3,6 +3,9 @@ import '../../app/modules/home_page_module/home_page_page.dart';
 import 'package:get/get.dart';
 
 import '../../page/error_screen.dart';
+import '../../page/home/home_page.dart';
+import '../../widget/bottom_bar/bottom_bar_navigator.dart';
+import '../../widget/bottom_bar/scaffold_with_navbar.dart';
 import '../middleware/auth_middleware.dart';
 import '../modules/home_page_module/home_page_controller.dart';
 part './app_routes.dart';
@@ -11,7 +14,7 @@ part './app_routes.dart';
  * */
 
 abstract class AppPages {
-  static const INITIAL = Routes.HOME_PAGE;
+  static const INITIAL = Routes.bottomNavigationBar;
 
   // 创建路由页面的辅助方法
   static GetPage _createPage({
@@ -27,10 +30,22 @@ abstract class AppPages {
       middlewares: requiresAuth ? [AuthMiddleware()] : null,
     );
   }
+
   static final pages = [
     _createPage(
+      name: Routes.bottomNavigationBar,
+      page: () => ScaffoldWithNavBar(),
+      requiresAuth: false,
+    ),
+    _createPage(
       name: Routes.HOME_PAGE,
-      page: () =>  HomePagePage(),
+      page: () => HomePage(),
+      binding: HomePageBinding(),
+      requiresAuth: false,
+    ),
+    _createPage(
+      name: Routes.HOME_PAGE,
+      page: () => BottomBarNavigator(),
       binding: HomePageBinding(),
       requiresAuth: false,
     ),

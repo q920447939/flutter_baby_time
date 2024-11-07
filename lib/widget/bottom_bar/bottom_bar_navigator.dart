@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_baby_time/page/home/home_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -9,8 +10,10 @@ import 'package:go_router/go_router.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
+import '../../app/modules/bottom_bar_module/bottom_bar_page_controller.dart';
 import '../../app/routes/app_pages.dart';
 import '../../model/app_config/navigator/app_navigator_config_model.dart';
+import '../../page/my/my_page.dart';
 
 class BottomBarNavigator extends StatefulWidget {
   BottomBarNavigator({super.key});
@@ -25,6 +28,8 @@ class _BottomBarNavigatorState extends State<BottomBarNavigator> {
   List<NavigationConfigVo> appNavigatorConfigList = [];
 
   late var futureFetchData;
+  BottomBarPageController homePageController =
+      Get.find<BottomBarPageController>();
 
   @override
   void initState() {
@@ -75,7 +80,7 @@ class _BottomBarNavigatorState extends State<BottomBarNavigator> {
             color: TDTheme.of(context).brandNormalColor,
           ),
           onTap: () {
-            Get.toNamed(AppPages.pages[0].name);
+            homePageController.curPage(HomePage());
           },
         ),
         TDBottomTabBarTabConfig(
@@ -104,7 +109,7 @@ class _BottomBarNavigatorState extends State<BottomBarNavigator> {
               color: TDTheme.of(context).brandNormalColor,
             ),
             onTap: () {
-              context.go("/my");
+              homePageController.curPage(const HomePage());
             }),
       ],
     );

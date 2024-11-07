@@ -159,6 +159,7 @@ dependencies:
   #轮播图组件
   flutter_swiper_null_safety: ^1.0.2
   get: ^4.6.6
+  timelines_plus: ^1.0.3
 
 
 dependency_overrides:

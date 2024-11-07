@@ -4,6 +4,7 @@ part of './app_pages.dart';
  * */
 
 abstract class Routes {
+  static const bottomNavigationBar = '/bottomNavigationBar';
   static const HOME_PAGE = '/home_page'; // HomePage page
   static const LOGIN = '/login';
   static const PROFILE = '/profile';

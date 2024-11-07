@@ -16,6 +16,7 @@ import 'package:json_theme/json_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'app/modules/bottom_bar_module/bottom_bar_page_controller.dart';
 import 'app/services/auth_service.dart';
 import 'config/init_config.dart';
 import 'config/material_app_config.dart';
@@ -37,6 +38,7 @@ void main() async {
 
   // 初始化服务
   Get.put(AuthService());
+  Get.put(BottomBarPageController());
 
   Log.setCustomLogPrinter((level, tag, msg) => print('[$level] $tag ==> $msg'));
 
