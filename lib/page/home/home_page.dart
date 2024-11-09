@@ -101,12 +101,13 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-        gapHeightSmall(),
         _viewModeController.currentMode == ViewMode.waterfall
             ? FallLoadViewModel(
                 height: 685.h,
               )
-            : TimeLimeViewModel()
+            : TimeLimeViewModel(
+                height: 685.h,
+              )
       ],
     );
   }

@@ -157,6 +157,8 @@ dependencies:
   #轮播图组件
   flutter_swiper_null_safety: ^1.0.2
   get: ^4.6.6
+  better_player_plus: ^1.0.7
+  share_plus: ^10.1.2
 
 
 dependency_overrides:

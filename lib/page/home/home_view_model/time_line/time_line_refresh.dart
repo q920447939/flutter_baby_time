@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class TimeLineRefresh<T> extends StatelessWidget {
@@ -14,8 +15,13 @@ class TimeLineRefresh<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(itemBuilder: (_, index) {
-      return childItem(data[index], index);
-    });
+    return Padding(
+      padding: EdgeInsets.all(10.r),
+      child: ListView.builder(
+        itemBuilder: (_, index) {
+          return childItem(data[index], index);
+        },
+      ),
+    );
   }
 }
