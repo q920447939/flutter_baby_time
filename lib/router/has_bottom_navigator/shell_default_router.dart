@@ -5,6 +5,7 @@ import 'package:flutter_baby_time/page/my/my_page.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../page/home/home_page.dart';
+import '../../page/my/baby_setting/baby_setting.dart';
 
 part 'shell_default_router.g.dart';
 
@@ -31,5 +32,18 @@ class MyRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const MyPage();
+  }
+}
+
+@TypedGoRoute<BabySettingRoute>(
+  path: '/baby-setting',
+)
+@immutable
+class BabySettingRoute extends GoRouteData {
+  const BabySettingRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const BabySetting();
   }
 }

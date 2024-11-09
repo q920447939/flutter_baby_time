@@ -158,7 +158,12 @@ dependencies:
   flutter_swiper_null_safety: ^1.0.2
   get: ^4.6.6
   better_player_plus: ^1.0.7
+  #分享
   share_plus: ^10.1.2
+  #多少分钟以前...
+  timeago: ^3.7.0
+  #日期处理
+  jiffy: ^6.3.1
 
 
 dependency_overrides:

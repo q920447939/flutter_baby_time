@@ -60,11 +60,17 @@ class $AssetsSvgGen {
   /// File path: assets/svg/add.svg
   String get add => 'assets/svg/add.svg';
 
+  /// File path: assets/svg/discuss.svg
+  String get discuss => 'assets/svg/discuss.svg';
+
   /// File path: assets/svg/like.svg
   String get like => 'assets/svg/like.svg';
 
+  /// File path: assets/svg/share.svg
+  String get share => 'assets/svg/share.svg';
+
   /// List of all assets
-  List<String> get values => [add, like];
+  List<String> get values => [add, discuss, like, share];
 }
 
 class Assets {

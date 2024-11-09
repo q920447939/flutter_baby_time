@@ -6,12 +6,14 @@ import 'package:flutter_baby_time/widget/base_stack/base_stack.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import '../../design_pattern/view_model/ViewModel.dart';
 import '../../widget/container/container_wrapper_card.dart';
 import '../../widget/gap/gap_height.dart';
 import '../../widget/gap/gap_width.dart';
+import '../my/baby_setting/baby_setting_controller.dart';
 import 'home_view_model/fall/fall_load_view_model.dart';
 
 class HomePage extends StatefulWidget {
@@ -22,13 +24,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  ViewModeController _viewModeController = Get.put(ViewModeController());
+  ViewModeController _viewModeController = Get.find();
+  BabySettingController _babySettingController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         ContainerWrapperCard(
-          margin: EdgeInsets.only(top: 5.h),
+          margin: EdgeInsets.only(top: 10.h, left: 10.w, right: 10.w),
           child: Row(
             children: [
               Align(
@@ -52,10 +55,12 @@ class _HomePageState extends State<HomePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      TDText(
-                        '小熙熙',
-                        style: TextStyle(
-                          fontSize: 18.sp,
+                      Obx(
+                        () => TDText(
+                          _babySettingController.babyName.value,
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                          ),
                         ),
                       ),
                     ],
@@ -63,9 +68,13 @@ class _HomePageState extends State<HomePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      TDText(
-                        '5岁 3个月',
-                        style: TextStyle(fontSize: 12.sp),
+                      Obx(
+                        () => TDText(
+                          _babySettingController.birthday.value == '未设置'
+                              ? _babySettingController.birthday.value
+                              : '${calculateAge(Jiffy.parse(_babySettingController.birthday.value, pattern: 'yyyy-MM-dd'))}(${Jiffy.parse(_babySettingController.birthday.value, pattern: 'yyyy-MM-dd').format(pattern: 'yyyy年M月d日')})',
+                          style: TextStyle(fontSize: 12.sp),
+                        ),
                       ),
                       gapWidthNormal(),
                     ],
@@ -110,5 +119,21 @@ class _HomePageState extends State<HomePage> {
               )
       ],
     );
+  }
+
+  String calculateAge(Jiffy birthJiffy) {
+    Jiffy currentJiffy = Jiffy.now();
+    if (currentJiffy.year == birthJiffy.year) {
+      return '${currentJiffy.month - birthJiffy.month}个月';
+    }
+    var numOfYear = currentJiffy.diff(birthJiffy, unit: Unit.year);
+    int year = numOfYear.toInt();
+
+    var numOfMonth = currentJiffy.diff(birthJiffy, unit: Unit.month);
+    if (year == 0) {
+      return '${numOfMonth.toInt()}个月';
+    }
+
+    return '$year岁${numOfMonth.toInt() - year * 12}个月';
   }
 }

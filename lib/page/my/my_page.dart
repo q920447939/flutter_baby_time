@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_baby_time/config/go_router_config.dart';
 import 'package:flutter_baby_time/widget/base_stack/base_stack.dart';
 import 'package:flutter_baby_time/widget/container/container_wrapper_card.dart';
 import 'package:flutter_baby_time/widget/gap/gap_height.dart';
@@ -8,9 +9,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import '../../design_pattern/view_model/ViewModel.dart';
+import '../../router/has_bottom_navigator/shell_default_router.dart';
 import '../home/view_model_controller.dart';
 
 class MyPage extends StatefulWidget {
@@ -46,43 +49,49 @@ class _MyPageState extends State<MyPage> {
             ),
           ),
           gapHeightNormal(),
-          ContainerWrapperCard(
-            height: 50.h,
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
+          homeViewModel(context),
+          gapHeightSmall(),
+          _babySetting(),
+        ],
+      ),
+    );
+  }
+
+  ContainerWrapperCard homeViewModel(BuildContext context) {
+    return ContainerWrapperCard(
+      height: 50.h,
+      padding: EdgeInsets.symmetric(horizontal: 10.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          TDText(
+            '首页预览模式',
+            style: TextStyle(
+              fontSize: 18.sp,
+            ),
+          ),
+          GestureDetector(
+            onTap: () async {
+              await _changeReadModel();
+            },
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                TDText(
-                  '首页预览模式',
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                  ),
+                Obx(() {
+                  return TDText(
+                    _viewModeController.currentMode.value.label,
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                    ),
+                  );
+                }),
+                gapWidthSmall(),
+                Icon(
+                  Icons.arrow_right_outlined,
+                  size: 18.w,
+                  color: TDTheme.of(context).brandNormalColor,
                 ),
-                GestureDetector(
-                  onTap: () async {
-                    await _changeReadModel();
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Obx(() {
-                        return TDText(
-                          _viewModeController.currentMode.value.label,
-                          style: TextStyle(
-                            fontSize: 18.sp,
-                          ),
-                        );
-                      }),
-                      gapWidthSmall(),
-                      Icon(
-                        Icons.arrow_right_outlined,
-                        size: 18.w,
-                        color: TDTheme.of(context).brandNormalColor,
-                      ),
-                      gapWidthSmall(),
-                    ],
-                  ),
-                ),
+                gapWidthSmall(),
               ],
             ),
           ),
@@ -129,5 +138,40 @@ class _MyPageState extends State<MyPage> {
         radioStyle: TDRadioStyle.circle,
       );
     }).toList();
+  }
+
+  _babySetting() {
+    return ContainerWrapperCard(
+      height: 50.h,
+      padding: EdgeInsets.symmetric(horizontal: 10.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          TDText(
+            '宝宝资料',
+            style: TextStyle(
+              fontSize: 18.sp,
+            ),
+          ),
+          GestureDetector(
+            onTap: () async {
+              BabySettingRoute().push(context);
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                gapWidthSmall(),
+                Icon(
+                  Icons.arrow_right_outlined,
+                  size: 18.w,
+                  color: TDTheme.of(context).brandNormalColor,
+                ),
+                gapWidthSmall(),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

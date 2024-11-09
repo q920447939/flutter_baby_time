@@ -7,6 +7,7 @@ import 'package:flutter_baby_time/widget/smart_dialog/smart_dialog_helper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
@@ -27,10 +28,19 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
   Map<String, TextEditingController> controllerMap = {};
   Map<String, Color?> _likeMapColor = {};
   Map<String, List<String>> discussMap = {};
+
+  List<Jiffy> data = [];
+
+  late Jiffy start;
+
+  late int curYear;
   //构建时间线 ，为了降低性能开销 分批渲染数据
   @override
   void initState() {
     super.initState();
+    start = Jiffy.parse('2023-1-3', pattern: 'yyyy-MM-dd');
+    curYear = start.year;
+    data = List.generate(10, (idx) => start = start.subtract(days: 1));
   }
 
   @override
@@ -77,11 +87,11 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
       });
     }
 
-    List<int> data = List.generate(10, (idx) => idx);
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         if (index > 0) gapHeightLarge(),
+        if (index == 0) _buildYear(),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -250,13 +260,12 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
                         ),
                       );
                     });
-                if (result != null) {
-                  if (result != "") {
-                    setState(() {
-                      discussList.add(result);
-                      //重新调一下请求
-                    });
-                  }
+                if (result != null && result != "") {
+                  dialogSuccess('提交成功');
+                  setState(() {
+                    discussList.add(result);
+                    //重新调一下请求
+                  });
                 }
               },
               child: SvgPicture.asset(
@@ -396,5 +405,21 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
         )
         .toList();
     return list;
+  }
+
+  _buildYear() {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 5.h),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: TDText(
+          '2023年',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20.sp,
+          ),
+        ),
+      ),
+    );
   }
 }
