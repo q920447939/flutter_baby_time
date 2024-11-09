@@ -1,5 +1,3 @@
-import 'dart:async';
-import 'dart:convert'; // For jsonDecode
 import 'dart:io';
 import 'dart:ui';
 
@@ -10,16 +8,10 @@ import 'package:flutter/foundation.dart' show kIsWeb, kReleaseMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_baby_time/config/server_config.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:json_theme/json_theme.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'app/services/auth_service.dart';
 import 'config/init_config.dart';
 import 'config/material_app_config.dart';
-import 'handle/timer_handle/update_token_timer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:tdesign_flutter/src/util/log.dart';
@@ -34,9 +26,6 @@ void main() async {
   // Add this line
   await ScreenUtil.ensureScreenSize();
   await EasyLocalization.ensureInitialized();
-
-  // 初始化服务
-  Get.put(AuthService());
 
   Log.setCustomLogPrinter((level, tag, msg) => print('[$level] $tag ==> $msg'));
 

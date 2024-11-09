@@ -7,8 +7,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
-import '../app/routes/app_pages.dart';
 import '../intl/intl_resource_delegate.dart';
+import 'go_router_config.dart';
 
 Widget buildMaterialApp(bool isFirstUse, TDThemeData themeData,
     BuildContext context, Locale? locale, IntlResourceDelegate delegate) {
@@ -26,28 +26,17 @@ Widget buildMaterialApp(bool isFirstUse, TDThemeData themeData,
       return MediaQuery(
         data:
             MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(1.0)),
-        child: GetMaterialApp(
+        child: MaterialApp.router(
           supportedLocales: AppLocalizations.supportedLocales,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           locale: locale,
           debugShowCheckedModeBanner: false,
           title: ServerConfig().appName,
-          initialRoute: AppPages.INITIAL,
-          getPages: AppPages.pages,
-          unknownRoute: AppPages.unknownRoute,
-          routingCallback: (routing) {
-            // 路由变化的回调
-            if (kDebugMode) {
-              print('Current route: ${routing?.current}');
-            }
-          },
           theme: ThemeData(
               extensions: [themeData],
               colorScheme:
                   ColorScheme.light(primary: themeData.brandNormalColor)),
-          navigatorObservers: [
-            FlutterSmartDialog.observer,
-          ],
+          routerConfig: router,
           builder: initSmartDialog,
         ),
       );

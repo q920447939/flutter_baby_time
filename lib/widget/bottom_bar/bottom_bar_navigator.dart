@@ -9,7 +9,6 @@ import 'package:go_router/go_router.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
-import '../../app/routes/app_pages.dart';
 import '../../model/app_config/navigator/app_navigator_config_model.dart';
 
 class BottomBarNavigator extends StatefulWidget {
@@ -75,7 +74,7 @@ class _BottomBarNavigatorState extends State<BottomBarNavigator> {
             color: TDTheme.of(context).brandNormalColor,
           ),
           onTap: () {
-            Get.toNamed(AppPages.pages[0].name);
+            context.go("/");
           },
         ),
         TDBottomTabBarTabConfig(

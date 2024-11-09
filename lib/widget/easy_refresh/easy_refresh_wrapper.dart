@@ -5,28 +5,30 @@ import 'package:flutter_baby_time/widget/no_data.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '../refresh/simple_easy_refresher.dart';
+import 'grid_refresh.dart';
 
 typedef PageData<T> = Future<List<T>> Function(int pageNo, int pageSize);
 
-class GirdRefresh<T> extends StatefulWidget {
+class EasyRefreshWrapper<T> extends StatefulWidget {
   PageData<T> initLoad; // 使用 InitLoad 类型
   PageData<T> loadMore;
-  Widget Function(dynamic item, int idx) childItem;
   int pageSize;
+  // 添加新的回调函数，用于构建列表视图
+  Widget Function(List<T> list, ScrollPhysics physics) listBuilder;
 
-  GirdRefresh({
+  EasyRefreshWrapper({
     super.key,
     required this.initLoad,
     required this.loadMore,
-    required this.childItem,
     this.pageSize = 10,
+    required this.listBuilder, // 新增必需参数
   });
 
   @override
-  State<GirdRefresh> createState() => _GirdRefreshState();
+  State<EasyRefreshWrapper> createState() => _EasyRefreshWrapperState();
 }
 
-class _GirdRefreshState<T> extends State<GirdRefresh> {
+class _EasyRefreshWrapperState<T> extends State<EasyRefreshWrapper> {
   final EasyRefreshController _controller = EasyRefreshController(
     controlFinishRefresh: true,
     controlFinishLoad: true,
@@ -90,20 +92,7 @@ class _GirdRefreshState<T> extends State<GirdRefresh> {
       childBuilder: (context, physics) {
         return _list.isEmpty
             ? const NoData()
-            : MasonryGridView.builder(
-                physics: physics, // 使用 EasyRefresh 提供的 physics
-                padding: const EdgeInsets.all(8),
-                itemCount: _list.length,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                gridDelegate:
-                    const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                ),
-                itemBuilder: (context, index) {
-                  return widget.childItem(_list[index], index);
-                },
-              );
+            : widget.listBuilder(_list, physics); // 使用传入的 listBuilder
       },
     );
   }

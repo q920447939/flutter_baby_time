@@ -29,7 +29,7 @@ class ContainerWrapperCard extends StatelessWidget {
       decoration: decoration ??
           BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(8.r),
+            borderRadius: BorderRadius.all(Radius.circular(8.r)),
           ),
       child: child,
     );
