@@ -17,8 +17,6 @@ Widget buildMaterialApp(bool isFirstUse, TDThemeData themeData,
   //填入设计稿中设备的屏幕尺寸,单位dp
   return ScreenUtilInit(
     designSize: const Size(412, 892),
-    minTextAdapt: true,
-    splitScreenMode: true,
     builder: (context, child) {
       // 设置文案代理,国际化需要在MaterialApp初始化完成之后才生效,而且需要每次更新context
       TDTheme.setResourceBuilder((context) => delegate..updateContext(context),
