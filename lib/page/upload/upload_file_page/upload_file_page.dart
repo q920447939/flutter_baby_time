@@ -91,9 +91,30 @@ class _UploadFilePageState extends State<UploadFilePage> {
               child: Icon(_canDelete ? Icons.delete : Icons.delete_outline),
             ),
       child: ContainerWrapperCard(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+          child: ListView(
+        //mainAxisAlignment: MainAxisAlignment.start,
+        scrollDirection: Axis.vertical,
         children: [
+          Container(
+            padding: EdgeInsets.fromLTRB(25, 20, 30, 25),
+            height: 200.h,
+            child: TextField(
+              maxLength: 100,
+              maxLines: 8,
+              decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.zero,
+                  hintText: "分享新鲜事",
+                  hintStyle: TextStyle(color: Colors.black12)),
+            ),
+          ),
+          SizedBox(
+            height: 20.h,
+            child: Container(
+              alignment: Alignment.center,
+              child: const TDDivider(),
+            ),
+          ),
           ContainerWrapperCard(
             margin: EdgeInsets.symmetric(horizontal: 10.w),
             height: 40.h,
@@ -113,9 +134,15 @@ class _UploadFilePageState extends State<UploadFilePage> {
               ),
             ),
           ),
-          gapHeightNormal(),
+          SizedBox(
+            height: 20.h,
+            child: Container(
+              alignment: Alignment.center,
+              child: const TDDivider(),
+            ),
+          ),
           ContainerWrapperCard(
-            height: 500.h,
+            height: 420.h,
             child: SingleChildScrollView(
               child: DragSortView(
                 _imageList,
@@ -184,7 +211,7 @@ class _UploadFilePageState extends State<UploadFilePage> {
               ),
             ),
           ),
-          Spacer(),
+          //Spacer(),
           TDButton(
             width: 150.w,
             text: '确认',
@@ -197,7 +224,7 @@ class _UploadFilePageState extends State<UploadFilePage> {
               SmartDialog.showToast('获取到图片,共${_imageFiles.length}张');
             },
           ),
-          Gap(80.h),
+          Gap(50.h),
         ],
       )),
     );

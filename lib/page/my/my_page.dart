@@ -33,14 +33,15 @@ class _MyPageState extends State<MyPage> {
   @override
   Widget build(BuildContext context) {
     return GreyBaseScaffoldStack(
-      title: '',
+      title: '个人中心',
       showBackIcon: false,
       appBarSize: 0,
       child: ListView(
         scrollDirection: Axis.vertical,
         children: [
+          gapHeightLarge(),
           Align(
-            alignment: Alignment.centerLeft,
+            alignment: Alignment.center,
             child: SizedBox(
               width: 80.w,
               child: TDAvatar(
