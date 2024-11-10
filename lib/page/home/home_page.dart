@@ -28,97 +28,101 @@ class _HomePageState extends State<HomePage> {
   BabySettingController _babySettingController = Get.find();
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ContainerWrapperCard(
-          margin: EdgeInsets.only(top: 10.h, left: 10.w, right: 10.w),
-          child: Row(
-            children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: SizedBox(
-                  width: 61.w,
-                  child: TDAvatar(
-                    size: TDAvatarSize.medium,
-                    type: TDAvatarType.normal,
-                    shape: TDAvatarShape.circle,
-                    defaultUrl: 'assets/img/baby_avator.jpeg',
-                    backgroundColor: Colors.transparent,
-                  ),
-                ),
-              ),
-              gapHeightNormal(),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return WhiteBaseScaffoldStack(
+        title: '',
+        appBarSize: 0,
+        showBackIcon: false,
+        child: Column(
+          children: [
+            ContainerWrapperCard(
+              margin: EdgeInsets.only(top: 10.h, left: 10.w, right: 10.w),
+              child: Row(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Obx(
-                        () => TDText(
-                          _babySettingController.babyName.value,
-                          style: TextStyle(
-                            fontSize: 18.sp,
-                          ),
-                        ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: SizedBox(
+                      width: 61.w,
+                      child: TDAvatar(
+                        size: TDAvatarSize.medium,
+                        type: TDAvatarType.normal,
+                        shape: TDAvatarShape.circle,
+                        defaultUrl: 'assets/img/baby_avator.jpeg',
+                        backgroundColor: Colors.transparent,
                       ),
+                    ),
+                  ),
+                  gapHeightNormal(),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Obx(
+                            () => TDText(
+                              _babySettingController.babyName.value,
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Obx(
+                            () => TDText(
+                              _babySettingController.birthday.value == '未设置'
+                                  ? _babySettingController.birthday.value
+                                  : '${calculateAge(Jiffy.parse(_babySettingController.birthday.value, pattern: 'yyyy-MM-dd'))}(${Jiffy.parse(_babySettingController.birthday.value, pattern: 'yyyy-MM-dd').format(pattern: 'yyyy年M月d日')})',
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                          ),
+                          gapWidthNormal(),
+                        ],
+                      )
                     ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Obx(
-                        () => TDText(
-                          _babySettingController.birthday.value == '未设置'
-                              ? _babySettingController.birthday.value
-                              : '${calculateAge(Jiffy.parse(_babySettingController.birthday.value, pattern: 'yyyy-MM-dd'))}(${Jiffy.parse(_babySettingController.birthday.value, pattern: 'yyyy-MM-dd').format(pattern: 'yyyy年M月d日')})',
-                          style: TextStyle(fontSize: 12.sp),
-                        ),
-                      ),
-                      gapWidthNormal(),
-                    ],
-                  )
                 ],
               ),
-            ],
-          ),
-        ),
-        gapHeightNormal(),
-        TDBottomTabBar(
-          TDBottomTabBarBasicType.text,
-          componentType: TDBottomTabBarComponentType.normal,
-          useVerticalDivider: true,
-          navigationTabs: [
-            TDBottomTabBarTabConfig(
-              tabText: '推荐',
-              onTap: () {
-                //onTapTab(context, '标签1');
-              },
             ),
-            TDBottomTabBarTabConfig(
-              tabText: '收藏',
-              onTap: () {
-                //onTapTab(context, '标签3');
-              },
+            gapHeightNormal(),
+            TDBottomTabBar(
+              TDBottomTabBarBasicType.text,
+              componentType: TDBottomTabBarComponentType.normal,
+              useVerticalDivider: true,
+              navigationTabs: [
+                TDBottomTabBarTabConfig(
+                  tabText: '推荐',
+                  onTap: () {
+                    //onTapTab(context, '标签1');
+                  },
+                ),
+                TDBottomTabBarTabConfig(
+                  tabText: '收藏',
+                  onTap: () {
+                    //onTapTab(context, '标签3');
+                  },
+                ),
+                TDBottomTabBarTabConfig(
+                  tabText: '标签',
+                  onTap: () {
+                    //onTapTab(context, '标签3');
+                  },
+                ),
+              ],
             ),
-            TDBottomTabBarTabConfig(
-              tabText: '标签',
-              onTap: () {
-                //onTapTab(context, '标签3');
-              },
-            ),
+            _viewModeController.currentMode == ViewMode.waterfall
+                ? FallLoadViewModel(
+                    height: 685.h,
+                  )
+                : TimeLimeViewModel(
+                    height: 685.h,
+                  )
           ],
-        ),
-        _viewModeController.currentMode == ViewMode.waterfall
-            ? FallLoadViewModel(
-                height: 685.h,
-              )
-            : TimeLimeViewModel(
-                height: 685.h,
-              )
-      ],
-    );
+        ));
   }
 
   String calculateAge(Jiffy birthJiffy) {

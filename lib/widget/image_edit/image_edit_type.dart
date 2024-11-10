@@ -3,10 +3,8 @@ import 'package:extended_image/extended_image.dart';
 import 'circle_editor_crop_layer_painter.dart';
 import 'rectangle_editor_crop_layer_painter.dart';
 
-
 enum ImageEditType {
-  realName('realName', '实名认证'),
-  profile('profile', '个人中心头像修改'),
+  default_('default_', '默认图片上传'),
   end('', '');
 
   final String storagePathPre;

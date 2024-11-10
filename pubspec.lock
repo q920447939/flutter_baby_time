@@ -1643,6 +1643,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.0"
+  nine_grid_view:
+    dependency: "direct main"
+    description:
+      name: nine_grid_view
+      sha256: "40785a2f73ad541536cbf7fd1010a02f06a51d0bd058d05629a5f04df2d1a086"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.0"
   nm:
     dependency: transitive
     description:
@@ -1843,6 +1851,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.6.1"
+  photo_manager_image_provider:
+    dependency: transitive
+    description:
+      name: photo_manager_image_provider
+      sha256: b6015b67b32f345f57cf32c126f871bced2501236c405aafaefa885f7c821e4f
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.2.0"
   photo_view:
     dependency: transitive
     description:
@@ -2632,6 +2648,22 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.16.1"
+  wechat_assets_picker:
+    dependency: "direct main"
+    description:
+      name: wechat_assets_picker
+      sha256: "9e0fd685eb624da897decb3ea71336325d2beeba1ac7706cd3cd42e2c1090b79"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "9.4.0"
+  wechat_picker_library:
+    dependency: transitive
+    description:
+      name: wechat_picker_library
+      sha256: a42e09cb85b15fc9410f6a69671371cc60aa99c4a1f7967f6593a7f665f6f47a
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.5"
   win32:
     dependency: transitive
     description:

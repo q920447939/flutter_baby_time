@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_baby_time/router/has_bottom_navigator/shell_default_router.dart';
+import 'package:flutter_baby_time/widget/gap/gap_height.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -89,7 +91,58 @@ class _BottomBarNavigatorState extends State<BottomBarNavigator> {
               size: 20.w,
               color: Colors.red,
             ),
-            onTap: () {}),
+            onTap: () {
+              Navigator.of(context).push(
+                TDSlidePopupRoute(
+                    modalBarrierColor: TDTheme.of(context).fontGyColor2,
+                    slideTransitionFrom: SlideTransitionFrom.bottom,
+                    builder: (context) {
+                      return TDPopupBottomDisplayPanel(
+                        title: '请选择上传类型',
+                        hideClose: false,
+                        closeClick: () {
+                          Navigator.maybePop(context);
+                        },
+                        child: Container(
+                          height: 100.w,
+                          margin: EdgeInsets.only(top: 20.h),
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.maybePop(context);
+                                    const UploadFileRoute().push(context);
+                                  },
+                                  child: TDText(
+                                    '上传图片',
+                                    style: TextStyle(
+                                      fontSize: 16.sp,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 20.h,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: const TDDivider(),
+                                  ),
+                                ),
+                                TDText(
+                                  '上传视频',
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+              );
+            }),
         TDBottomTabBarTabConfig(
             tabText: '个人中心',
             selectedIcon: Icon(

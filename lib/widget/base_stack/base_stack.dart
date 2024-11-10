@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../page/my/global_setting/global_setting_controller.dart';
 import '../custom_safe_area/CustomSafeArea.dart';
 
 class BaseScaffoldStack extends StatefulWidget {
@@ -13,6 +16,7 @@ class BaseScaffoldStack extends StatefulWidget {
   VoidCallback? appBarRightClick;
   TabBar? appBarBottom;
   bool showBackIcon;
+  Widget? floatingActionButton;
   BaseScaffoldStack({
     super.key,
     required this.title,
@@ -23,6 +27,7 @@ class BaseScaffoldStack extends StatefulWidget {
     this.appBarBottom,
     this.showBackIcon = true,
     this.appBarSize,
+    this.floatingActionButton,
   });
 
   @override
@@ -30,20 +35,31 @@ class BaseScaffoldStack extends StatefulWidget {
 }
 
 class _BaseScaffoldStackState extends State<BaseScaffoldStack> {
+  GlobalSettingController _globalSettingController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return CustomerSafeArea(
       child: Stack(
         children: [
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: /*[
+          Obx(
+            () => Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                image:
+                    _globalSettingController.globalBackgroundImage.value == ''
+                        ? null
+                        : DecorationImage(
+                            image: AssetImage("assets/img/baby_photo.jpg"),
+                            fit: BoxFit.fill,
+                          ),
+                gradient: LinearGradient(
+                  colors: /*[
                   Color(0xFFBBDEFB),
                   Color(0xFF90CAF9),
                 ]*/
-                    widget.gradientColors ?? [Colors.white, Colors.white],
+                      widget.gradientColors ?? [Colors.white, Colors.white],
+                ),
               ),
             ),
           ),
@@ -60,6 +76,7 @@ class _BaseScaffoldStackState extends State<BaseScaffoldStack> {
                       child: _buildAppBar(context),
                     ),
               body: widget.child,
+              floatingActionButton: widget.floatingActionButton,
             ),
           ),
         ],
@@ -119,6 +136,8 @@ class GreyBaseScaffoldStack extends StatelessWidget {
   VoidCallback? appBarRightClick;
   TabBar? appBarBottom;
   bool? showBackIcon;
+  Widget? floatingActionButton;
+
   GreyBaseScaffoldStack({
     super.key,
     required this.title,
@@ -128,6 +147,7 @@ class GreyBaseScaffoldStack extends StatelessWidget {
     this.appBarBottom,
     this.showBackIcon,
     this.appBarSize,
+    this.floatingActionButton,
   });
 
   @override
@@ -143,6 +163,7 @@ class GreyBaseScaffoldStack extends StatelessWidget {
         Colors.grey.withOpacity(0.1),
       ],
       appBarBottom: appBarBottom,
+      floatingActionButton: floatingActionButton,
       child: child,
     );
   }
@@ -156,6 +177,7 @@ class WhiteBaseScaffoldStack extends StatelessWidget {
   VoidCallback? appBarRightClick;
   TabBar? appBarBottom;
   bool? showBackIcon;
+  Widget? floatingActionButton;
   WhiteBaseScaffoldStack({
     super.key,
     required this.title,
@@ -165,6 +187,7 @@ class WhiteBaseScaffoldStack extends StatelessWidget {
     this.appBarBottom,
     this.showBackIcon,
     this.appBarSize,
+    this.floatingActionButton,
   });
 
   @override
@@ -180,6 +203,7 @@ class WhiteBaseScaffoldStack extends StatelessWidget {
         Colors.white.withOpacity(0.1),
       ],
       appBarBottom: appBarBottom,
+      floatingActionButton: floatingActionButton,
       child: child,
     );
   }

@@ -15,6 +15,8 @@ import 'package:tdesign_flutter/tdesign_flutter.dart';
 import '../../design_pattern/view_model/ViewModel.dart';
 import '../../router/has_bottom_navigator/shell_default_router.dart';
 import '../home/view_model_controller.dart';
+import 'baby_setting/baby_setting_controller.dart';
+import 'global_setting/global_setting_controller.dart';
 
 class MyPage extends StatefulWidget {
   const MyPage({super.key});
@@ -25,6 +27,8 @@ class MyPage extends StatefulWidget {
 
 class _MyPageState extends State<MyPage> {
   ViewModeController _viewModeController = Get.find();
+  BabySettingController _babyController = Get.find();
+  GlobalSettingController _globalSettingController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +56,40 @@ class _MyPageState extends State<MyPage> {
           homeViewModel(context),
           gapHeightSmall(),
           _babySetting(),
+          gapHeightSmall(),
+          _buildGlobalBackgroundImage(),
         ],
       ),
+    );
+  }
+
+  GestureDetector _buildGlobalBackgroundImage() {
+    return GestureDetector(
+      onTap: () {
+        SmartDialog.showToast('功能开发中');
+      },
+      child: ContainerWrapperCard(
+          height: 50.h,
+          padding: EdgeInsets.symmetric(horizontal: 10.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TDText(
+                '更换主页背景',
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Obx(() => TDText(
+                      '' == _globalSettingController.globalBackgroundImage.value
+                          ? '系统默认背景'
+                          : '自定义')),
+                  gapWidthSmall(),
+                  Icon(Icons.arrow_right_outlined),
+                ],
+              ),
+            ],
+          )),
     );
   }
 

@@ -164,6 +164,10 @@ dependencies:
   timeago: ^3.7.0
   #日期处理
   jiffy: ^6.3.1
+  #九宫格图片
+  nine_grid_view: ^2.0.0
+  #微信风格的图片挑选
+  wechat_assets_picker: ^9.4.0
 
 
 dependency_overrides:

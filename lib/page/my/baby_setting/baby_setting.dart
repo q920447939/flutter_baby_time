@@ -131,21 +131,6 @@ class _BabySettingState extends State<BabySetting> {
                         : formatChineseDate(_babyController.birthday.value))),
                   ),
                 ),
-                SizedBox(
-                  height: 20.h,
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: const TDDivider(),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {},
-                  child: buildRow(
-                    '更换主页背景',
-                    rightWidget:
-                        Obx(() => TDText(_babyController.babyName.value)),
-                  ),
-                ),
               ],
             ),
           ),

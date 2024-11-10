@@ -7,6 +7,8 @@ import 'package:flutter_baby_time/widget/smart_dialog/smart_dialog_helper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
@@ -14,6 +16,7 @@ import 'package:tdesign_flutter/tdesign_flutter.dart';
 import '../../../../widget/easy_refresh/easy_refresh_wrapper.dart';
 import '../../../../widget/gap/gap_height.dart';
 import '../../../../widget/gap/gap_width.dart';
+import '../../../my/baby_setting/baby_setting_controller.dart';
 
 class TimeLimeViewModel extends StatefulWidget {
   double height;
@@ -28,6 +31,7 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
   Map<String, TextEditingController> controllerMap = {};
   Map<String, Color?> _likeMapColor = {};
   Map<String, List<String>> discussMap = {};
+  BabySettingController _babyController = Get.find();
 
   List<Jiffy> data = [];
 
@@ -374,7 +378,7 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
                         baseline: 25,
                         baselineType: TextBaseline.alphabetic,
                         child: TDText(
-                          '小熙熙',
+                          _babyController.babyName.value,
                           style: TextStyle(
                             fontSize: 14.sp,
                           ),
