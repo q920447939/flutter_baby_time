@@ -8,10 +8,12 @@ class BabySettingController extends GetxController {
   static const String _birthdayKey = 'birthday';
   static const String _sexKey = 'sex';
   static const String _babyNameKey = 'babyName';
+  static const String _babyNameAvatarKey = 'babyNameAvatar';
 
   var babyName = "请设置宝宝名称".obs;
   var birthday = "未设置".obs;
   var sex = SexEnums.female.obs;
+  var babyNameAvatar = 'assets/img/baby_avator.jpeg'.obs;
   @override
   void onInit() {
     super.onInit();
@@ -33,6 +35,10 @@ class BabySettingController extends GetxController {
     if (null != babyNameSp) {
       babyName.value = babyNameSp;
     }
+    final babyNameAvatarSp = SP.getString(_babyNameAvatarKey);
+    if (null != babyNameAvatarSp) {
+      babyNameAvatar.value = babyNameAvatarSp;
+    }
   }
 
   void changeBirthday(String newValue) {
@@ -48,6 +54,11 @@ class BabySettingController extends GetxController {
   void changeBabyName(String newValue) {
     babyName.value = newValue;
     saveSp(_babyNameKey, newValue);
+  }
+
+  void changeBabyAvatar(String newValue) {
+    babyNameAvatar.value = newValue;
+    saveSp(_babyNameAvatarKey, newValue);
   }
 
   Future<void> saveSp(String key, String value) async {

@@ -4,13 +4,11 @@ import 'package:image_picker/image_picker.dart';
 class ImagePickerWidget extends StatefulWidget {
   final Widget child;
   final Function(String) onImageSelected;
-  final VoidCallback onTap;
 
   const ImagePickerWidget({
     Key? key,
     required this.child,
     required this.onImageSelected,
-    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -19,6 +17,12 @@ class ImagePickerWidget extends StatefulWidget {
 
 class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   final ImagePicker _picker = ImagePicker();
+
+  @override
+  void initState() {
+    _openModalBottomSheet();
+    super.initState();
+  }
 
   Future<void> _openModalBottomSheet() async {
     if (!mounted) return;
@@ -86,7 +90,6 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        widget.onTap();
         _openModalBottomSheet();
       },
       child: widget.child,

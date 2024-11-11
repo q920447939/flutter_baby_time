@@ -7,19 +7,16 @@ import 'package:gap/gap.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
-import '../../../router/has_bottom_navigator/shell_default_router.dart';
 import '../../../widget/base_stack/base_stack.dart';
 import '../../../widget/container/container_wrapper_card.dart';
-import '../../../widget/image_edit/image_edit_type.dart';
-import '../../../widget/image_pick/image_pick_wrap.dart';
 
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:nine_grid_view/nine_grid_view.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
-import '../../../widget/pick/pick_image/image_bean.dart';
-import '../../../widget/pick/pick_image/picture_utils.dart';
+import '../../../widget/pick/pick_image_by_wechat/image_bean.dart';
+import '../../../widget/pick/pick_image_by_wechat/picture_utils.dart';
 
 class UploadFilePage extends StatefulWidget {
   const UploadFilePage({Key? key}) : super(key: key);

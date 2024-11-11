@@ -13,6 +13,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
+import '../../../widget/pick/pick_image_single/image_pick_wrap.dart';
+import '../../../widget/pick/pick_image_single/image_pick_wrap_new.dart';
 import 'baby_setting_controller.dart';
 
 class BabySetting extends StatefulWidget {
@@ -48,12 +50,17 @@ class _BabySettingState extends State<BabySetting> {
           ContainerWrapperCard(
             height: 200.h,
             child: Center(
-              child: TDAvatar(
-                size: TDAvatarSize.large,
-                type: TDAvatarType.normal,
-                shape: TDAvatarShape.circle,
-                defaultUrl: 'assets/img/baby_avator.jpeg',
-                backgroundColor: Colors.transparent,
+              child: Obx(
+                () => TDAvatar(
+                  size: TDAvatarSize.large,
+                  type: TDAvatarType.normal,
+                  shape: TDAvatarShape.circle,
+                  defaultUrl: _babyController.babyNameAvatar.value,
+                  backgroundColor: Colors.transparent,
+                  onTap: () {
+                    _changeBabyAvatar();
+                  },
+                ),
               ),
             ),
           ),
@@ -310,5 +317,9 @@ class _BabySettingState extends State<BabySetting> {
     if (result != null && result != "") {
       _babyController.babyName.value = result;
     }
+  }
+
+  void _changeBabyAvatar() {
+    ImagePickerWrapperNew(context: context).selectImage();
   }
 }

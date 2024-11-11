@@ -3,7 +3,9 @@ import 'dart:io';
 
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_baby_time/widget/smart_dialog/smart_dialog_helper.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../utils/crop_editor_helper.dart';
@@ -112,8 +114,7 @@ class _ImageEditorPageState extends State<ImageEditorPage> {
     try {
       _cropping = true;
 
-      EasyLoading.showProgress(0.1,
-          status: '照片裁切中...', maskType: EasyLoadingMaskType.black);
+      dialogLoading(msg: '照片裁切中...请等待');
 
       late EditImageInfo imageInfo;
 
@@ -121,26 +122,24 @@ class _ImageEditorPageState extends State<ImageEditorPage> {
         imageInfo = await cropImageDataWithNativeLibrary(
             state: editorKey.currentState!);
       } else {
-        EasyLoading.showProgress(0.5,
-            status: '照片裁切中...', maskType: EasyLoadingMaskType.black);
         imageInfo =
             await cropImageDataWithDartLibrary(state: editorKey.currentState!);
-        EasyLoading.showProgress(0.8,
-            status: '照片裁切中...', maskType: EasyLoadingMaskType.black);
       }
       DateTime now = DateTime.now();
 // 输出当前时间的时间戳（毫秒级）
       int currentTimeMillis = now.millisecondsSinceEpoch;
-     /* var url = await ImageDao.uploadImage(
+      /* var url = await ImageDao.uploadImage(
           imageInfo.data as ty.Uint8List, '$currentTimeMillis.png');
       _cropping = false;
       EasyLoading.dismiss();*/
       return "";
     } catch (e, stack) {
       msg = 'save failed: $e\n $stack';
-      await EasyLoading.showError(msg);
+      dialogFailure(msg);
       _cropping = false;
       return '';
+    } finally {
+      SmartDialog.dismiss();
     }
   }
 
