@@ -116,10 +116,10 @@ class _HomePageState extends State<HomePage> {
             ),
             _viewModeController.currentMode == ViewMode.waterfall
                 ? FallLoadViewModel(
-                    height: 685.h,
+                    height: 660.h,
                   )
                 : TimeLimeViewModel(
-                    height: 685.h,
+                    height: 660.h,
                   )
           ],
         ));

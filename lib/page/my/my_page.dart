@@ -59,6 +59,8 @@ class _MyPageState extends State<MyPage> {
           _babySetting(),
           gapHeightSmall(),
           _buildGlobalBackgroundImage(),
+          gapHeightSmall(),
+          _buildTag(),
         ],
       ),
     );
@@ -76,7 +78,7 @@ class _MyPageState extends State<MyPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               TDText(
-                '更换主页背景',
+                '背景',
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -101,12 +103,7 @@ class _MyPageState extends State<MyPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          TDText(
-            '首页预览模式',
-            style: TextStyle(
-              fontSize: 18.sp,
-            ),
-          ),
+          TDText('首页预览模式'),
           GestureDetector(
             onTap: () async {
               await _changeReadModel();
@@ -117,9 +114,6 @@ class _MyPageState extends State<MyPage> {
                 Obx(() {
                   return TDText(
                     _viewModeController.currentMode.value.label,
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                    ),
                   );
                 }),
                 gapWidthSmall(),
@@ -184,12 +178,7 @@ class _MyPageState extends State<MyPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          TDText(
-            '宝宝资料',
-            style: TextStyle(
-              fontSize: 18.sp,
-            ),
-          ),
+          TDText('宝宝资料'),
           GestureDetector(
             onTap: () async {
               BabySettingRoute().push(context);
@@ -209,6 +198,31 @@ class _MyPageState extends State<MyPage> {
           ),
         ],
       ),
+    );
+  }
+
+  _buildTag() {
+    return GestureDetector(
+      onTap: () {
+        TagSettingRoute().push(context);
+      },
+      child: ContainerWrapperCard(
+          height: 50.h,
+          padding: EdgeInsets.symmetric(horizontal: 10.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TDText(
+                '标签管理',
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(Icons.arrow_right_outlined),
+                ],
+              ),
+            ],
+          )),
     );
   }
 }

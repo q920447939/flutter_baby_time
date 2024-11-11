@@ -12,6 +12,7 @@ List<RouteBase> get $appRoutes => [
       $babySettingRoute,
       $uploadFileRoute,
       $imageEditorPageRouter,
+      $tagSettingRoute,
     ];
 
 RouteBase get $homeRoute => GoRouteData.$route(
@@ -153,4 +154,27 @@ const _$ImageEditCropLayerTypeEnumMap = {
 extension<T extends Enum> on Map<T, String> {
   T _$fromName(String value) =>
       entries.singleWhere((element) => element.value == value).key;
+}
+
+RouteBase get $tagSettingRoute => GoRouteData.$route(
+      path: '/tag-setting',
+      factory: $TagSettingRouteExtension._fromState,
+    );
+
+extension $TagSettingRouteExtension on TagSettingRoute {
+  static TagSettingRoute _fromState(GoRouterState state) =>
+      const TagSettingRoute();
+
+  String get location => GoRouteData.$location(
+        '/tag-setting',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
 }

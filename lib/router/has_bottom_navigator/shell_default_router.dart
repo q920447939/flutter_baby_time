@@ -9,6 +9,7 @@ import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import '../../page/home/home_page.dart';
 import '../../page/my/baby_setting/baby_setting.dart';
+import '../../page/my/tag_settring/tag_setting_page.dart';
 import '../../page/upload/upload_file_page/upload_file_page.dart';
 import '../../widget/image_edit/image_edit.dart';
 import '../../widget/image_edit/image_edit_type.dart';
@@ -88,5 +89,18 @@ class ImageEditorPageRouter extends GoRouteData {
       editorCropLayerPainter:
           imageEditCropLayerType.getEditorCropLayerPainter(),
     );
+  }
+}
+
+@TypedGoRoute<TagSettingRoute>(
+  path: '/tag-setting',
+)
+@immutable
+class TagSettingRoute extends GoRouteData {
+  const TagSettingRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return TagSettingPage();
   }
 }
