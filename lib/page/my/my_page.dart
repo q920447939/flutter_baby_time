@@ -54,6 +54,8 @@ class _MyPageState extends State<MyPage> {
             ),
           ),
           gapHeightNormal(),
+          _buildPersonInfo(),
+          gapHeightSmall(),
           homeViewModel(context),
           gapHeightSmall(),
           _babySetting(),
@@ -172,39 +174,27 @@ class _MyPageState extends State<MyPage> {
   }
 
   _babySetting() {
-    return ContainerWrapperCard(
-      height: 50.h,
-      padding: EdgeInsets.symmetric(horizontal: 10.w),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          TDText('宝宝资料'),
-          GestureDetector(
-            onTap: () async {
-              BabySettingRoute().push(context);
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                gapWidthSmall(),
-                Icon(
-                  Icons.arrow_right_outlined,
-                  size: 18.w,
-                  color: TDTheme.of(context).brandNormalColor,
-                ),
-                gapWidthSmall(),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+    return _buildRowInfo('宝宝资料', () {
+      const BabySettingRoute().push(context);
+    });
   }
 
   _buildTag() {
+    return _buildRowInfo('标签管理', () {
+      const TagSettingRoute().push(context);
+    });
+  }
+
+  _buildPersonInfo() {
+    return _buildRowInfo('昵称', () {
+      const MyProfileRoute().push(context);
+    });
+  }
+
+  _buildRowInfo(String leftText, GestureTapCallback onTap) {
     return GestureDetector(
       onTap: () {
-        TagSettingRoute().push(context);
+        onTap.call();
       },
       child: ContainerWrapperCard(
           height: 50.h,
@@ -213,7 +203,7 @@ class _MyPageState extends State<MyPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               TDText(
-                '标签管理',
+                leftText,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,

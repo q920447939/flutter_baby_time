@@ -13,6 +13,8 @@ List<RouteBase> get $appRoutes => [
       $uploadFileRoute,
       $imageEditorPageRouter,
       $tagSettingRoute,
+      $myProfileRoute,
+      $heightWeightManageRoute,
     ];
 
 RouteBase get $homeRoute => GoRouteData.$route(
@@ -167,6 +169,52 @@ extension $TagSettingRouteExtension on TagSettingRoute {
 
   String get location => GoRouteData.$location(
         '/tag-setting',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $myProfileRoute => GoRouteData.$route(
+      path: '/my-profile',
+      factory: $MyProfileRouteExtension._fromState,
+    );
+
+extension $MyProfileRouteExtension on MyProfileRoute {
+  static MyProfileRoute _fromState(GoRouterState state) =>
+      const MyProfileRoute();
+
+  String get location => GoRouteData.$location(
+        '/my-profile',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $heightWeightManageRoute => GoRouteData.$route(
+      path: '/height-weight-manage',
+      factory: $HeightWeightManageRouteExtension._fromState,
+    );
+
+extension $HeightWeightManageRouteExtension on HeightWeightManageRoute {
+  static HeightWeightManageRoute _fromState(GoRouterState state) =>
+      const HeightWeightManageRoute();
+
+  String get location => GoRouteData.$location(
+        '/height-weight-manage',
       );
 
   void go(BuildContext context) => context.go(location);

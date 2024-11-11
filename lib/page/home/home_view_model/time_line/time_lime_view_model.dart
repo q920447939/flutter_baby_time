@@ -193,6 +193,20 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
           children: _buildTag(),
         ),
         gapHeightSmall(),
+        Padding(
+          padding: EdgeInsets.only(left: 10.w),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: TDText(
+              '妈妈',
+              style: TextStyle(
+                fontSize: 12.sp,
+                color: Colors.grey,
+              ),
+            ),
+          ),
+        ),
+        gapHeightSmall(),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [

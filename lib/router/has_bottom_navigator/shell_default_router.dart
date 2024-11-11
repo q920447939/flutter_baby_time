@@ -7,8 +7,10 @@ import 'package:flutter_baby_time/widget/container/container_wrapper_card.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
+import '../../page/heightWeight/height_weight_manage_page.dart';
 import '../../page/home/home_page.dart';
 import '../../page/my/baby_setting/baby_setting.dart';
+import '../../page/my/my_profile/my_profile_page.dart';
 import '../../page/my/tag_settring/tag_setting_page.dart';
 import '../../page/upload/upload_file_page/upload_file_page.dart';
 import '../../widget/image_edit/image_edit.dart';
@@ -102,5 +104,31 @@ class TagSettingRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return TagSettingPage();
+  }
+}
+
+@TypedGoRoute<MyProfileRoute>(
+  path: '/my-profile',
+)
+@immutable
+class MyProfileRoute extends GoRouteData {
+  const MyProfileRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return MyProfilePage();
+  }
+}
+
+@TypedGoRoute<HeightWeightManageRoute>(
+  path: '/height-weight-manage',
+)
+@immutable
+class HeightWeightManageRoute extends GoRouteData {
+  const HeightWeightManageRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return HeightWeightManagePage();
   }
 }

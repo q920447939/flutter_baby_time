@@ -10,6 +10,7 @@ import 'package:jiffy/jiffy.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import '../../design_pattern/view_model/ViewModel.dart';
+import '../../router/has_bottom_navigator/shell_default_router.dart';
 import '../../widget/container/container_wrapper_card.dart';
 import '../../widget/gap/gap_height.dart';
 import '../../widget/gap/gap_width.dart';
@@ -110,6 +111,12 @@ class _HomePageState extends State<HomePage> {
                   tabText: '标签',
                   onTap: () {
                     //onTapTab(context, '标签3');
+                  },
+                ),
+                TDBottomTabBarTabConfig(
+                  tabText: '身高体重',
+                  onTap: () {
+                    const HeightWeightManageRoute().push(context);
                   },
                 ),
               ],
