@@ -1,5 +1,6 @@
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_baby_time/widget/no_data.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -65,6 +66,9 @@ class _EasyRefreshWrapperState<T> extends State<EasyRefreshWrapper> {
         _controller.finishLoad();
       }
     } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       _controller.finishRefresh();
     }
   }
@@ -78,6 +82,9 @@ class _EasyRefreshWrapperState<T> extends State<EasyRefreshWrapper> {
       //TODO 获取总页数
       _controller.finishLoad();
     } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       pageNo--; // 加载失败，页码回退
       _controller.finishLoad();
     }

@@ -9,9 +9,13 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
+import '../../dao/baby/baby_dao.dart';
 import '../../design_pattern/view_model/ViewModel.dart';
+import '../../model/baby/BabyInfoRespVO.dart';
+import '../../model/uploadList/UploadListRespVO.dart';
 import '../../router/has_bottom_navigator/shell_default_router.dart';
 import '../../widget/container/container_wrapper_card.dart';
+import '../../widget/future/future_.dart';
 import '../../widget/gap/gap_height.dart';
 import '../../widget/gap/gap_width.dart';
 import '../my/baby_setting/baby_setting_controller.dart';
@@ -27,6 +31,17 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   ViewModeController _viewModeController = Get.find();
   BabySettingController _babySettingController = Get.find();
+
+  @override
+  void initState() {
+    fetch();
+    super.initState();
+  }
+
+  Future<BabyInfoRespVo?> fetch() async {
+    return await BabyDao.get(1);
+  }
+
   @override
   Widget build(BuildContext context) {
     return WhiteBaseScaffoldStack(
@@ -47,7 +62,8 @@ class _HomePageState extends State<HomePage> {
                         size: TDAvatarSize.medium,
                         type: TDAvatarType.normal,
                         shape: TDAvatarShape.circle,
-                        defaultUrl: 'assets/img/baby_avator.jpeg',
+                        //defaultUrl: 'assets/img/baby_avator.jpeg',
+                        avatarUrl: _babySettingController.babyNameAvatar.value,
                         backgroundColor: Colors.transparent,
                       ),
                     ),

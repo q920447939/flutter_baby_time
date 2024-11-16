@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_baby_time/page/heightWeight/weight_record.dart';
 import 'package:flutter_baby_time/widget/base_stack/base_stack.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -8,6 +9,7 @@ import 'package:tdesign_flutter/tdesign_flutter.dart';
 import '../../widget/container/container_wrapper_card.dart';
 import '../../widget/gap/gap_height.dart';
 import '../../widget/smart_dialog/smart_dialog_helper.dart';
+import 'height_record.dart';
 
 class HeightWeightManagePage extends StatefulWidget {
   const HeightWeightManagePage({super.key});
@@ -17,6 +19,13 @@ class HeightWeightManagePage extends StatefulWidget {
 }
 
 class _HeightWeightManagePageState extends State<HeightWeightManagePage> {
+  String model = 'height';
+
+  Map<String, Widget> record_map = {
+    'height': HeightRecord(),
+    'weight': WeightRecord(),
+  };
+
   @override
   Widget build(BuildContext context) {
     return GreyBaseScaffoldStack(
@@ -50,6 +59,7 @@ class _HeightWeightManagePageState extends State<HeightWeightManagePage> {
                 children: [
                   _horizontalCardStyle(c),
                   gapHeightNormal(),
+                  record_map[model]!
                 ],
               ),
             );
@@ -61,23 +71,28 @@ class _HeightWeightManagePageState extends State<HeightWeightManagePage> {
 
   Widget _horizontalCardStyle(BuildContext context) {
     return TDRadioGroup(
-      selectId: 'index:1',
+      selectId: model,
       cardMode: true,
       showDivider: true,
       direction: Axis.horizontal,
       rowCount: 2,
       directionalTdRadios: const [
         TDRadio(
-          id: 'index:0',
+          id: 'height',
           title: '身高',
           cardMode: true,
         ),
         TDRadio(
-          id: 'index:1',
+          id: 'weight',
           title: '体重',
           cardMode: true,
         ),
       ],
+      onRadioGroupChange: (model) {
+        setState(() {
+          this.model = model!;
+        });
+      },
     );
   }
 }

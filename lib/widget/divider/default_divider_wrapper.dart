@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 class DefaultDividerWrapper extends StatelessWidget {
   final Color? color;
@@ -11,11 +12,12 @@ class DefaultDividerWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Divider(
-      color: color,
-      thickness: thickness,
-      indent: 0.w,
-      endIndent: 10.w,
+    return SizedBox(
+      height: 20.h,
+      child: Container(
+        alignment: Alignment.center,
+        child: const TDDivider(),
+      ),
     );
   }
 }

@@ -5,7 +5,7 @@ import '../../main.dart';
 
 class ViewModeController extends GetxController {
   static const String _viewModeKey = 'view_mode';
-  final Rx<ViewMode> currentMode = ViewMode.waterfall.obs;
+  final Rx<ViewMode> currentMode = ViewMode.timeline.obs;
 
   @override
   void onInit() {

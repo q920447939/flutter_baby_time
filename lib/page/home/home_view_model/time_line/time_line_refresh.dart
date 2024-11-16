@@ -18,6 +18,7 @@ class TimeLineRefresh<T> extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(10.r),
       child: ListView.builder(
+        itemCount: data.length,
         itemBuilder: (_, index) {
           return childItem(data[index], index);
         },

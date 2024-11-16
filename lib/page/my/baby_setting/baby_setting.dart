@@ -55,7 +55,8 @@ class _BabySettingState extends State<BabySetting> {
                   size: TDAvatarSize.large,
                   type: TDAvatarType.normal,
                   shape: TDAvatarShape.circle,
-                  defaultUrl: _babyController.babyNameAvatar.value,
+                  //defaultUrl: _babyController.babyNameAvatar.value,
+                  avatarUrl: _babyController.babyNameAvatar.value,
                   backgroundColor: Colors.transparent,
                   onTap: () {
                     _changeBabyAvatar();

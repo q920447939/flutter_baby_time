@@ -67,12 +67,12 @@ class _BottomBarNavigatorState extends State<BottomBarNavigator> {
           tabText: '首页',
           selectedIcon: Icon(
             TDIcons.home,
-            size: 20.w,
+            size: 19.w,
             color: TDTheme.of(context).brandNormalColor,
           ),
           unselectedIcon: Icon(
             TDIcons.home,
-            size: 20.w,
+            size: 19.w,
             color: TDTheme.of(context).brandNormalColor,
           ),
           onTap: () {
@@ -83,12 +83,12 @@ class _BottomBarNavigatorState extends State<BottomBarNavigator> {
             tabText: '上传',
             selectedIcon: Icon(
               TDIcons.add,
-              size: 20.w,
+              size: 19.w,
               color: Colors.red,
             ),
             unselectedIcon: Icon(
               TDIcons.add,
-              size: 20.w,
+              size: 19.w,
               color: Colors.red,
             ),
             onTap: () {
@@ -147,12 +147,12 @@ class _BottomBarNavigatorState extends State<BottomBarNavigator> {
             tabText: '个人中心',
             selectedIcon: Icon(
               TDIcons.setting,
-              size: 20.w,
+              size: 19.w,
               color: TDTheme.of(context).brandNormalColor,
             ),
             unselectedIcon: Icon(
               TDIcons.setting,
-              size: 20.w,
+              size: 19.w,
               color: TDTheme.of(context).brandNormalColor,
             ),
             onTap: () {

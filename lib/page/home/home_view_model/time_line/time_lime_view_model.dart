@@ -13,6 +13,8 @@ import 'package:jiffy/jiffy.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
+import '../../../../dao/baby/baby_dao.dart';
+import '../../../../model/uploadList/UploadListRespVO.dart';
 import '../../../../widget/easy_refresh/easy_refresh_wrapper.dart';
 import '../../../../widget/gap/gap_height.dart';
 import '../../../../widget/gap/gap_width.dart';
@@ -33,18 +35,29 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
   Map<String, List<String>> discussMap = {};
   BabySettingController _babyController = Get.find();
 
-  List<Jiffy> data = [];
+  int? curYear;
+  List<UploadListRespVo> uploadList = [];
 
-  late Jiffy start;
+  final int _DEFAULT_PAGE_NO = 1;
+  late int pageNo = _DEFAULT_PAGE_NO;
 
-  late int curYear;
+  int size = 10;
+
   //构建时间线 ，为了降低性能开销 分批渲染数据
   @override
   void initState() {
     super.initState();
-    start = Jiffy.parse('2023-1-3', pattern: 'yyyy-MM-dd');
-    curYear = start.year;
-    data = List.generate(10, (idx) => start = start.subtract(days: 1));
+  }
+
+  Future<List<dynamic>> fetchUploadListInit() async {
+    pageNo = _DEFAULT_PAGE_NO;
+    uploadList = await BabyDao.fetchUploadList(pageNo, size, 1) ?? [];
+    return uploadList;
+  }
+
+  Future<List<dynamic>> fetchUploadList(int pageNo, int babyId) async {
+    uploadList = await BabyDao.fetchUploadList(pageNo, size, babyId) ?? [];
+    return uploadList;
   }
 
   @override
@@ -53,16 +66,10 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
       height: widget.height,
       child: EasyRefreshWrapper<dynamic>(
         initLoad: (int pageNo, int pageSize) async {
-          return Future.delayed(Duration(seconds: 2)).then((_) {
-            var list = List.generate(10, (index) => 'initLoad $index');
-            return Future.value(list);
-          });
+          return fetchUploadListInit();
         },
         loadMore: (int pageNo, int pageSize) {
-          return Future.delayed(Duration(seconds: 2)).then((_) {
-            var list = List.generate(10, (index) => 'loadMore $index');
-            return Future.value(list);
-          });
+          return fetchUploadList(++pageNo, 1);
         },
         listBuilder: (List<dynamic> list, ScrollPhysics physics) {
           return TimeLineRefresh<dynamic>(
@@ -73,7 +80,11 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
   }
 
   Widget _buildItem(item, index) {
+    UploadListRespVo uploadInfo = item as UploadListRespVo;
     var key = index.toString();
+
+    int len =
+        uploadInfo.uploadType! == 1 ? uploadInfo.uploadImageRespVo.length : 1;
     TextEditingController controller;
     List<String> discussList = [];
     Color? colorIsLike;
@@ -86,16 +97,25 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
       controllerMap.putIfAbsent(key, () {
         return controller;
       });
+      var list = uploadInfo.uploadDiscussRespVo.map((e) => e.content!).toList();
+      discussList = list;
       discussMap.putIfAbsent(key, () {
-        return [];
+        return list;
       });
     }
+    var buildCrossAxis = _buildCrossAxis(len);
+    int crossAxisCount = len <= 2
+        ? 1
+        : len <= 6
+            ? 2
+            : 3;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         if (index > 0) gapHeightLarge(),
-        if (index == 0) _buildYear(),
+        if (index == 0 || uploadInfo.uploadTime!.year != curYear)
+          _buildYear(uploadInfo.uploadTime!.year),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -106,7 +126,7 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
             ),
             gapWidthSmall(),
             TDText(
-              '11月6日',
+              '${uploadInfo.uploadTime!.month}月${uploadInfo.uploadTime!.day}日',
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
@@ -129,34 +149,33 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
         gapHeightNormal(),
         ContainerWrapperCard(
           width: 350.w,
-          height: 360.h,
+          height: len >= 3 ? 360.h : 180.h,
           child: GridView.builder(
             //取消滚动
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: _buildCrossAxis(data.length),
+              crossAxisCount: len <= 4 ? 2 : 3,
               mainAxisSpacing: 8.0,
               crossAxisSpacing: 8.0,
             ),
-            itemCount: data.length > 9 ? 9 : data.length,
+            itemCount: len > 9 ? 9 : len,
             itemBuilder: (context, index) {
               Widget widget;
               if (index < 8) {
                 widget = TDImage(
-                  assetUrl: 'assets/img/baby_photo.jpg',
+                  imgUrl: uploadInfo.uploadImageRespVo[index].imageUrl!,
                 );
               } else {
                 widget = Stack(
                   fit: StackFit.expand,
                   alignment: Alignment.center,
                   children: [
-                    const TDImage(
-                      assetUrl: 'assets/img/baby_photo.jpg',
-                      fit: BoxFit.cover,
+                    TDImage(
+                      imgUrl: uploadInfo.uploadImageRespVo[index].imageUrl!,
                     ),
                     Center(
                       child: TDText(
-                        '+16',
+                        '+${len - 9}',
                         style: TextStyle(
                           fontSize: 25.sp,
                           color: Colors.white,
@@ -167,18 +186,14 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
                   ],
                 );
               }
-
+              var imageUrls =
+                  uploadInfo.uploadImageRespVo.map((e) => e.imageUrl!).toList();
               return GestureDetector(
                 onTap: () {
                   TDImageViewer.showImageViewer(
-                    defaultIndex: index,
+                    defaultIndex: index > 8 ? 8 : index,
                     context: context,
-                    images: List.generate(
-                      10,
-                      (idx) {
-                        return 'assets/img/baby_photo.jpg';
-                      },
-                    ),
+                    images: imageUrls,
                   );
                 },
                 child: widget,
@@ -198,7 +213,7 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
           child: Align(
             alignment: Alignment.centerLeft,
             child: TDText(
-              '妈妈',
+              uploadInfo.memberSimpleResVo!.memberNickName,
               style: TextStyle(
                 fontSize: 12.sp,
                 color: Colors.grey,
@@ -425,13 +440,14 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
     return list;
   }
 
-  _buildYear() {
+  _buildYear(newYear) {
+    curYear = newYear;
     return Padding(
       padding: EdgeInsets.only(bottom: 5.h),
       child: Align(
         alignment: Alignment.centerLeft,
         child: TDText(
-          '2023年',
+          '$curYear年',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20.sp,
