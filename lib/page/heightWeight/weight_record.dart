@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-class WeightRecord extends StatefulWidget {
+import 'height_weight_manager_parent.dart';
+
+class WeightRecord extends HeightWeightManagerParent {
   const WeightRecord({Key? key}) : super(key: key);
 
   @override
@@ -10,6 +12,6 @@ class WeightRecord extends StatefulWidget {
 class _WeightRecordState extends State<WeightRecord> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Text('体重记录');
   }
 }

@@ -32,7 +32,7 @@ class TimeLimeViewModel extends StatefulWidget {
 class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
   Map<String, TextEditingController> controllerMap = {};
   Map<String, Color?> _likeMapColor = {};
-  Map<String, List<String>> discussMap = {};
+  Map<String, List<UploadDiscussRespVo>> discussMap = {};
   BabySettingController _babyController = Get.find();
 
   int? curYear;
@@ -86,7 +86,7 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
     int len =
         uploadInfo.uploadType! == 1 ? uploadInfo.uploadImageRespVo.length : 1;
     TextEditingController controller;
-    List<String> discussList = [];
+    List<UploadDiscussRespVo> discussList = [];
     Color? colorIsLike;
     if (controllerMap.containsKey(key)) {
       controller = controllerMap[key]!;
@@ -97,10 +97,9 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
       controllerMap.putIfAbsent(key, () {
         return controller;
       });
-      var list = uploadInfo.uploadDiscussRespVo.map((e) => e.content!).toList();
-      discussList = list;
+      discussList = uploadInfo.uploadDiscussRespVo;
       discussMap.putIfAbsent(key, () {
-        return list;
+        return uploadInfo.uploadDiscussRespVo;
       });
     }
     var buildCrossAxis = _buildCrossAxis(len);
@@ -149,12 +148,12 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
         gapHeightNormal(),
         ContainerWrapperCard(
           width: 350.w,
-          height: len >= 3 ? 360.h : 180.h,
+          height: len > 6 ? 360.h : (len > 3 ? 250.h : 180.h),
           child: GridView.builder(
             //取消滚动
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: len <= 4 ? 2 : 3,
+              crossAxisCount: 3,
               mainAxisSpacing: 8.0,
               crossAxisSpacing: 8.0,
             ),
@@ -368,7 +367,7 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
   }
 
   _buildCrossAxis(int length) {
-    if (length < 3) {
+    if (length <= 3) {
       return 1;
     }
     if (length <= 6) {
@@ -378,7 +377,7 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
     }
   }
 
-  _buildDiscuss(List<String> discussList) {
+  _buildDiscuss(List<UploadDiscussRespVo> discussList) {
     var list = discussList
         .map(
           (discuss) => Column(
@@ -395,10 +394,11 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
                       SizedBox(
                         width: 30.w,
                         child: TDAvatar(
+                          avatarUrl: discuss.memberSimpleResVo!.avatar!,
                           size: TDAvatarSize.medium,
                           type: TDAvatarType.normal,
                           shape: TDAvatarShape.circle,
-                          defaultUrl: 'assets/img/baby_avator.jpeg',
+                          //defaultUrl: 'assets/img/baby_avator.jpeg',
                           backgroundColor: Colors.transparent,
                         ),
                       ),
@@ -407,7 +407,7 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
                         baseline: 25,
                         baselineType: TextBaseline.alphabetic,
                         child: TDText(
-                          _babyController.babyName.value,
+                          discuss.memberSimpleResVo!.memberNickName,
                           style: TextStyle(
                             fontSize: 14.sp,
                           ),
@@ -416,7 +416,7 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
                     ],
                   ),
                   TDText(
-                    '2024年10月2日',
+                    '${Jiffy.parseFromDateTime(discuss.createTime!).format(pattern: 'yyyy年MM月dd日')}',
                     style: TextStyle(
                       fontSize: 12.sp,
                       color: Colors.grey.withOpacity(0.8),
@@ -428,7 +428,7 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
               Padding(
                 padding: EdgeInsets.only(left: 35.w),
                 child: TDText(
-                  discuss,
+                  discuss.content!,
                   style: TextStyle(fontSize: 14.sp),
                   maxLines: 2,
                 ),

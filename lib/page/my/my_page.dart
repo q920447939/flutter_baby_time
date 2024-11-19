@@ -45,10 +45,11 @@ class _MyPageState extends State<MyPage> {
             child: SizedBox(
               width: 80.w,
               child: TDAvatar(
+                avatarUrl: _babyController.babyNameAvatar.value,
                 size: TDAvatarSize.large,
                 type: TDAvatarType.normal,
                 shape: TDAvatarShape.circle,
-                defaultUrl: 'assets/img/baby_avator.jpeg',
+                //defaultUrl: 'assets/img/baby_avator.jpeg',
                 backgroundColor: Colors.transparent,
               ),
             ),

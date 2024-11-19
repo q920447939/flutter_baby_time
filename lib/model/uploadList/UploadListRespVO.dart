@@ -20,8 +20,8 @@ class UploadListRespVo {
   final String? remark;
   final DateTime? createTime;
   final MemberSimpleResVo? memberSimpleResVo;
-  final List<UploadRespVo> uploadDiscussRespVo;
-  final List<UploadRespVo> uploadImageRespVo;
+  final List<UploadDiscussRespVo> uploadDiscussRespVo;
+  final List<UploadImageRespVo> uploadImageRespVo;
 
   factory UploadListRespVo.fromJson(Map<String, dynamic> json) {
     return UploadListRespVo(
@@ -37,28 +37,14 @@ class UploadListRespVo {
           : MemberSimpleResVo.fromJson(json["memberSimpleResVO"]),
       uploadDiscussRespVo: json["uploadDiscussRespVO"] == null
           ? []
-          : List<UploadRespVo>.from(json["uploadDiscussRespVO"]!
-              .map((x) => UploadRespVo.fromJson(x))),
+          : List<UploadDiscussRespVo>.from(json["uploadDiscussRespVO"]!
+              .map((x) => UploadDiscussRespVo.fromJson(x))),
       uploadImageRespVo: json["uploadImageRespVO"] == null
           ? []
-          : List<UploadRespVo>.from(
-              json["uploadImageRespVO"]!.map((x) => UploadRespVo.fromJson(x))),
+          : List<UploadImageRespVo>.from(json["uploadImageRespVO"]!
+              .map((x) => UploadImageRespVo.fromJson(x))),
     );
   }
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "babyId": babyId,
-        "uploadType": uploadType,
-        "uploadUser": uploadUser,
-        "uploadTime": uploadTime?.toIso8601String(),
-        "remark": remark,
-        "createTime": createTime?.toIso8601String(),
-        "memberSimpleResVO": memberSimpleResVo?.toJson(),
-        "uploadDiscussRespVO":
-            uploadDiscussRespVo.map((x) => x?.toJson()).toList(),
-        "uploadImageRespVO": uploadImageRespVo.map((x) => x?.toJson()).toList(),
-      };
 }
 
 class MemberSimpleResVo {
@@ -66,84 +52,77 @@ class MemberSimpleResVo {
     required this.memberCode,
     required this.memberNickName,
     required this.avatar,
-    required this.comment,
   });
 
   final String? memberCode;
   final String? memberNickName;
   final String? avatar;
-  final Comment? comment;
 
   factory MemberSimpleResVo.fromJson(Map<String, dynamic> json) {
     return MemberSimpleResVo(
       memberCode: json["memberCode"],
       memberNickName: json["memberNickName"],
       avatar: json["avatar"],
-      comment:
-          json["@comment"] == null ? null : Comment.fromJson(json["@comment"]),
     );
   }
-
-  Map<String, dynamic> toJson() => {
-        "memberCode": memberCode,
-        "memberNickName": memberNickName,
-        "avatar": avatar,
-        "@comment": comment?.toJson(),
-      };
 }
 
-class Comment {
-  Comment({
-    required this.avatar,
-  });
-
-  final String? avatar;
-
-  factory Comment.fromJson(Map<String, dynamic> json) {
-    return Comment(
-      avatar: json["avatar"],
-    );
-  }
-
-  Map<String, dynamic> toJson() => {
-        "avatar": avatar,
-      };
-}
-
-class UploadRespVo {
-  UploadRespVo({
+class UploadDiscussRespVo {
+  UploadDiscussRespVo({
     required this.id,
     required this.babyId,
+    required this.discussMemberId,
     required this.uploadId,
     required this.content,
     required this.createTime,
+    required this.memberSimpleResVo,
+  });
+
+  final int? id;
+  final int? babyId;
+  final int? discussMemberId;
+  final int? uploadId;
+  final String? content;
+  final DateTime? createTime;
+  final MemberSimpleResVo? memberSimpleResVo;
+
+  factory UploadDiscussRespVo.fromJson(Map<String, dynamic> json) {
+    return UploadDiscussRespVo(
+      id: json["id"],
+      babyId: json["babyId"],
+      discussMemberId: json["discussMemberId"],
+      uploadId: json["uploadId"],
+      content: json["content"],
+      createTime: DateTime.tryParse(json["createTime"] ?? ""),
+      memberSimpleResVo: json["memberSimpleResVO"] == null
+          ? null
+          : MemberSimpleResVo.fromJson(json["memberSimpleResVO"]),
+    );
+  }
+}
+
+class UploadImageRespVo {
+  UploadImageRespVo({
+    required this.id,
+    required this.babyId,
+    required this.uploadId,
     required this.imageUrl,
+    required this.createTime,
   });
 
   final int? id;
   final int? babyId;
   final int? uploadId;
-  final String? content;
-  final DateTime? createTime;
   final String? imageUrl;
+  final DateTime? createTime;
 
-  factory UploadRespVo.fromJson(Map<String, dynamic> json) {
-    return UploadRespVo(
+  factory UploadImageRespVo.fromJson(Map<String, dynamic> json) {
+    return UploadImageRespVo(
       id: json["id"],
       babyId: json["babyId"],
       uploadId: json["uploadId"],
-      content: json["content"],
-      createTime: DateTime.tryParse(json["createTime"] ?? ""),
       imageUrl: json["imageUrl"],
+      createTime: DateTime.tryParse(json["createTime"] ?? ""),
     );
   }
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "babyId": babyId,
-        "uploadId": uploadId,
-        "content": content,
-        "createTime": createTime?.toIso8601String(),
-        "imageUrl": imageUrl,
-      };
 }

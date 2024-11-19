@@ -4,11 +4,14 @@ import 'package:flutter_baby_time/page/heightWeight/weight_record.dart';
 import 'package:flutter_baby_time/widget/base_stack/base_stack.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import '../../widget/container/container_wrapper_card.dart';
 import '../../widget/gap/gap_height.dart';
 import '../../widget/smart_dialog/smart_dialog_helper.dart';
+import 'controller/height_weight_manager_controller.dart';
 import 'height_record.dart';
 
 class HeightWeightManagePage extends StatefulWidget {
@@ -25,6 +28,8 @@ class _HeightWeightManagePageState extends State<HeightWeightManagePage> {
     'height': HeightRecord(),
     'weight': WeightRecord(),
   };
+
+  HeightWeightManagerController heightWeightManagerController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -52,14 +57,17 @@ class _HeightWeightManagePageState extends State<HeightWeightManagePage> {
         await SmartDialog.show(
           builder: (c) {
             return ContainerWrapperCard(
-              height: 500.h,
+              height: 550.h,
               margin: EdgeInsets.all(10.w),
               padding: EdgeInsets.all(10.w),
               child: Column(
                 children: [
                   _horizontalCardStyle(c),
                   gapHeightNormal(),
-                  record_map[model]!
+                  Obx(() =>
+                      heightWeightManagerController.model.value == 'height'
+                          ? HeightRecord()
+                          : WeightRecord()),
                 ],
               ),
             );
@@ -89,9 +97,7 @@ class _HeightWeightManagePageState extends State<HeightWeightManagePage> {
         ),
       ],
       onRadioGroupChange: (model) {
-        setState(() {
-          this.model = model!;
-        });
+        heightWeightManagerController.model.value = model!;
       },
     );
   }
