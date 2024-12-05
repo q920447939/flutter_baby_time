@@ -12,7 +12,7 @@ void dialogFailure(String msg,
       onDismiss: onDismiss);
 }
 
-void dialogSuccess(String msg,
+Future<void> dialogSuccess(String msg,
     {Duration displayTime = const Duration(seconds: 3),
     bool clickMaskDismiss = false,
     VoidCallback? onDismiss}) async {

@@ -126,7 +126,6 @@ dependencies:
   flustars_flutter3: ^3.0.0
   dropdown_button2: ^3.0.0-beta.10
   easy_localization: ^3.0.3
-  syncfusion_flutter_datepicker: ^24.2.9
   expansion_tile_card: ^3.0.0
   #单选组件
   radio_group_v2: ^3.2.0
@@ -168,6 +167,7 @@ dependencies:
   nine_grid_view: ^2.0.0
   #微信风格的图片挑选
   wechat_assets_picker: ^9.4.0
+  syncfusion_flutter_charts: 26.2.14
 
 
 dependency_overrides:

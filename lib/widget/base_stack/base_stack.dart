@@ -16,6 +16,7 @@ class BaseScaffoldStack extends StatefulWidget {
   VoidCallback? appBarRightClick;
   TabBar? appBarBottom;
   bool showBackIcon;
+  Widget? leftBackWidget;
   Widget? floatingActionButton;
   BaseScaffoldStack({
     super.key,
@@ -28,6 +29,7 @@ class BaseScaffoldStack extends StatefulWidget {
     this.showBackIcon = true,
     this.appBarSize,
     this.floatingActionButton,
+    this.leftBackWidget,
   });
 
   @override
@@ -88,16 +90,17 @@ class _BaseScaffoldStackState extends State<BaseScaffoldStack> {
     return AppBar(
       automaticallyImplyLeading: widget.showBackIcon,
       leading: widget.showBackIcon
-          ? IconButton(
-              icon: Icon(
-                Icons.arrow_back,
-              ),
-              onPressed: () {
-                if (context.canPop()) {
-                  context.pop();
-                }
-              },
-            )
+          ? widget.leftBackWidget ??
+              IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                ),
+                onPressed: () {
+                  if (context.canPop()) {
+                    context.pop();
+                  }
+                },
+              )
           : null,
       title: widget.title == ''
           ? null
@@ -136,6 +139,7 @@ class GreyBaseScaffoldStack extends StatelessWidget {
   VoidCallback? appBarRightClick;
   TabBar? appBarBottom;
   bool? showBackIcon;
+  Widget? leftBackWidget;
   Widget? floatingActionButton;
 
   GreyBaseScaffoldStack({
@@ -148,6 +152,7 @@ class GreyBaseScaffoldStack extends StatelessWidget {
     this.showBackIcon,
     this.appBarSize,
     this.floatingActionButton,
+    this.leftBackWidget,
   });
 
   @override
@@ -156,6 +161,7 @@ class GreyBaseScaffoldStack extends StatelessWidget {
       title: title,
       appBarSize: appBarSize,
       showBackIcon: showBackIcon ?? true,
+      leftBackWidget: leftBackWidget,
       appBarRightTitle: appBarRightTitle,
       appBarRightClick: appBarRightClick,
       gradientColors: [
