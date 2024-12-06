@@ -44,9 +44,17 @@ class _HeightWeightManagePageState extends State<HeightWeightManagePage> {
     1: const WeightRecordBodyPage(),
   };
 
+  int _updateKey = 0; // 用于强制更新的key
+
   @override
   void initState() {
     super.initState();
+  }
+
+  void updateData() {
+    setState(() {
+      _updateKey++; // 增加key值，强制更新
+    });
   }
 
   @override
@@ -134,7 +142,7 @@ class _HeightWeightManagePageState extends State<HeightWeightManagePage> {
                 children: [
                   //_horizontalCardStyle(c),
                   //gapHeightNormal(),
-                  HeightRecord()
+                  HeightRecord(key: ValueKey(_updateKey), updateData)
                 ],
               ),
             );

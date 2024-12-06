@@ -12,13 +12,13 @@ import '../http/request/base_request.dart';
 class BabyDao {
   static final BabySettingController _babyController = Get.find();
 
-  static Future<BabyInfoRespVo?> get(id) async {
+  static Future<BabyInfoRespVo?> get() async {
     var data = await HiNet.getInstance().fire(AnonymousRequest(
       method: HttpMethod.GET,
       path: "/api/baby/info/get",
       needLogin: true,
       needToken: true,
-    ).add("id", id));
+    ).add("id", _babyController.babyId));
     if (null == data) {
       return null;
     }

@@ -38,7 +38,7 @@ class DioHiNetAdapter extends HiNetAdapter {
               "result statusCode is ${result.statusCode} , msg is ${result.statusMessage} , data is ${result.data}");*/
           if (ServerConfig().isDebug) {
             if (kDebugMode) {
-              //print("result is ${result.data}");
+              print("result is ${result.data}");
             }
           }
           return HiNetResponse(

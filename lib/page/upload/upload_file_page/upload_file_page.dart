@@ -7,6 +7,7 @@ import 'package:gap/gap.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
+import '../../../dao/image/image_dao.dart';
 import '../../../widget/base_stack/base_stack.dart';
 import '../../../widget/container/container_wrapper_card.dart';
 
@@ -219,6 +220,7 @@ class _UploadFilePageState extends State<UploadFilePage> {
             disabled: _disable,
             onTap: () {
               SmartDialog.showToast('获取到图片,共${_imageFiles.length}张');
+              ImageDao.uploadImageByFiles(_imageFiles);
             },
           ),
           Gap(50.h),
@@ -249,11 +251,7 @@ class _UploadFilePageState extends State<UploadFilePage> {
         last10YearDate.daysInMonth
       ],
       dateEnd: [jiffy.year, jiffy.month, jiffy.daysInMonth],
-      initialDate: [
-        last10YearDate.year,
-        last10YearDate.month,
-        last10YearDate.daysInMonth
-      ],
+      initialDate: [jiffy.year, jiffy.month, jiffy.daysInMonth],
     );
   }
 

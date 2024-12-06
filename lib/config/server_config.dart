@@ -9,7 +9,7 @@ class ServerConfig {
 
   String get tenantId => dotenv.env['TENANT_ID']!;
   String get version => dotenv.env['V']!;
-
+  String get _debugProxy => dotenv.env['DEBUG_PROXY']!;
 
   //允许支持的平台
   List<String> get allowPlatform {
@@ -23,4 +23,5 @@ class ServerConfig {
   bool get isDebug => _isDebug;
 
   String get appName => _appName;
+  String get debugProxy => _debugProxy;
 }

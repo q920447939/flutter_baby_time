@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_baby_time/widget/container/container_wrapper_card.dart';
+import 'package:flutter_baby_time/widget/future/future_.dart';
 import 'package:flutter_baby_time/widget/gap/gap_height.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
+
+import '../../dao/height_record/height_dao.dart';
+import '../../model/height_record/BabyHeightRecordRespVO.dart';
+import '../../utils/datime_helper.dart';
+import '../../widget/no_data.dart';
 
 class HeightRecordBodyPage2 extends StatefulWidget {
   const HeightRecordBodyPage2({super.key});
@@ -15,6 +18,10 @@ class HeightRecordBodyPage2 extends StatefulWidget {
 }
 
 class _HeightRecordBodyPage2State extends State<HeightRecordBodyPage2> {
+  Future<List<BabyHeightRecordRespVo>?> fetch() {
+    return HeightRecordDao.getAllRecord();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -28,34 +35,31 @@ class _HeightRecordBodyPage2State extends State<HeightRecordBodyPage2> {
         ),
         gapHeightNormal(),
         gapHeightNormal(),
-        //构建历史记录
-        /*ListView(
-          shrinkWrap: true,
-          scrollDirection: Axis.vertical,
-          physics: const NeverScrollableScrollPhysics(),
-          children: List.generate(100, (idx) {
-            return Padding(
-                padding: EdgeInsets.all(5.h), child: _buildHistory());
-          }),
-        ),*/
         Expanded(
           // 添加 Expanded
-          child: ListView.builder(
-            // 使用 ListView.builder 更高效
-            itemCount: 100,
-            itemBuilder: (context, idx) {
-              return Padding(
-                padding: EdgeInsets.all(5.h),
-                child: _buildHistory(),
-              );
-            },
-          ),
+          child: FutureLoading(
+              future: fetch(),
+              builder: (context, list) {
+                if ((list ?? []).isEmpty) {
+                  return NoData();
+                }
+                return ListView.builder(
+                  // 使用 ListView.builder 更高效
+                  itemCount: list!.length,
+                  itemBuilder: (context, idx) {
+                    return Padding(
+                      padding: EdgeInsets.all(5.h),
+                      child: _buildHistory(list[idx]),
+                    );
+                  },
+                );
+              }),
         ),
       ],
     );
   }
 
-  _buildHistory() {
+  _buildHistory(BabyHeightRecordRespVo babyHeightRecordRespVo) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,11 +67,11 @@ class _HeightRecordBodyPage2State extends State<HeightRecordBodyPage2> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            TDText('2023-01-01'),
+            TDText(formatDate(babyHeightRecordRespVo.recordTime!)),
             TDText.rich(
               TextSpan(children: [
                 TDTextSpan(
-                  text: '65',
+                  text: babyHeightRecordRespVo.height!.toStringAsFixed(2),
                 ),
                 TextSpan(
                     text: ' cm',

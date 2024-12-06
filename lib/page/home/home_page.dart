@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<BabyInfoRespVo?> fetch() async {
-    return await BabyDao.get(1);
+    return await BabyDao.get();
   }
 
   @override

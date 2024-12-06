@@ -13,5 +13,11 @@ class GetxInit {
     Get.put(ViewModeController());
     Get.put(GlobalSettingController());
     Get.put(HeightWeightManagerController());
+    mockData();
+  }
+
+  mockData() {
+    BabySettingController _babyController = Get.find();
+    _babyController.changeBabyId(1);
   }
 }

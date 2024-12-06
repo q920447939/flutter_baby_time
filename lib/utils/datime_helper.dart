@@ -9,6 +9,10 @@ String formatDate(DateTime dateTime) {
   return DateFormat('yyyy-MM-dd').format(dateTime);
 }
 
+DateTime parseDate(String dateStr) {
+  return DateFormat('yyyy-MM-dd').parse(dateStr);
+}
+
 /**
  * 判断投资周期，
  * 如果 开始时间和 结束时间的差值 小于 3天，那么显示小时数(分钟数省略)

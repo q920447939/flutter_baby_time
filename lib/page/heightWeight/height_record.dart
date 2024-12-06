@@ -7,29 +7,32 @@ import 'package:gap/gap.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
+import '../../dao/height_record/height_dao.dart';
+import '../../utils/datime_helper.dart';
 import '../../widget/gap/gap_width.dart';
 import '../../widget/smart_dialog/smart_dialog_helper.dart';
 import 'height_weight_manager_parent.dart';
 
 class HeightRecord extends HeightWeightManagerParent {
-  HeightRecord({super.key});
+  final VoidCallback onUpdate;
+
+  HeightRecord(this.onUpdate, {super.key});
 
   @override
   State<HeightRecord> createState() => _HeightRecordState();
 }
 
 class _HeightRecordState extends State<HeightRecord> {
-  late TextEditingController controller;
+  late TextEditingController heightController;
 
-  String selected_6 = '';
+  String recordTime = '';
   var weekDayList = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
   var jiffy = Jiffy.now();
   late Jiffy lastYearDate;
-
   @override
   void initState() {
     super.initState();
-    controller = TextEditingController();
+    heightController = TextEditingController();
 
     lastYearDate = jiffy.subtract(years: 1);
   }
@@ -41,41 +44,32 @@ class _HeightRecordState extends State<HeightRecord> {
       scrollDirection: Axis.vertical,
       children: [
         TDInput(
-          type: TDInputType.special,
-          controller: controller,
-          leftLabel: '身高',
-          hintText: '请输入身高',
-          backgroundColor: Colors.white,
-          textAlign: TextAlign.end,
-          rightWidget:
-              TDText('cm', textColor: TDTheme.of(context).fontGyColor1),
-        ),
+            type: TDInputType.special,
+            controller: heightController,
+            leftLabel: '身高',
+            hintText: '请输入身高',
+            backgroundColor: Colors.white,
+            textAlign: TextAlign.end,
+            rightWidget:
+                TDText('cm', textColor: TDTheme.of(context).fontGyColor1)),
         gapHeightNormal(),
         GestureDetector(
           onTap: () {
-            TDPicker.showDatePicker(context, title: '选择出生日期',
+            TDPicker.showDatePicker(context, title: '选择记录日期',
                 onConfirm: (selected) {
               if (selected.isNotEmpty) {
-                selected_6 = '${selected['year'].toString().padLeft(4, '0')}-'
+                recordTime = '${selected['year'].toString().padLeft(4, '0')}-'
                     '${selected['month'].toString().padLeft(2, '0')}-'
                     '${selected['day'].toString().padLeft(2, '0')} ';
                 //_babyController.changeBirthday(selected_6);
                 setState(() {});
               }
               Navigator.of(context).pop();
-            }, useWeekDay: true, dateStart: [
-              lastYearDate.year,
-              01,
-              01
-            ], dateEnd: [
-              jiffy.year + 1,
-              jiffy.month,
-              jiffy.daysInMonth
-            ], initialDate: [
-              jiffy.year,
-              lastYearDate.month,
-              lastYearDate.daysInMonth
-            ]);
+            },
+                useWeekDay: true,
+                dateStart: [lastYearDate.year, 01, 01],
+                dateEnd: [jiffy.year + 1, jiffy.month, jiffy.daysInMonth],
+                initialDate: [jiffy.year, jiffy.month, jiffy.daysInMonth]);
           },
           child: buildRow(
             '记录时间',
@@ -85,17 +79,19 @@ class _HeightRecordState extends State<HeightRecord> {
         Align(
           alignment: Alignment.bottomCenter, // 对齐底部
           child: TDButton(
-            disabled: selected_6.isEmpty || controller.value.text.isEmpty,
+            disabled: recordTime.isEmpty || heightController.value.text.isEmpty,
             text: '确认',
             size: TDButtonSize.medium,
             type: TDButtonType.fill,
             shape: TDButtonShape.rectangle,
             theme: TDButtonTheme.primary,
             onTap: () async {
-              await dialogSuccess(
-                '保存成功',
-              );
-              SmartDialog.dismiss();
+              await HeightRecordDao.create(parseDate(recordTime),
+                  double.parse(heightController.value.text));
+              await dialogSuccess('保存成功', onDismiss: () {
+                SmartDialog.dismiss();
+              });
+              widget.onUpdate();
             },
           ),
         ),
@@ -125,8 +121,8 @@ class _HeightRecordState extends State<HeightRecord> {
   }
 
   _buildRight() {
-    if (selected_6.isNotEmpty) {
-      return TDText(selected_6);
+    if (recordTime.isNotEmpty) {
+      return TDText(recordTime);
     } else {
       return Icon(Icons.arrow_right_outlined);
     }
