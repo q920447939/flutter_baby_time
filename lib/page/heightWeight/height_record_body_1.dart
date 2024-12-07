@@ -1,15 +1,16 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_baby_time/widget/future/future_.dart';
-import 'package:flutter_baby_time/widget/future/future_more.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_baby_time/widget/no_data.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../dao/height_record/height_dao.dart';
 import '../../model/height_record/BabyHeightRecordRespVO.dart';
 import '../../model/height_record/BabyHeightRecordStandardRelationRespVO.dart';
 import '../../utils/datime_helper.dart';
+import '../../widget/chart/dual_line_chart.dart';
 import '../my/baby_setting/baby_setting_controller.dart';
 
 class HeightRecordBodyPage1 extends StatefulWidget {
@@ -26,9 +27,13 @@ class _HeightRecordBodyPage1State extends State<HeightRecordBodyPage1> {
 
   BabySettingController _babyController = Get.find();
 
+  bool showActualHeight = true;
+  bool showStandardHeight = true;
+
   @override
   void initState() {
     super.initState();
+    fetchBabyHeightRecordStandardRelation();
   }
 
   Future<List<BabyHeightRecordRespVo>?> fetch() async {
@@ -40,75 +45,107 @@ class _HeightRecordBodyPage1State extends State<HeightRecordBodyPage1> {
       fetchBabyHeightRecordStandardRelation() async {
     babyHeightRecordStandardRelationRespVoList =
         await HeightRecordDao.getBabyHeightRecordStandardByCountryCode();
+    fetch().then((_) => setState(() {}));
     return babyHeightRecordStandardRelationRespVoList;
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureMoreLoading(
-      future: [fetch(), fetchBabyHeightRecordStandardRelation()],
-      builder: (context, _) {
-        if ((babyHeightRecordRespVoList ?? []).isEmpty) {
-          return NoData();
-        }
-        List<HeightData> combinedData = [
-          ...babyHeightRecordRespVoList!.map((record) => HeightData(
-                recordTime: record.recordTime!,
-                height: record.height!,
-                isStandard: false,
-              )),
-          ...babyHeightRecordStandardRelationRespVoList!
-              .map((standard) => HeightData(
-                    recordTime: standard.relationTime!,
-                    height: standard.standardHeight!,
-                    isStandard: true,
-                  )),
-        ];
-        return Column(
-          children: [
-            SfCartesianChart(
-              primaryXAxis: CategoryAxis(),
-              // Chart title
-              // Enable legend
-              legend: Legend(isVisible: true),
-              // Enable tooltip
-              tooltipBehavior: TooltipBehavior(enable: true),
-              series: <LineSeries<HeightData, String>>[
-                LineSeries<HeightData, String>(
-                  dataSource:
-                      combinedData.where((data) => !data.isStandard).toList(),
-                  xValueMapper: (HeightData data, _) =>
-                      formatDate(data.recordTime),
-                  yValueMapper: (HeightData data, _) => data.height,
-                  name: '身高',
-                  dataLabelSettings: DataLabelSettings(isVisible: true),
-                ),
-                LineSeries<HeightData, String>(
-                  dataSource:
-                      combinedData.where((data) => data.isStandard).toList(),
-                  xValueMapper: (HeightData data, _) =>
-                      formatDate(data.recordTime),
-                  yValueMapper: (HeightData data, _) => data.height,
-                  name: '标准身高(${_babyController.sex.value.label})',
-                  dataLabelSettings: DataLabelSettings(isVisible: true),
-                ),
-              ],
-            ),
-          ],
-        );
-      },
+    if ((babyHeightRecordRespVoList ?? []).isEmpty) {
+      return NoData();
+    }
+    List<Data> combinedData = [
+      ...babyHeightRecordRespVoList!.map((record) => Data(
+            recordTime: record.recordTime!,
+            height: record.height!,
+            isStandard: false,
+          )),
+      ...babyHeightRecordStandardRelationRespVoList!.map((standard) => Data(
+            recordTime: standard.relationTime!,
+            height: standard.standardHeight!,
+            isStandard: true,
+          )),
+    ];
+    // 转换你的数据为 DualLineData 格式
+    List<DualLineData> chartData = combinedData
+        .map((data) => DualLineData(
+              time: data.recordTime,
+              value: data.height,
+              isSecondary: data.isStandard,
+            ))
+        .toList();
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10.w),
+      child: DualLineChart(
+        data: chartData,
+        primaryName: '身高',
+        secondaryName: '标准身高(${_babyController.sex.value.label})',
+        yAxisTitle: '身高(cm)',
+        yAxisTitleStyle: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+          color: Colors.blue,
+        ),
+        yAxisValueStyle: TextStyle(
+          fontSize: 12,
+          color: Colors.grey,
+        ),
+        showGrid: true,
+        gridColor: Colors.grey.withOpacity(0.2),
+        gridLineWidth: 0.5,
+      ),
     );
   }
-}
 
-class HeightData {
-  final DateTime recordTime;
-  final double height;
-  final bool isStandard;
+// 新的辅助方法来获取统一的数据点
+  List<FlSpot> _getSpots(List<Data> data, bool isStandard) {
+    // 获取所有排序后的唯一日期
+    List<String> allDates = data
+        .map((data) => formatDate(data.recordTime))
+        .toSet()
+        .toList()
+      ..sort();
 
-  HeightData({
-    required this.recordTime,
-    required this.height,
-    required this.isStandard,
-  });
+    // 过滤并排序数据
+    var filteredData = data
+        .where((item) => item.isStandard == isStandard)
+        .toList()
+      ..sort((a, b) => a.recordTime.compareTo(b.recordTime));
+
+    // 创建数据点
+    return filteredData.map((item) {
+      // 找到日期在统一时间轴上的索引位置
+      int index = allDates.indexOf(formatDate(item.recordTime));
+      return FlSpot(index.toDouble(), item.height);
+    }).toList();
+  }
+
+  Widget _buildLegendItem(
+      String label, Color color, bool isVisible, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Row(
+        children: [
+          Container(
+            width: 16,
+            height: 16,
+            decoration: BoxDecoration(
+              color: isVisible ? color : Colors.grey.shade300,
+              border: Border.all(
+                color: color,
+                width: 2,
+              ),
+            ),
+          ),
+          SizedBox(width: 4),
+          Text(
+            label,
+            style: TextStyle(
+              color: isVisible ? Colors.black : Colors.grey,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

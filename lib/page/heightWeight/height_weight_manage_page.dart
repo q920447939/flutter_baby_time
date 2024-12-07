@@ -9,7 +9,6 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:go_router/go_router.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import '../../widget/container/container_wrapper_card.dart';
@@ -17,7 +16,6 @@ import '../../widget/gap/gap_height.dart';
 import '../../widget/smart_dialog/smart_dialog_helper.dart';
 import 'controller/height_weight_manager_controller.dart';
 import 'height_record.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'height_record_body_2.dart';
 

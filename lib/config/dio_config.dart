@@ -45,6 +45,9 @@ class MyHttpOverrides extends HttpOverrides {
 }
 
 void initAdapter() {
+  var debugProxy = ServerConfig().debugProxy;
+  if (debugProxy.isEmpty) return;
+
   _dio.httpClientAdapter = IOHttpClientAdapter()
     ..onHttpClientCreate = (client) {
       // Config the client.

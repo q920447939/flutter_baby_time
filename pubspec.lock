@@ -690,10 +690,10 @@ packages:
     dependency: "direct main"
     description:
       name: fl_chart
-      sha256: "00b74ae680df6b1135bdbea00a7d1fc072a9180b7c3f3702e4b19a9943f5ed7d"
+      sha256: "74959b99b92b9eebeed1a4049426fd67c4abc3c5a0f4d12e2877097d6a11ae08"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.66.2"
+    version: "0.69.2"
   flick_video_player:
     dependency: "direct main"
     description:
@@ -739,6 +739,15 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.4.1"
+  flutter_chart_plus:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: main
+      resolved-ref: a57000e9a0c6b3b6a29627035cb836c8155d0b77
+      url: "https://github.com/JDongKhan/flutter_chart"
+    source: git
+    version: "0.3.1"
   flutter_chat_types:
     dependency: transitive
     description:
@@ -2280,22 +2289,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.1.0"
-  syncfusion_flutter_charts:
-    dependency: "direct main"
-    description:
-      name: syncfusion_flutter_charts
-      sha256: a755274a8786b200b7a05f7414168cd5858871db74d0f1de2e57b20a8aaeb7a4
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "26.2.14"
-  syncfusion_flutter_core:
-    dependency: transitive
-    description:
-      name: syncfusion_flutter_core
-      sha256: "6e67726b85812afc7105725a23620b876ab7f6b04b8410e211330ffb8c2cdbe8"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "26.2.14"
   synchronized:
     dependency: transitive
     description:
