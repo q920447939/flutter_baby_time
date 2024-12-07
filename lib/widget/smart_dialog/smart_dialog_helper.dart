@@ -28,7 +28,7 @@ Future<void> dialogSuccess(String msg,
       });
 }
 
-void dialogWarning(
+Future<void> dialogWarning(
   String msg, {
   Duration displayTime = const Duration(seconds: 2),
 }) async {
