@@ -44,7 +44,7 @@ class _UploadFilePageState extends State<UploadFilePage> {
 
   BabySettingController _babyController = Get.find();
 
-  String remark = "";
+  TextEditingController remarkController = TextEditingController();
 
   @override
   void initState() {
@@ -109,14 +109,12 @@ class _UploadFilePageState extends State<UploadFilePage> {
             child: TextField(
               maxLength: 100,
               maxLines: 8,
+              controller: remarkController,
               decoration: InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.zero,
                   hintText: "分享新鲜事",
                   hintStyle: TextStyle(color: Colors.black12)),
-              onChanged: (newValue) {
-                remark = newValue;
-              },
             ),
           ),
           SizedBox(
@@ -238,7 +236,7 @@ class _UploadFilePageState extends State<UploadFilePage> {
                 "babyId": _babyController.babyId.value,
                 "uploadType": 1,
                 "uploadTime": selected_6,
-                "remark": remark,
+                "remark": remarkController.text,
                 "uploadImageAddReqVO": {
                   "babyId": _babyController.babyId.value,
                   "imageUrls": imageUrls
@@ -248,7 +246,7 @@ class _UploadFilePageState extends State<UploadFilePage> {
                 await dialogSuccess('上传成功');
                 setState(() {
                   selected_6 = "请选择上传时间";
-                  remark = '';
+                  remarkController.text = '';
                   _imageFiles = [];
                   _imageList = [];
                   _disable = true;
