@@ -79,7 +79,7 @@ class _OnBordingScreenState extends State<OnBordingScreen> {
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: () {
-                    context.go("/");
+                    context.go("/signup");
                   },
                   child: Text(
                     "Skip",
@@ -129,7 +129,7 @@ class _OnBordingScreenState extends State<OnBordingScreen> {
                         _pageController.nextPage(
                             curve: Curves.ease, duration: defaultDuration);
                       } else {
-                        context.go("/");
+                        context.go("/signup");
                       }
                     },
                   ),

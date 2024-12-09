@@ -192,7 +192,7 @@ dev_dependencies:
 
   go_router_builder: ^2.4.0
 
-  flutter_gen_runner: ^5.3.2  #asset目录下的内容，使用类常量去访问  ，如果加入了新的图片，需要在终端输入命令  dart run build_runner build
+  #flutter_gen_runner: ^5.3.2  #asset目录下的内容，使用类常量去访问  ，如果加入了新的图片，需要在终端输入命令  dart run build_runner build
   flutter_localizations:
     sdk: flutter
 
@@ -247,6 +247,7 @@ flutter:
     - assets/svg/
     - assets/Illustration/
     - assets/icons/
+    - assets/images/
 
   fonts:
     - family: SourceHanSerifCN
