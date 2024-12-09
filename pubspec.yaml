@@ -171,6 +171,7 @@ dependencies:
     git:
       url: https://github.com/JDongKhan/flutter_chart
       ref: main
+  form_field_validator: ^1.1.0
 
 
 dependency_overrides:
@@ -244,6 +245,8 @@ flutter:
     - assets/theme.json
     - assets/img/
     - assets/svg/
+    - assets/Illustration/
+    - assets/icons/
 
   fonts:
     - family: SourceHanSerifCN
