@@ -9,31 +9,15 @@ import 'dart:typed_data' as ty;
 import '../http/request/base_request.dart';
 
 class ImageDao {
-/*  static Future<String> uploadImage(ty.Uint8List data, String fileName) async {
-    var list = await uploadImages([data], [fileName]);
-    return list[0];
-  }*/
-
-  static Future<String> uploadImageByFiles(List<File> files) async {
+  static Future<List<String>> uploadImageByFiles(List<File> files) async {
+    List<String> urls = [];
     for (var file in files) {
-      print(file.path);
-      var list = await uploadFile(await file.readAsBytes(), "test.png");
+      var map = await uploadFile(await file.readAsBytes(), "test.png") as Map;
+      urls.add(map['url']);
     }
 
-    return "";
+    return urls;
   }
-
-/*
-  static Future<List<String>> uploadImages(
-      List<ty.Uint8List> images, List<String> fileNames) async {
-    List<String> imagePath = [];
-    for (int i = 0; i < images.length; i++) {
-      var data = await uploadFile(images, i, fileNames);
-      imagePath.add(data['url']);
-    }
-    return imagePath;
-  }
-*/
 
   static Future<dynamic> uploadFile(List<int> bytes, String fileName) async {
     var data = await HiNet.getInstance().fire(

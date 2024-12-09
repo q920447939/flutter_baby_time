@@ -1,13 +1,18 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_baby_time/widget/gap/gap_height.dart';
+import 'package:flutter_baby_time/widget/smart_dialog/smart_dialog_helper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import '../../../dao/image/image_dao.dart';
+import '../../../dao/upload_list/upload_list_dao.dart';
+import '../../../utils/datime_helper.dart';
 import '../../../widget/base_stack/base_stack.dart';
 import '../../../widget/container/container_wrapper_card.dart';
 
@@ -18,6 +23,7 @@ import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 import '../../../widget/pick/pick_image_by_wechat/image_bean.dart';
 import '../../../widget/pick/pick_image_by_wechat/picture_utils.dart';
+import '../../my/baby_setting/baby_setting_controller.dart';
 
 class UploadFilePage extends StatefulWidget {
   const UploadFilePage({Key? key}) : super(key: key);
@@ -35,6 +41,10 @@ class _UploadFilePageState extends State<UploadFilePage> {
   int moveAction = MotionEvent.actionUp;
   bool _canDelete = false;
   bool _disable = true;
+
+  BabySettingController _babyController = Get.find();
+
+  String remark = "";
 
   @override
   void initState() {
@@ -104,6 +114,9 @@ class _UploadFilePageState extends State<UploadFilePage> {
                   contentPadding: EdgeInsets.zero,
                   hintText: "分享新鲜事",
                   hintStyle: TextStyle(color: Colors.black12)),
+              onChanged: (newValue) {
+                remark = newValue;
+              },
             ),
           ),
           SizedBox(
@@ -218,9 +231,31 @@ class _UploadFilePageState extends State<UploadFilePage> {
             shape: TDButtonShape.rectangle,
             theme: TDButtonTheme.primary,
             disabled: _disable,
-            onTap: () {
-              SmartDialog.showToast('获取到图片,共${_imageFiles.length}张');
-              ImageDao.uploadImageByFiles(_imageFiles);
+            onTap: () async {
+              //SmartDialog.showToast('获取到图片,共${_imageFiles.length}张');
+              var imageUrls = await ImageDao.uploadImageByFiles(_imageFiles);
+              var b = await UploadListDao.uploadList({
+                "babyId": _babyController.babyId.value,
+                "uploadType": 1,
+                "uploadTime": selected_6,
+                "remark": remark,
+                "uploadImageAddReqVO": {
+                  "babyId": _babyController.babyId.value,
+                  "imageUrls": imageUrls
+                }
+              });
+              if (b) {
+                await dialogSuccess('上传成功');
+                setState(() {
+                  selected_6 = "请选择上传时间";
+                  remark = '';
+                  _imageFiles = [];
+                  _imageList = [];
+                  _disable = true;
+                });
+              } else {
+                await dialogWarning('上传失败');
+              }
             },
           ),
           Gap(50.h),
