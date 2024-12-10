@@ -8,6 +8,8 @@ import '../main.dart';
 import '../router/error_router.dart';
 import '../router/has_bottom_navigator/shell_default_router.dart'
     as shell_default_router;
+import '../router/not_bottom_navigator/no_shell_default_router.dart'
+    as no_shell_default_router;
 import '../utils/member_helper.dart';
 import '../widget/bottom_bar/scaffold_with_navbar.dart';
 import '../widget/smart_dialog/smart_dialog_helper.dart';
@@ -19,7 +21,7 @@ var goRouterBaseConfig = GoRouterBaseConfig();
 
 final router = GoRouter(
   navigatorKey: _rootNavigatorKey,
-  initialLocation: '/',
+  initialLocation: '/welcome',
   routes: [
     ShellRoute(
       navigatorKey: _shellNavigatorKey,
@@ -30,6 +32,12 @@ final router = GoRouter(
         );
       },
       routes: goRouterBaseConfig.hasBottomNavigatorRouterBaseList,
+    ),
+    ShellRoute(
+      builder: (context, state, child) {
+        return child;
+      },
+      routes: goRouterBaseConfig.notBottomNavigatorRouterBaseList,
     ),
   ],
   redirect: (context, state) {
@@ -77,5 +85,7 @@ class GoRouterBaseConfig {
     _hasBottomNavigatorRouterBaseList.addAll(shell_default_router.$appRoutes);
 
     _notBottomNavigatorRouterBaseList = [];
+    _notBottomNavigatorRouterBaseList
+        .addAll(no_shell_default_router.$appRoutes);
   }
 }

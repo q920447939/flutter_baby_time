@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../config/go_router_config.dart';
-import '../gen/assets.gen.dart';
 import '../router/has_bottom_navigator/shell_default_router.dart';
 
 class ErrorScreenPage extends StatefulWidget {
