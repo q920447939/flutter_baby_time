@@ -98,9 +98,10 @@ class _HeightWeightManagePageState extends State<HeightWeightManagePage> {
                   ),
                   TDBottomTabBarTabConfig(
                     tabText: '体重',
-                    onTap: () {
+                    onTap: () async {
+                      await dialogWarning('功能开发中');
                       setState(() {
-                        currentIndex = 1;
+                        currentIndex = 0;
                       });
                     },
                   ),

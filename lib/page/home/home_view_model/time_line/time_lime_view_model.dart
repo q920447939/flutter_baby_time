@@ -14,7 +14,9 @@ import 'package:share_plus/share_plus.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import '../../../../dao/baby/baby_dao.dart';
+import '../../../../dao/upload_list/upload_list_dao.dart';
 import '../../../../model/uploadList/UploadListRespVO.dart';
+import '../../../../utils/calculate_age_helper.dart';
 import '../../../../widget/easy_refresh/easy_refresh_wrapper.dart';
 import '../../../../widget/gap/gap_height.dart';
 import '../../../../widget/gap/gap_width.dart';
@@ -102,13 +104,6 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
         return uploadInfo.uploadDiscussRespVo;
       });
     }
-    var buildCrossAxis = _buildCrossAxis(len);
-    int crossAxisCount = len <= 2
-        ? 1
-        : len <= 6
-            ? 2
-            : 3;
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -136,7 +131,7 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
               baseline: 18,
               baselineType: TextBaseline.alphabetic,
               child: TDText(
-                '9个月15天',
+                '${calculateAge(Jiffy.parse(_babyController.birthday.value, pattern: 'yyyy-MM-dd'))}',
                 style: TextStyle(
                   fontSize: 12.sp,
                   color: Colors.grey.withOpacity(0.9),
@@ -293,12 +288,21 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
                       );
                     });
                 if (result != null && result != "") {
-                  dialogSuccess('提交成功');
-                  setState(() {
-                    discussList.add(result);
-                    //重新调一下请求
+                  var b = await UploadListDao.discuss({
+                    "babyId": _babyController.babyId.value,
+                    "uploadId": uploadInfo.id,
+                    "content": result as String
                   });
+                  if (b) {
+                    await dialogSuccess('提交成功');
+                    setState(() {
+                      //discussList.add(result);
+                      //重新调一下请求
+                      //友好的用户体验,直接加到 discussList,让用户先看到
+                    });
+                  }
                 }
+                controller.clear();
               },
               child: SvgPicture.asset(
                 "assets/svg/discuss.svg",

@@ -65,8 +65,7 @@ class HiNet {
 
   Future<HiNetResponse> send<T>(BaseRequest baseRequest) async {
     if (baseRequest.needToken()) {
-      //baseRequest.addHead("token", SP.getString('token') ?? '');
-      baseRequest.addHead("token", '84d76b59-5972-4344-8151-685d449c0f37');
+      baseRequest.addHead("token", SP.getString('token') ?? '');
     }
     return await DioHiNetAdapter().send(baseRequest);
   }

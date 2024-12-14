@@ -14,4 +14,17 @@ class UploadListDao {
     }
     return true;
   }
+
+  static Future<bool> discuss(params) async {
+    var data = await HiNet.getInstance().fire(AnonymousRequest(
+      method: HttpMethod.POST,
+      path: "/api/baby/upload-discuss/create",
+      needLogin: true,
+      needToken: true,
+    ).setBody(params));
+    if (null == data) {
+      return false;
+    }
+    return true;
+  }
 }

@@ -14,6 +14,7 @@ import '../../design_pattern/view_model/ViewModel.dart';
 import '../../model/baby/BabyInfoRespVO.dart';
 import '../../model/uploadList/UploadListRespVO.dart';
 import '../../router/has_bottom_navigator/shell_default_router.dart';
+import '../../utils/calculate_age_helper.dart';
 import '../../widget/container/container_wrapper_card.dart';
 import '../../widget/future/future_.dart';
 import '../../widget/gap/gap_height.dart';
@@ -146,21 +147,5 @@ class _HomePageState extends State<HomePage> {
                   )
           ],
         ));
-  }
-
-  String calculateAge(Jiffy birthJiffy) {
-    Jiffy currentJiffy = Jiffy.now();
-    if (currentJiffy.year == birthJiffy.year) {
-      return '${currentJiffy.month - birthJiffy.month}个月';
-    }
-    var numOfYear = currentJiffy.diff(birthJiffy, unit: Unit.year);
-    int year = numOfYear.toInt();
-
-    var numOfMonth = currentJiffy.diff(birthJiffy, unit: Unit.month);
-    if (year == 0) {
-      return '${numOfMonth.toInt()}个月';
-    }
-
-    return '$year岁${numOfMonth.toInt() - year * 12}个月';
   }
 }
