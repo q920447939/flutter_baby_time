@@ -19,6 +19,7 @@ import '../../widget/container/container_wrapper_card.dart';
 import '../../widget/future/future_.dart';
 import '../../widget/gap/gap_height.dart';
 import '../../widget/gap/gap_width.dart';
+import '../heightWeight/height_weight_manage_page.dart';
 import '../my/baby_setting/baby_setting_controller.dart';
 import 'home_view_model/fall/fall_load_view_model.dart';
 
@@ -32,10 +33,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   ViewModeController _viewModeController = Get.find();
   BabySettingController _babySettingController = Get.find();
-
+  int currentIndex = 0;
+  late Widget body;
   @override
   void initState() {
     fetch();
+    body = TimeLimeViewModel(
+      height: 660.h,
+    );
     super.initState();
   }
 
@@ -46,106 +51,114 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return WhiteBaseScaffoldStack(
-        title: '',
-        appBarSize: 0,
-        showBackIcon: false,
-        child: Column(
-          children: [
-            ContainerWrapperCard(
-              margin: EdgeInsets.only(top: 10.h, left: 10.w, right: 10.w),
-              child: Row(
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: SizedBox(
-                      width: 61.w,
-                      child: TDAvatar(
-                        size: TDAvatarSize.medium,
-                        type: TDAvatarType.normal,
-                        shape: TDAvatarShape.circle,
-                        //defaultUrl: 'assets/img/baby_avator.jpeg',
-                        avatarUrl: _babySettingController.babyNameAvatar.value,
-                        backgroundColor: Colors.transparent,
-                      ),
+      title: '',
+      appBarSize: 0,
+      showBackIcon: false,
+      child: Column(
+        children: [
+          ContainerWrapperCard(
+            margin: EdgeInsets.only(top: 10.h, left: 10.w, right: 10.w),
+            child: Row(
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: SizedBox(
+                    width: 61.w,
+                    child: TDAvatar(
+                      size: TDAvatarSize.medium,
+                      type: TDAvatarType.normal,
+                      shape: TDAvatarShape.circle,
+                      //defaultUrl: 'assets/img/baby_avator.jpeg',
+                      avatarUrl: _babySettingController.babyNameAvatar.value,
+                      backgroundColor: Colors.transparent,
                     ),
                   ),
-                  gapHeightNormal(),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Obx(
-                            () => TDText(
-                              _babySettingController.babyName.value,
-                              style: TextStyle(
-                                fontSize: 18.sp,
-                              ),
+                ),
+                gapHeightNormal(),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Obx(
+                          () => TDText(
+                            _babySettingController.babyName.value,
+                            style: TextStyle(
+                              fontSize: 18.sp,
                             ),
                           ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Obx(
-                            () => TDText(
-                              _babySettingController.birthday.value == '未设置'
-                                  ? _babySettingController.birthday.value
-                                  : '${calculateAge(Jiffy.parse(_babySettingController.birthday.value, pattern: 'yyyy-MM-dd'))}(${Jiffy.parse(_babySettingController.birthday.value, pattern: 'yyyy-MM-dd').format(pattern: 'yyyy年M月d日')})',
-                              style: TextStyle(fontSize: 12.sp),
-                            ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Obx(
+                          () => TDText(
+                            _babySettingController.birthday.value == '未设置'
+                                ? _babySettingController.birthday.value
+                                : '${calculateAge(Jiffy.parse(_babySettingController.birthday.value, pattern: 'yyyy-MM-dd'))}(${Jiffy.parse(_babySettingController.birthday.value, pattern: 'yyyy-MM-dd').format(pattern: 'yyyy年M月d日')})',
+                            style: TextStyle(fontSize: 12.sp),
                           ),
-                          gapWidthNormal(),
-                        ],
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            gapHeightNormal(),
-            TDBottomTabBar(
-              TDBottomTabBarBasicType.text,
-              componentType: TDBottomTabBarComponentType.normal,
-              useVerticalDivider: true,
-              navigationTabs: [
-                TDBottomTabBarTabConfig(
-                  tabText: '推荐',
-                  onTap: () {
-                    //onTapTab(context, '标签1');
-                  },
-                ),
-                TDBottomTabBarTabConfig(
-                  tabText: '收藏',
-                  onTap: () {
-                    //onTapTab(context, '标签3');
-                  },
-                ),
-                TDBottomTabBarTabConfig(
-                  tabText: '标签',
-                  onTap: () {
-                    //onTapTab(context, '标签3');
-                  },
-                ),
-                TDBottomTabBarTabConfig(
-                  tabText: '身高体重',
-                  onTap: () {
-                    const HeightWeightManageRoute().push(context);
-                  },
+                        ),
+                        gapWidthNormal(),
+                      ],
+                    )
+                  ],
                 ),
               ],
             ),
-            _viewModeController.currentMode == ViewMode.waterfall
-                ? FallLoadViewModel(
-                    height: 660.h,
-                  )
-                : TimeLimeViewModel(
-                    height: 660.h,
-                  )
-          ],
-        ));
+          ),
+          gapHeightNormal(),
+          TDBottomTabBar(
+            TDBottomTabBarBasicType.text,
+            componentType: TDBottomTabBarComponentType.normal,
+            useVerticalDivider: true,
+            currentIndex: currentIndex,
+            navigationTabs: [
+              TDBottomTabBarTabConfig(
+                tabText: '推荐',
+                onTap: () {
+                  //onTapTab(context, '标签1');
+                  setState(() {
+                    currentIndex = 0;
+                    body = TimeLimeViewModel(
+                      key: UniqueKey(),
+                      height: 660.h,
+                    );
+                  });
+                },
+              ),
+              TDBottomTabBarTabConfig(
+                tabText: '收藏',
+                onTap: () {
+                  setState(() {
+                    currentIndex = 1;
+                    body = TimeLimeViewModel(
+                      key: UniqueKey(),
+                      height: 660.h,
+                      queryCollect: true,
+                      isCollect: true,
+                    );
+                  });
+                },
+              ),
+              TDBottomTabBarTabConfig(
+                tabText: '身高体重',
+                onTap: () {
+                  setState(() {
+                    currentIndex = 0;
+                  });
+                  const HeightWeightManageRoute().push(context);
+                },
+              ),
+            ],
+          ),
+          if (body != HeightWeightManagePage()) body
+        ],
+      ),
+    );
   }
 }

@@ -39,23 +39,23 @@ class _TagSettingPageState extends State<TagSettingPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureLoading(
-        future: fetch(),
-        builder: (_, list) {
-          return GreyBaseScaffoldStack(
-            title: '标签管理',
-            child: ContainerWrapperCard(
-              margin: EdgeInsets.all(10.w),
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(10, 10.h, 10.w, 10.h),
-                child: _buildTag(list),
-              ),
-            ),
-            floatingActionButton: _buildAddTag(context),
-          );
-        });
+    return GreyBaseScaffoldStack(
+      title: '标签管理',
+      child: ContainerWrapperCard(
+        margin: EdgeInsets.all(10.w),
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(10, 10.h, 10.w, 10.h),
+          child: FutureLoading(
+              future: fetch(),
+              builder: (_, list) {
+                return _buildTag(list);
+              }),
+        ),
+      ),
+      floatingActionButton: _buildAddTag(context),
+    );
   }
 
   Widget _buildAddTag(BuildContext context) {

@@ -72,4 +72,17 @@ class UploadListDao {
     }
     return true;
   }
+
+  static Future<bool> markLikeOrCancel(int id, bool isCollect) async {
+    var data = await HiNet.getInstance().fire(AnonymousRequest(
+      method: HttpMethod.GET,
+      path: "/api/baby/upload-list/like",
+      needLogin: true,
+      needToken: true,
+    ).add("id", id).add("isCollect", isCollect));
+    if (null == data) {
+      return false;
+    }
+    return true;
+  }
 }

@@ -6,6 +6,7 @@ class UploadListRespVo {
     required this.uploadUser,
     required this.uploadTime,
     required this.remark,
+    required this.isCollect,
     required this.createTime,
     required this.memberSimpleResVo,
     required this.uploadDiscussRespVo,
@@ -18,6 +19,7 @@ class UploadListRespVo {
   final int? uploadUser;
   final DateTime? uploadTime;
   final String? remark;
+  final bool? isCollect;
   final DateTime? createTime;
   final MemberSimpleResVo? memberSimpleResVo;
   final List<UploadDiscussRespVo> uploadDiscussRespVo;
@@ -31,6 +33,7 @@ class UploadListRespVo {
       uploadUser: json["uploadUser"],
       uploadTime: DateTime.tryParse(json["uploadTime"] ?? ""),
       remark: json["remark"],
+      isCollect: json["isCollect"],
       createTime: DateTime.tryParse(json["createTime"] ?? ""),
       memberSimpleResVo: json["memberSimpleResVO"] == null
           ? null

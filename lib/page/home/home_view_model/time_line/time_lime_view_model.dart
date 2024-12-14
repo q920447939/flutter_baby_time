@@ -26,8 +26,13 @@ import '../../../my/baby_setting/baby_setting_controller.dart';
 
 class TimeLimeViewModel extends StatefulWidget {
   double height;
-
-  TimeLimeViewModel({super.key, this.height = 300});
+  bool queryCollect;
+  bool isCollect;
+  TimeLimeViewModel(
+      {super.key,
+      this.height = 300,
+      this.queryCollect = false,
+      this.isCollect = false});
 
   @override
   State<TimeLimeViewModel> createState() => _TimeLimeViewModelState();
@@ -55,12 +60,16 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
 
   Future<List<dynamic>> fetchUploadListInit() async {
     pageNo = _DEFAULT_PAGE_NO;
-    uploadList = await BabyDao.fetchUploadList(pageNo, size, 1) ?? [];
+    uploadList = await BabyDao.fetchUploadList(
+            pageNo, size, widget.queryCollect, widget.isCollect) ??
+        [];
     return uploadList;
   }
 
   Future<List<dynamic>> fetchUploadList(int pageNo, int babyId) async {
-    uploadList = await BabyDao.fetchUploadList(pageNo, size, babyId) ?? [];
+    uploadList = await BabyDao.fetchUploadList(
+            pageNo, size, widget.queryCollect, widget.isCollect) ??
+        [];
     return uploadList;
   }
 
@@ -105,6 +114,24 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
       discussMap.putIfAbsent(key, () {
         return uploadInfo.uploadDiscussRespVo;
       });
+      _likeMapColor.putIfAbsent(key, () {
+        return Colors.amberAccent;
+      });
+      if (null != uploadInfo.isCollect) {
+        //使用后台的逻辑
+        colorIsLike = uploadInfo.isCollect! ? Colors.amberAccent : null;
+      } else {
+        //使用默认的逻辑
+        if (widget.queryCollect) {
+          if (widget.isCollect) {
+            colorIsLike = Colors.amberAccent;
+          } else {
+            colorIsLike = null;
+          }
+        } else {
+          colorIsLike = null;
+        }
+      }
     }
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -222,16 +249,20 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             GestureDetector(
-              onTap: () {
-                setState(() {
-                  colorIsLike = (colorIsLike == Colors.amberAccent)
-                      ? null
-                      : Colors.amberAccent;
+              onTap: () async {
+                var b = await UploadListDao.markLikeOrCancel(
+                    uploadInfo.id!, (colorIsLike != Colors.amberAccent));
+                if (b) {
+                  setState(() {
+                    colorIsLike = (colorIsLike == Colors.amberAccent)
+                        ? null
+                        : Colors.amberAccent;
 
-                  _likeMapColor[key] = colorIsLike;
-                });
-                dialogSuccess(
-                    colorIsLike == Colors.amberAccent ? "收藏成功" : "取消收藏");
+                    _likeMapColor[key] = colorIsLike;
+                  });
+                  dialogSuccess(
+                      colorIsLike == Colors.amberAccent ? "收藏成功" : "取消收藏");
+                }
               },
               child: SvgPicture.asset(
                 "assets/svg/like.svg",
