@@ -13,6 +13,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import '../../design_pattern/view_model/ViewModel.dart';
+import '../../getx/controller/manager_gex_controller.dart';
 import '../../router/has_bottom_navigator/shell_default_router.dart';
 import '../home/view_model_controller.dart';
 import 'baby_setting/baby_setting_controller.dart';
@@ -189,10 +190,11 @@ class _MyPageState extends State<MyPage> {
   _buildPersonInfo() {
     return _buildRowInfo('昵称', () {
       const MyProfileRoute().push(context);
-    });
+    }, rightText: memberLogic.memberInfo.value!.memberNickName);
   }
 
-  _buildRowInfo(String leftText, GestureTapCallback onTap) {
+  _buildRowInfo(String leftText, GestureTapCallback onTap,
+      {String? rightText}) {
     return GestureDetector(
       onTap: () {
         onTap.call();
@@ -209,6 +211,10 @@ class _MyPageState extends State<MyPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  if (rightText != null)
+                    TDText(
+                      rightText,
+                    ),
                   Icon(Icons.arrow_right_outlined),
                 ],
               ),

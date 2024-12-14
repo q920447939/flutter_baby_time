@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
+import '../../../getx/controller/manager_gex_controller.dart';
 import '../../../widget/base_stack/base_stack.dart';
 
 class MyProfilePage extends StatefulWidget {
@@ -46,7 +47,14 @@ class _MyProfilePageState extends State<MyProfilePage> {
           padding: EdgeInsets.fromLTRB(10, 10.h, 10.w, 10.h),
           child: Column(
             children: [
-              TDText(''),
+              Padding(
+                padding: EdgeInsets.only(left: 32.w),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: TDText(
+                      '当前昵称:${memberLogic.memberInfo.value!.memberNickName!}'),
+                ),
+              ),
               TDInput(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(6),

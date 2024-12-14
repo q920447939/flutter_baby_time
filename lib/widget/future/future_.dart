@@ -11,13 +11,14 @@ class FutureLoading<T> extends StatefulWidget {
   final Widget loadingWidget;
   final Widget Function(BuildContext, dynamic)? errorBuilder;
 
-  const FutureLoading({
-    Key? key,
+  FutureLoading({
     required this.future,
     required this.builder,
     this.loadingWidget = const Center(child: CircularProgressIndicator()),
     this.errorBuilder,
-  }) : super(key: key);
+  }) : super(
+          key: UniqueKey(),
+        );
 
   @override
   _FutureLoadingState<T> createState() => _FutureLoadingState<T>();
