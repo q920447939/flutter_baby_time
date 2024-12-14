@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -38,7 +39,8 @@ class TimeLimeViewModel extends StatefulWidget {
   State<TimeLimeViewModel> createState() => _TimeLimeViewModelState();
 }
 
-class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
+class _TimeLimeViewModelState extends State<TimeLimeViewModel>
+    with SingleTickerProviderStateMixin {
   Map<String, TextEditingController> controllerMap = {};
   Map<String, Color?> _likeMapColor = {};
   Map<String, List<UploadDiscussRespVo>> discussMap = {};
@@ -51,6 +53,8 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
   late int pageNo = _DEFAULT_PAGE_NO;
 
   int size = 10;
+
+  AnimationController? animationController;
 
   //构建时间线 ，为了降低性能开销 分批渲染数据
   @override
@@ -393,16 +397,33 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
   }
 
   List<Widget> _buildTag() {
-    return List.generate(10, (idx) {
+    int len = 10;
+    return List.generate(len, (idx) {
+      if (idx < len - 1) {
+        return ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: 150.w, minWidth: 80.w),
+          child: TDTag(
+            '一周年纪念',
+            isOutline: true,
+            needCloseIcon: false,
+            theme: TDTagTheme.primary,
+          ),
+        );
+      }
       return ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: 150.w, minWidth: 80.w),
-        child: TDTag(
-          '一周年纪念',
-          isOutline: true,
-          needCloseIcon: false,
-          theme: TDTagTheme.primary,
-        ),
-      );
+          constraints: BoxConstraints(maxWidth: 150.w, minWidth: 80.w),
+          child: BounceInRight(
+            duration: const Duration(milliseconds: 3000),
+            controller: (c) {
+              animationController = c;
+              animationController!.forward();
+            },
+            child: TDTag('添加标签',
+                isOutline: true,
+                needCloseIcon: false,
+                theme: TDTagTheme.success,
+                size: TDTagSize.large),
+          ));
     });
   }
 
@@ -417,6 +438,7 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
 
     _likeMapColor = {};
     discussMap = {};
+    animationController?.dispose();
     super.dispose();
   }
 
