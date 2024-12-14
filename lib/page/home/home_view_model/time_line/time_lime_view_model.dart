@@ -15,8 +15,10 @@ import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import '../../../../dao/baby/baby_dao.dart';
 import '../../../../dao/upload_list/upload_list_dao.dart';
+import '../../../../getx/controller/manager_gex_controller.dart';
 import '../../../../model/uploadList/UploadListRespVO.dart';
 import '../../../../utils/calculate_age_helper.dart';
+import '../../../../utils/datime_helper.dart';
 import '../../../../widget/easy_refresh/easy_refresh_wrapper.dart';
 import '../../../../widget/gap/gap_height.dart';
 import '../../../../widget/gap/gap_width.dart';
@@ -294,9 +296,26 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel> {
                     "content": result as String
                   });
                   if (b) {
-                    await dialogSuccess('提交成功');
+                    await dialogSuccess('提交成功',
+                        displayTime: const Duration(seconds: 1));
                     setState(() {
-                      //discussList.add(result);
+                      var curMemberId = memberLogic.memberInfo.value!.id!;
+                      discussList.add(UploadDiscussRespVo.fromJson({
+                        "id": -1,
+                        "babyId": _babyController.babyId.value,
+                        "discussMemberId": curMemberId,
+                        "uploadId": curMemberId,
+                        "content": result,
+                        "createTime": formatDateTime(DateTime.now()),
+                        "memberSimpleResVO": {
+                          "memberCode":
+                              memberLogic.memberInfo.value!.memberCode,
+                          "memberNickName":
+                              memberLogic.memberInfo.value!.memberNickName,
+                          "avatar": memberLogic.memberInfo.value!.avatar
+                        }
+                      }));
+                      discussMap[key] = discussList;
                       //重新调一下请求
                       //友好的用户体验,直接加到 discussList,让用户先看到
                     });

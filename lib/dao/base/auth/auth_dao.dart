@@ -1,6 +1,7 @@
 import '../../../utils/member_helper.dart';
 import '../../http/core/hi_net.dart';
 import '../../http/request/base_request.dart';
+import '../member/member_dao.dart';
 
 class AuthDao {
   static Future<bool> login(params) async {
@@ -14,6 +15,7 @@ class AuthDao {
       return false;
     }
     await saveToken(data['token']);
+    await MemberDao.get();
     return true;
   }
 }

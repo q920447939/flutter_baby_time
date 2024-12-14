@@ -1,3 +1,5 @@
+import '../../../getx/controller/manager_gex_controller.dart';
+import '../../../model/auth/MemberRespVO.dart';
 import '../../../utils/member_helper.dart';
 import '../../http/core/hi_net.dart';
 import '../../http/request/base_request.dart';
@@ -13,7 +15,7 @@ class MemberDao {
     if (null == data) {
       return false;
     }
-    await saveToken(data['token']);
+    memberLogic.updateMemberInfo(MemberRespVo.fromJson(data));
     return true;
   }
 }

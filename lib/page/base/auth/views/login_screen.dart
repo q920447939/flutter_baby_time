@@ -23,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    _usernameController.text = 'abc123';
+    _usernameController.text = 'abc1234';
     _passwordController.text = '123456';
     userName = _usernameController.text;
     password = _passwordController.text;
