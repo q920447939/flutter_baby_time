@@ -11,6 +11,7 @@ class UploadListRespVo {
     required this.memberSimpleResVo,
     required this.uploadDiscussRespVo,
     required this.uploadImageRespVo,
+    required this.babyUploadTagRespVos,
   });
 
   final int? id;
@@ -24,6 +25,7 @@ class UploadListRespVo {
   final MemberSimpleResVo? memberSimpleResVo;
   final List<UploadDiscussRespVo> uploadDiscussRespVo;
   final List<UploadImageRespVo> uploadImageRespVo;
+  final List<BabyUploadTagRespVo> babyUploadTagRespVos;
 
   factory UploadListRespVo.fromJson(Map<String, dynamic> json) {
     return UploadListRespVo(
@@ -46,6 +48,27 @@ class UploadListRespVo {
           ? []
           : List<UploadImageRespVo>.from(json["uploadImageRespVO"]!
               .map((x) => UploadImageRespVo.fromJson(x))),
+      babyUploadTagRespVos: json["babyUploadTagRespVOS"] == null
+          ? []
+          : List<BabyUploadTagRespVo>.from(json["babyUploadTagRespVOS"]!
+              .map((x) => BabyUploadTagRespVo.fromJson(x))),
+    );
+  }
+}
+
+class BabyUploadTagRespVo {
+  BabyUploadTagRespVo({
+    required this.id,
+    required this.tagName,
+  });
+
+  final int? id;
+  final String? tagName;
+
+  factory BabyUploadTagRespVo.fromJson(Map<String, dynamic> json) {
+    return BabyUploadTagRespVo(
+      id: json["id"],
+      tagName: json["tagName"],
     );
   }
 }

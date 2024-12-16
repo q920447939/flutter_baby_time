@@ -17,10 +17,12 @@ import 'package:tdesign_flutter/tdesign_flutter.dart';
 import '../../../../dao/baby/baby_dao.dart';
 import '../../../../dao/upload_list/upload_list_dao.dart';
 import '../../../../getx/controller/manager_gex_controller.dart';
+import '../../../../model/baby/BabyUploadTagRespVO.dart' as tag;
 import '../../../../model/uploadList/UploadListRespVO.dart';
 import '../../../../utils/calculate_age_helper.dart';
 import '../../../../utils/datime_helper.dart';
 import '../../../../widget/easy_refresh/easy_refresh_wrapper.dart';
+import '../../../../widget/future/future_.dart';
 import '../../../../widget/gap/gap_height.dart';
 import '../../../../widget/gap/gap_width.dart';
 import '../../../my/baby_setting/baby_setting_controller.dart';
@@ -44,6 +46,7 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel>
   Map<String, TextEditingController> controllerMap = {};
   Map<String, Color?> _likeMapColor = {};
   Map<String, List<UploadDiscussRespVo>> discussMap = {};
+  Map<String, List<BabyUploadTagRespVo>> uploadListTagMap = {};
   BabySettingController _babyController = Get.find();
 
   int? curYear;
@@ -55,6 +58,8 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel>
   int size = 10;
 
   AnimationController? animationController;
+
+  int maxTag = 3;
 
   //构建时间线 ，为了降低性能开销 分批渲染数据
   @override
@@ -105,10 +110,13 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel>
     TextEditingController controller;
     List<UploadDiscussRespVo> discussList = [];
     Color? colorIsLike;
+    List<BabyUploadTagRespVo> uploadListTag = [];
+
     if (controllerMap.containsKey(key)) {
       controller = controllerMap[key]!;
       discussList = discussMap[key]!;
       colorIsLike = _likeMapColor[key];
+      uploadListTag = uploadListTagMap[key]!;
     } else {
       controller = TextEditingController();
       controllerMap.putIfAbsent(key, () {
@@ -120,6 +128,12 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel>
       });
       _likeMapColor.putIfAbsent(key, () {
         return Colors.amberAccent;
+      });
+      if (uploadInfo.babyUploadTagRespVos.isNotEmpty) {
+        uploadListTag = uploadInfo.babyUploadTagRespVos;
+      }
+      uploadListTagMap.putIfAbsent(key, () {
+        return uploadListTag;
       });
       if (null != uploadInfo.isCollect) {
         //使用后台的逻辑
@@ -139,6 +153,7 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel>
     }
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (index > 0) gapHeightLarge(),
         if (index == 0 || uploadInfo.uploadTime!.year != curYear)
@@ -176,7 +191,7 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel>
         gapHeightNormal(),
         ContainerWrapperCard(
           width: 350.w,
-          height: len > 6 ? 360.h : (len > 3 ? 250.h : 180.h),
+          height: len > 6 ? 360.h : (len > 3 ? 250.h : 120.h),
           child: GridView.builder(
             //取消滚动
             physics: const NeverScrollableScrollPhysics(),
@@ -232,23 +247,19 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel>
         Wrap(
           spacing: 10.w,
           runSpacing: 10.h,
-          children: _buildTag(),
+          children: _buildTag(key, uploadInfo),
         ),
         gapHeightSmall(),
-        Padding(
-          padding: EdgeInsets.only(left: 10.w),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: TDText(
-              uploadInfo.memberSimpleResVo!.memberNickName,
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: Colors.grey,
-              ),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: TDText(
+            uploadInfo.memberSimpleResVo!.memberNickName,
+            style: TextStyle(
+              fontSize: 12.sp,
+              color: Colors.grey,
             ),
           ),
         ),
-        gapHeightSmall(),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -396,35 +407,146 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel>
     );
   }
 
-  List<Widget> _buildTag() {
-    int len = 10;
-    return List.generate(len, (idx) {
-      if (idx < len - 1) {
+  List<Widget> _buildTag(String key, UploadListRespVo uploadInfo) {
+    var tagList = uploadListTagMap[key];
+    var tag = ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: 150.w, minWidth: 80.w),
+      child: BounceInRight(
+        duration: const Duration(milliseconds: 3000),
+        controller: (c) {
+          animationController = c;
+          animationController!.forward();
+        },
+        child: GestureDetector(
+          onTap: () async {
+            var uploadListTagList = uploadListTagMap[key];
+            if (null != uploadListTagList &&
+                uploadListTagList.length >= maxTag) {
+              dialogFailure('最多添加$maxTag个标签');
+              return;
+            }
+            var babyUploadTagRespVO1 = await SmartDialog.show(
+              tag: "radioTag",
+              builder: (context) {
+                return Center(
+                  child: ContainerWrapperCard(
+                    margin: EdgeInsets.symmetric(horizontal: 10.w),
+                    padding: EdgeInsets.symmetric(horizontal: 10.w),
+                    height: 400.h,
+                    child: Column(
+                      children: [
+                        _horizontalRadios(context),
+                        gapHeightNormal(),
+                        _buildBody(key),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+            if (null != babyUploadTagRespVO1) {
+              // babyUploadTagRespVO1 = tag.BabyUploadTagRespVo
+              setState(() {
+                var uploadListTagList = uploadListTagMap[key];
+                uploadListTagMap[key] = [
+                  ...uploadListTagList!,
+                  BabyUploadTagRespVo(
+                      id: babyUploadTagRespVO1.id,
+                      tagName: babyUploadTagRespVO1.tagName)
+                ];
+              });
+              UploadListDao.relationTag(
+                  uploadInfo.id!, babyUploadTagRespVO1.id);
+              await dialogSuccess('添加标签成功');
+            }
+          },
+          child: TDTag(
+            '添加/选择标签',
+            isOutline: true,
+            needCloseIcon: false,
+            theme: TDTagTheme.success,
+            size: TDTagSize.large,
+          ),
+        ),
+      ),
+    );
+
+    if (tagList?.isNotEmpty ?? false) {
+      var list = List.generate(tagList!.length, (idx) {
         return ConstrainedBox(
           constraints: BoxConstraints(maxWidth: 150.w, minWidth: 80.w),
           child: TDTag(
-            '一周年纪念',
+            tagList[idx].tagName!,
             isOutline: true,
-            needCloseIcon: false,
+            needCloseIcon: true,
             theme: TDTagTheme.primary,
+            onCloseTap: () async {
+              var removeBabyUploadTagResp =
+                  await SmartDialog.show(builder: (_) {
+                return TDAlertDialog(
+                  content: '确定删除${tagList[idx].tagName!}标签吗?',
+                  leftBtnAction: () {
+                    SmartDialog.dismiss(result: false);
+                  },
+                  rightBtnAction: () {
+                    SmartDialog.dismiss(result: tagList[idx]);
+                  },
+                );
+              });
+              if (null != removeBabyUploadTagResp) {
+                var uploadListTagList = uploadListTagMap[key];
+                var b = await UploadListDao.uploadListCancelTag(
+                    uploadInfo.id!, removeBabyUploadTagResp.id);
+                if (b) {
+                  setState(() {
+                    var list = uploadListTagList!
+                        .where((e) => e.id! != removeBabyUploadTagResp.id)
+                        .toList();
+                    uploadListTagMap[key] = list;
+                  });
+                  await dialogSuccess(
+                    '取消关联标签成功',
+                    displayTime: const Duration(seconds: 3),
+                  );
+                } else {
+                  await dialogFailure(
+                    '取消关联标签失败',
+                    displayTime: const Duration(seconds: 3),
+                  );
+                }
+              }
+            },
           ),
         );
-      }
-      return ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 150.w, minWidth: 80.w),
-          child: BounceInRight(
-            duration: const Duration(milliseconds: 3000),
-            controller: (c) {
-              animationController = c;
-              animationController!.forward();
-            },
-            child: TDTag('添加标签',
-                isOutline: true,
-                needCloseIcon: false,
-                theme: TDTagTheme.success,
-                size: TDTagSize.large),
-          ));
-    });
+      });
+      list.add(tag);
+      return list;
+    } else {
+      return [tag];
+    }
+  }
+
+  String radioSelect = '0';
+  Widget _horizontalRadios(BuildContext context) {
+    return TDRadioGroup(
+      selectId: radioSelect,
+      direction: Axis.horizontal,
+      directionalTdRadios: const [
+        TDRadio(
+          id: '0',
+          title: '选择标签',
+          radioStyle: TDRadioStyle.circle,
+          showDivider: true,
+        ),
+        TDRadio(
+          id: '1',
+          title: '新增标签',
+          radioStyle: TDRadioStyle.circle,
+          showDivider: false,
+          enable: false,
+        ),
+      ],
+    );
   }
 
   @override
@@ -438,6 +560,7 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel>
 
     _likeMapColor = {};
     discussMap = {};
+    uploadListTagMap = {};
     animationController?.dispose();
     super.dispose();
   }
@@ -530,6 +653,104 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel>
           ),
         ),
       ),
+    );
+  }
+
+  _buildBody(String key) {
+    switch (radioSelect) {
+      case "0": //选择
+        return FutureLoading(
+            future: fetchTag(),
+            builder: (_, list) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _radioBuildTag(key, list),
+                  //已选择的标签
+                  gapHeightNormal(),
+                  TDDivider(),
+                  TDText(
+                    '已选择的标签',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  gapHeightSmall(),
+                  buildSelectTag(key),
+                ],
+              );
+            });
+      case "1":
+        return Container();
+    }
+  }
+
+  Future<List<tag.BabyUploadTagRespVo>?> fetchTag() {
+    return UploadListDao.getBabyUploadTagAll();
+  }
+
+  _radioBuildTag(String key, List<tag.BabyUploadTagRespVo>? list) {
+    if (null == list || list.isEmpty) {
+      return TDText(
+        '还没有标签哦',
+        style: TextStyle(color: Colors.grey.withOpacity(0.7)),
+      );
+    }
+    return Wrap(
+      runSpacing: 20.w,
+      spacing: 30.w,
+      children: _radioBuildTags(context, key, list),
+    );
+  }
+
+  _radioBuildTags(
+      BuildContext context, String key, List<tag.BabyUploadTagRespVo> list) {
+    var uploadListTagNameList =
+        (uploadListTagMap[key] ?? []).map((e) => e.tagName!).toList();
+    return list.where((e) => !uploadListTagNameList.contains(e.tagName)).map(
+      (e) {
+        return GestureDetector(
+          onTap: () async {
+            var res = await SmartDialog.show(
+                tag: "radioSelectTag",
+                builder: (_) {
+                  return TDAlertDialog(
+                    content: '确定选择该标签吗?',
+                    leftBtnAction: () {
+                      SmartDialog.dismiss(tag: "radioSelectTag");
+                    },
+                    rightBtnAction: () {
+                      SmartDialog.dismiss(tag: "radioSelectTag", result: e);
+                    },
+                  );
+                });
+            SmartDialog.dismiss(
+                tag: "radioTag", result: res as tag.BabyUploadTagRespVo);
+          },
+          child: TDTag(
+            e.tagName!,
+            size: TDTagSize.large,
+          ),
+        );
+      },
+    ).toList();
+  }
+
+  buildSelectTag(String key) {
+    var uploadListTagList = uploadListTagMap[key];
+    if (null == uploadListTagList || uploadListTagList.isEmpty) {
+      return SizedBox();
+    }
+    return Wrap(
+      runSpacing: 20.w,
+      spacing: 10.w,
+      children: uploadListTagList.map((e) {
+        return TDTag(
+          e.tagName!,
+          size: TDTagSize.large,
+        );
+      }).toList(),
     );
   }
 }

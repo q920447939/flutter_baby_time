@@ -85,4 +85,34 @@ class UploadListDao {
     }
     return true;
   }
+
+  static Future<bool> relationTag(int id, int tagId) async {
+    var data = await HiNet.getInstance().fire(
+        AnonymousRequest(
+          method: HttpMethod.GET,
+          path: "/api/baby/upload-list/relationTag",
+          needLogin: true,
+          needToken: true,
+        ).add("id", id).add("tagId", tagId),
+        showLoading: false);
+    if (null == data) {
+      return false;
+    }
+    return true;
+  }
+
+  static Future<bool> uploadListCancelTag(int id, int tagId) async {
+    var data = await HiNet.getInstance().fire(
+        AnonymousRequest(
+          method: HttpMethod.GET,
+          path: "/api/baby/upload-list/uploadListCancelTag",
+          needLogin: true,
+          needToken: true,
+        ).add("id", id).add("tagId", tagId),
+        showLoading: true);
+    if (null == data) {
+      return false;
+    }
+    return true;
+  }
 }

@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
-void dialogFailure(String msg,
+Future<void> dialogFailure(String msg,
     {Duration displayTime = const Duration(seconds: 3),
     VoidCallback? onDismiss}) async {
   return await SmartDialog.showNotify(
