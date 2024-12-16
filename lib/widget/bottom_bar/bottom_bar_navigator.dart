@@ -122,7 +122,7 @@ class _BottomBarNavigatorState extends State<BottomBarNavigator> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
+                                /*SizedBox(
                                   height: 20.h,
                                   child: Container(
                                     alignment: Alignment.center,
@@ -134,7 +134,7 @@ class _BottomBarNavigatorState extends State<BottomBarNavigator> {
                                   style: TextStyle(
                                     fontSize: 16.sp,
                                   ),
-                                ),
+                                ),*/
                               ],
                             ),
                           ),

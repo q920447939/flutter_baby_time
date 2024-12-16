@@ -69,7 +69,7 @@ class _HeightRecordState extends State<HeightRecord> {
                 useWeekDay: true,
                 dateStart: [lastYearDate.year, 01, 01],
                 dateEnd: [jiffy.year + 1, jiffy.month, jiffy.daysInMonth],
-                initialDate: [jiffy.year, jiffy.month, jiffy.daysInMonth]);
+                initialDate: [jiffy.year, jiffy.month, jiffy.date]);
           },
           child: buildRow(
             '记录时间',

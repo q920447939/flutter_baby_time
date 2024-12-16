@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_baby_time/config/go_router_config.dart';
+import 'package:flutter_baby_time/widget/custom_safe_area/CustomSafeArea.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
@@ -69,9 +70,9 @@ class _OnBordingScreenState extends State<OnBordingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
+    return CustomerSafeArea(
+      child: Scaffold(
+        body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
           child: Column(
             children: [
@@ -79,7 +80,7 @@ class _OnBordingScreenState extends State<OnBordingScreen> {
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: () {
-                    context.go("/signup");
+                    context.go("/signin");
                   },
                   child: Text(
                     "Skip",

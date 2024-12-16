@@ -65,7 +65,6 @@ class _UploadFilePageState extends State<UploadFilePage> {
         setState(() {
           _imageFiles.add(imgFile);
           _imageList = PictureUtils.getImageBean(_imageFiles);
-          print('22222' + imgFile.path);
         });
       }
       _changeDisable();
@@ -107,13 +106,13 @@ class _UploadFilePageState extends State<UploadFilePage> {
             padding: EdgeInsets.fromLTRB(25, 20, 30, 25),
             height: 200.h,
             child: TextField(
-              maxLength: 100,
+              maxLength: 1000,
               maxLines: 8,
               controller: remarkController,
               decoration: InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.zero,
-                  hintText: "分享新鲜事",
+                  hintText: "记录新鲜事",
                   hintStyle: TextStyle(color: Colors.black12)),
             ),
           ),
@@ -151,7 +150,7 @@ class _UploadFilePageState extends State<UploadFilePage> {
             ),
           ),
           ContainerWrapperCard(
-            height: 420.h,
+            height: 400.h,
             child: SingleChildScrollView(
               child: DragSortView(
                 _imageList,
@@ -284,7 +283,7 @@ class _UploadFilePageState extends State<UploadFilePage> {
         last10YearDate.daysInMonth
       ],
       dateEnd: [jiffy.year, jiffy.month, jiffy.daysInMonth],
-      initialDate: [jiffy.year, jiffy.month, jiffy.daysInMonth],
+      initialDate: [jiffy.year, jiffy.month, jiffy.date],
     );
   }
 

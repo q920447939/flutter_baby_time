@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:expandable_richtext/expandable_rich_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -244,6 +245,17 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel>
           ),
         ),
         gapHeightSmall(),
+        if (null != uploadInfo.remark && uploadInfo.remark!.isNotEmpty)
+          ExpandableRichText(uploadInfo.remark!,
+              expandText: '查看更多',
+              collapseText: '收起',
+              maxLines: 3,
+              toggleTextStyle: TextStyle(
+                color: Colors.blue,
+              )
+              //linkColor: Colors.blue,
+              ),
+        gapHeightSmall(),
         Wrap(
           spacing: 10.w,
           runSpacing: 10.h,
@@ -465,7 +477,6 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel>
             isOutline: true,
             needCloseIcon: false,
             theme: TDTagTheme.success,
-            size: TDTagSize.large,
           ),
         ),
       ),
@@ -561,7 +572,6 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel>
     _likeMapColor = {};
     discussMap = {};
     uploadListTagMap = {};
-    animationController?.dispose();
     super.dispose();
   }
 

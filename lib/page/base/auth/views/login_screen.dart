@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_baby_time/widget/base_stack/base_stack.dart';
+import 'package:flutter_baby_time/widget/custom_safe_area/CustomSafeArea.dart';
+import 'package:flutter_baby_time/widget/gap/gap_height.dart';
 import 'package:flutter_baby_time/widget/smart_dialog/smart_dialog_helper.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import '../../../../constants.dart';
 import '../../../../dao/base/auth/auth_dao.dart';
-import 'components/login_form.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -27,15 +29,14 @@ class _LoginScreenState extends State<LoginScreen> {
     _passwordController.text = '123456';
     userName = _usernameController.text;
     password = _passwordController.text;
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
+    return CustomerSafeArea(
+      child: Scaffold(
+        body: Column(
           children: [
             Image.asset(
               "assets/images/login_dark.png",
@@ -47,15 +48,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Welcome back!",
+                    "欢迎回来",
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   const SizedBox(height: defaultPadding / 2),
                   const Text(
-                    "Log in with your data that you intered during your registration.",
+                    "使用您在注册时输入的数据登录。",
                   ),
                   const SizedBox(height: defaultPadding),
                   TDInput(
+                    required: true,
                     leftIcon: const Icon(TDIcons.mobile),
                     leftLabel: '手机号',
                     controller: _usernameController,
@@ -74,6 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                   ),
                   TDInput(
+                    required: true,
                     leftIcon: const Icon(TDIcons.photo),
                     leftLabel: '密码',
                     controller: _passwordController,
@@ -92,22 +95,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       });
                     },
                   ),
-                  Align(
-                    child: TextButton(
-                      child: const Text("Forgot password"),
-                      onPressed: () {
-                        context.go("/passwordRecovery");
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height:
-                        size.height > 700 ? size.height * 0.1 : defaultPadding,
-                  ),
+                  gapHeightLarge(),
                   Align(
                     child: TDButton(
-                      text: "登录",
+                      text: '登录',
                       disabled: userName.isEmpty || password.isEmpty,
+                      size: TDButtonSize.medium,
+                      type: TDButtonType.fill,
+                      shape: TDButtonShape.rectangle,
+                      theme: TDButtonTheme.primary,
                       onTap: () async {
                         var b = await AuthDao.login({
                           "userName": userName,
@@ -124,15 +120,23 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                     ),
                   ),
+                  Align(
+                    child: TextButton(
+                      child: const Text("忘记密码?"),
+                      onPressed: () {
+                        context.go("/passwordRecovery");
+                      },
+                    ),
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text("Don't have an account?"),
+                      const Text("还没有账户?"),
                       TextButton(
                         onPressed: () {
                           context.go("/signup");
                         },
-                        child: const Text("Sign up"),
+                        child: const Text("注册"),
                       )
                     ],
                   ),

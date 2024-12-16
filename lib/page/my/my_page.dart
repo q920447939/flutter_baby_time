@@ -45,8 +45,9 @@ class _MyPageState extends State<MyPage> {
             alignment: Alignment.center,
             child: SizedBox(
               width: 80.w,
+              height: 100.h,
               child: TDAvatar(
-                avatarUrl: _babyController.babyNameAvatar.value,
+                avatarUrl: memberLogic.memberInfo.value!.avatar!,
                 size: TDAvatarSize.large,
                 type: TDAvatarType.normal,
                 shape: TDAvatarShape.circle,

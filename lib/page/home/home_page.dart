@@ -11,6 +11,7 @@ import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import '../../dao/baby/baby_dao.dart';
 import '../../design_pattern/view_model/ViewModel.dart';
+import '../../getx/controller/manager_gex_controller.dart';
 import '../../model/baby/BabyInfoRespVO.dart';
 import '../../model/uploadList/UploadListRespVO.dart';
 import '../../router/has_bottom_navigator/shell_default_router.dart';
@@ -69,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                       type: TDAvatarType.normal,
                       shape: TDAvatarShape.circle,
                       //defaultUrl: 'assets/img/baby_avator.jpeg',
-                      avatarUrl: _babySettingController.babyNameAvatar.value,
+                      avatarUrl: memberLogic.memberInfo.value!.avatar!,
                       backgroundColor: Colors.transparent,
                     ),
                   ),
