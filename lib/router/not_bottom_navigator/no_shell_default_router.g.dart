@@ -11,6 +11,9 @@ List<RouteBase> get $appRoutes => [
       $signUpScreenRouter,
       $signInScreenRouter,
       $passwordRecoveryScreenRouter,
+      $familyManagerPageRouter,
+      $familyCreatePageRouter,
+      $familySelectExistsPageRouter,
     ];
 
 RouteBase get $onBordingScreenRouter => GoRouteData.$route(
@@ -94,6 +97,76 @@ extension $PasswordRecoveryScreenRouterExtension
 
   String get location => GoRouteData.$location(
         '/passwordRecovery',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $familyManagerPageRouter => GoRouteData.$route(
+      path: '/familyManager',
+      factory: $FamilyManagerPageRouterExtension._fromState,
+    );
+
+extension $FamilyManagerPageRouterExtension on FamilyManagerPageRouter {
+  static FamilyManagerPageRouter _fromState(GoRouterState state) =>
+      FamilyManagerPageRouter();
+
+  String get location => GoRouteData.$location(
+        '/familyManager',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $familyCreatePageRouter => GoRouteData.$route(
+      path: '/familyManager/create',
+      factory: $FamilyCreatePageRouterExtension._fromState,
+    );
+
+extension $FamilyCreatePageRouterExtension on FamilyCreatePageRouter {
+  static FamilyCreatePageRouter _fromState(GoRouterState state) =>
+      FamilyCreatePageRouter();
+
+  String get location => GoRouteData.$location(
+        '/familyManager/create',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $familySelectExistsPageRouter => GoRouteData.$route(
+      path: '/familyManager/selectExists',
+      factory: $FamilySelectExistsPageRouterExtension._fromState,
+    );
+
+extension $FamilySelectExistsPageRouterExtension
+    on FamilySelectExistsPageRouter {
+  static FamilySelectExistsPageRouter _fromState(GoRouterState state) =>
+      FamilySelectExistsPageRouter();
+
+  String get location => GoRouteData.$location(
+        '/familyManager/selectExists',
       );
 
   void go(BuildContext context) => context.go(location);

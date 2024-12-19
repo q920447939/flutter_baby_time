@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
+import '../../../dao/base/member/member_dao.dart';
 import '../../../getx/controller/manager_gex_controller.dart';
 import '../../../widget/base_stack/base_stack.dart';
 
@@ -31,13 +32,17 @@ class _MyProfilePageState extends State<MyProfilePage> {
     return GreyBaseScaffoldStack(
       title: '昵称设置',
       appBarRightTitle: '保存',
-      appBarRightClick: () {
+      appBarRightClick: () async {
         if (nickName.isEmpty || nickName == '') {
           dialogWarning('昵称不能为空');
           return;
         }
-        dialogSuccess('保存成功');
-        context.pop();
+        var b = await MemberDao.updateNickName(nickName);
+        if (b) {
+          dialogSuccess('保存成功', onDismiss: () {
+            context.pop();
+          });
+        }
       },
       child: ContainerWrapperCard(
         margin: EdgeInsets.all(10.w),

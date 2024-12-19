@@ -4,6 +4,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../getx/controller/manager_gex_controller.dart';
 import '../main.dart';
 import '../router/error_router.dart';
 import '../router/has_bottom_navigator/shell_default_router.dart'
@@ -21,7 +22,7 @@ var goRouterBaseConfig = GoRouterBaseConfig();
 
 final router = GoRouter(
   navigatorKey: _rootNavigatorKey,
-  initialLocation: '/welcome',
+  initialLocation: '/',
   routes: [
     ShellRoute(
       navigatorKey: _shellNavigatorKey,
@@ -46,27 +47,30 @@ final router = GoRouter(
     if (state.fullPath == null) {
       return null;
     }
-    var loginFlag = isLogin();
     var fullPath = state.fullPath;
-    if (fullPath == "/my") {
-      /*if (!loginFlag) {
-        return '/welcomeScreen';
-      }*/
-      return "/my";
-    } else if (fullPath == "/welcomeScreen") {
-      if (loginFlag) {
-        return '/my';
-      }
-    } else if (fullPath == "/serverCenter" ||
-        fullPath == "/mall/integral-mall") {
-      if (!loginFlag) {
-        dialogFailure('请先进行登录');
-        /*Provider.of<BottomNavigatorBarIndexProvider>(context, listen: false)
-            .modifyBottomNavigatorIndex(getBottomBarIndex('/my'));*/
-        return '/login';
-      }
+    if (fullPath == "/signup" || fullPath == "/signin") {
+      return fullPath;
     }
-    return null;
+    if (isFirstUse()) {
+      return "/welcome";
+    }
+    var loginFlag = isLogin();
+
+    if (!loginFlag) {
+      return "/signin";
+    }
+    if (fullPath == "/familyManager/selectExists") {
+      return fullPath;
+    }
+    if (null == familyLogic.familyRespVo.value) {
+      if (fullPath == "/familyManager/create") {
+        return fullPath;
+      }
+      //还没有绑定到家庭
+      return "/familyManager";
+    }
+
+    return fullPath;
   },
   observers: [FlutterSmartDialog.observer],
   errorBuilder: (c, s) => ErrorRoute(error: s.error!).build(c, s),
