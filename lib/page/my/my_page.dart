@@ -191,11 +191,13 @@ class _MyPageState extends State<MyPage> {
   _buildPersonInfo() {
     return _buildRowInfo('昵称', () {
       const MyProfileRoute().push(context);
-    }, rightText: memberLogic.memberInfo.value!.memberNickName);
+    },
+        rightWidget:
+            Obx(() => TDText(memberLogic.memberInfo.value!.memberNickName)));
   }
 
   _buildRowInfo(String leftText, GestureTapCallback onTap,
-      {String? rightText}) {
+      {Widget? rightWidget}) {
     return GestureDetector(
       onTap: () {
         onTap.call();
@@ -212,10 +214,7 @@ class _MyPageState extends State<MyPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  if (rightText != null)
-                    TDText(
-                      rightText,
-                    ),
+                  if (rightWidget != null) rightWidget,
                   Icon(Icons.arrow_right_outlined),
                 ],
               ),
