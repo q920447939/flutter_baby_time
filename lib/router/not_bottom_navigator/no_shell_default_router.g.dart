@@ -14,6 +14,8 @@ List<RouteBase> get $appRoutes => [
       $familyManagerPageRouter,
       $familyCreatePageRouter,
       $familySelectExistsPageRouter,
+      $familyApplyPageRouter,
+      $familyApplyHistoryPageRouter,
     ];
 
 RouteBase get $onBordingScreenRouter => GoRouteData.$route(
@@ -167,6 +169,53 @@ extension $FamilySelectExistsPageRouterExtension
 
   String get location => GoRouteData.$location(
         '/familyManager/selectExists',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $familyApplyPageRouter => GoRouteData.$route(
+      path: '/familyManager/applyFamily',
+      factory: $FamilyApplyPageRouterExtension._fromState,
+    );
+
+extension $FamilyApplyPageRouterExtension on FamilyApplyPageRouter {
+  static FamilyApplyPageRouter _fromState(GoRouterState state) =>
+      FamilyApplyPageRouter();
+
+  String get location => GoRouteData.$location(
+        '/familyManager/applyFamily',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $familyApplyHistoryPageRouter => GoRouteData.$route(
+      path: '/familyManager/applyFamilyHistory',
+      factory: $FamilyApplyHistoryPageRouterExtension._fromState,
+    );
+
+extension $FamilyApplyHistoryPageRouterExtension
+    on FamilyApplyHistoryPageRouter {
+  static FamilyApplyHistoryPageRouter _fromState(GoRouterState state) =>
+      FamilyApplyHistoryPageRouter();
+
+  String get location => GoRouteData.$location(
+        '/familyManager/applyFamilyHistory',
       );
 
   void go(BuildContext context) => context.go(location);

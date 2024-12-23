@@ -6,6 +6,8 @@ import '../../page/base/auth/views/login_screen.dart';
 import '../../page/base/auth/views/password_recovery_screen.dart';
 import '../../page/base/auth/views/signup_screen.dart';
 import '../../page/base/onbording/views/onbording_screnn.dart';
+import '../../page/family/family_apply_history_page.dart';
+import '../../page/family/family_apply_page.dart';
 import '../../page/family/family_create_page.dart';
 import '../../page/family/family_manager_page.dart';
 import '../../page/family/family_select_exists_page.dart';
@@ -74,5 +76,24 @@ class FamilySelectExistsPageRouter extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return FamilySelectExistsPage();
+  }
+}
+
+@TypedGoRoute<FamilyApplyPageRouter>(path: '/familyManager/applyFamily')
+@immutable
+class FamilyApplyPageRouter extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return FamilyApplyPage();
+  }
+}
+
+@TypedGoRoute<FamilyApplyHistoryPageRouter>(
+    path: '/familyManager/applyFamilyHistory')
+@immutable
+class FamilyApplyHistoryPageRouter extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return FamilyApplyHistoryPage();
   }
 }

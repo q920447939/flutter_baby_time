@@ -1,4 +1,5 @@
 import '../../model/baby/BabyInfoRespVO.dart';
+import '../../model/family/FamilyApplyRespVO.dart';
 import '../../utils/response/response_utils.dart';
 import '../http/core/hi_net.dart';
 import '../http/request/base_request.dart';
@@ -22,5 +23,29 @@ class FamilyDao {
       needToken: true,
     ).setBody(params));
     return data;
+  }
+
+  static Future<int?> apply(params) async {
+    var data = await HiNet.getInstance().fire(AnonymousRequest(
+      method: HttpMethod.POST,
+      path: "/api/familyApply/create",
+      needLogin: true,
+      needToken: true,
+    ).setBody(params));
+    return data;
+  }
+
+  static Future<List<FamilyApplyRespVo>?> applyPage(
+      int pageNo, int pageSize) async {
+    var data = await HiNet.getInstance().fire(
+      AnonymousRequest(
+        method: HttpMethod.GET,
+        path: "/api/familyApply/page",
+        needLogin: true,
+        needToken: true,
+      ).add("pageNo", pageNo).add("pageSize", pageSize),
+    );
+    var list = pageResToObjList(data, FamilyApplyRespVo.fromJson);
+    return list;
   }
 }

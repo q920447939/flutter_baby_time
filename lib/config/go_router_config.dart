@@ -59,7 +59,9 @@ final router = GoRouter(
     if (!loginFlag) {
       return "/signin";
     }
-    if (fullPath == "/familyManager/selectExists") {
+    if (fullPath == "/familyManager/selectExists" ||
+        fullPath == "/familyManager/applyFamily" ||
+        fullPath == "/familyManager/applyFamilyHistory") {
       return fullPath;
     }
     if (null == familyLogic.familyRespVo.value) {

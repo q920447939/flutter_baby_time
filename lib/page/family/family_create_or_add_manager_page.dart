@@ -64,7 +64,7 @@ class _FamilyCreateOrAddManagerPageState
                         if (res == 'create') {
                           context.push('/familyManager/create');
                         } else {
-                          await dialogFailure('开发中');
+                          context.push("/familyManager/applyFamily");
                           //context.pushReplacement('');
                         }
                       }

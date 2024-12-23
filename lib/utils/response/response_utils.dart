@@ -26,3 +26,17 @@ List<T> parseJsonList<T>(
       .map((json) => fromJson(json as Map<String, dynamic>))
       .toList();
 }
+
+List<T>? pageResToObjList<T>(
+  dynamic data,
+  T Function(Map<String, dynamic>) fromJson,
+) {
+  if (null == data) {
+    return [];
+  }
+  var list = data['list'];
+  if (null == list) {
+    return [];
+  }
+  return toObjList(list, fromJson);
+}
