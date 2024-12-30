@@ -16,6 +16,7 @@ List<RouteBase> get $appRoutes => [
       $familySelectExistsPageRouter,
       $familyApplyPageRouter,
       $familyApplyHistoryPageRouter,
+      $babyInfoCreatePageRouter,
     ];
 
 RouteBase get $onBordingScreenRouter => GoRouteData.$route(
@@ -216,6 +217,29 @@ extension $FamilyApplyHistoryPageRouterExtension
 
   String get location => GoRouteData.$location(
         '/familyManager/applyFamilyHistory',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $babyInfoCreatePageRouter => GoRouteData.$route(
+      path: '/babyInfo/create',
+      factory: $BabyInfoCreatePageRouterExtension._fromState,
+    );
+
+extension $BabyInfoCreatePageRouterExtension on BabyInfoCreatePageRouter {
+  static BabyInfoCreatePageRouter _fromState(GoRouterState state) =>
+      BabyInfoCreatePageRouter();
+
+  String get location => GoRouteData.$location(
+        '/babyInfo/create',
       );
 
   void go(BuildContext context) => context.go(location);

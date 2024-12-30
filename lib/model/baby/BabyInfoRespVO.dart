@@ -68,26 +68,16 @@ class FamilyRespVo {
     required this.familyName,
     required this.familyMemberCount,
     required this.createTime,
+    required this.roleId,
+    required this.roleName,
   });
 
   final int? id;
   final String? familyName;
   final int? familyMemberCount;
   final DateTime? createTime;
-
-  FamilyRespVo copyWith({
-    int? id,
-    String? familyName,
-    int? familyMemberCount,
-    DateTime? createTime,
-  }) {
-    return FamilyRespVo(
-      id: id ?? this.id,
-      familyName: familyName ?? this.familyName,
-      familyMemberCount: familyMemberCount ?? this.familyMemberCount,
-      createTime: createTime ?? this.createTime,
-    );
-  }
+  final int? roleId;
+  final String? roleName;
 
   factory FamilyRespVo.fromJson(Map<String, dynamic> json) {
     return FamilyRespVo(
@@ -95,6 +85,8 @@ class FamilyRespVo {
       familyName: json["familyName"],
       familyMemberCount: json["familyMemberCount"],
       createTime: DateTime.tryParse(json["createTime"] ?? ""),
+      roleId: json["roleId"],
+      roleName: json["roleName"],
     );
   }
 
@@ -103,5 +95,7 @@ class FamilyRespVo {
         "familyName": familyName,
         "familyMemberCount": familyMemberCount,
         "createTime": createTime?.toIso8601String(),
+        "roleId": roleId,
+        "roleName": roleName,
       };
 }

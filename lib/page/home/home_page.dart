@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                       type: TDAvatarType.normal,
                       shape: TDAvatarShape.circle,
                       //defaultUrl: 'assets/img/baby_avator.jpeg',
-                      avatarUrl: memberLogic.memberInfo.value!.avatar!,
+                      avatarUrl: memberLogic.get()!.avatar!,
                       backgroundColor: Colors.transparent,
                     ),
                   ),
@@ -97,12 +97,7 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Obx(
-                          () => TDText(
-                            _babySettingController.birthday.value == '未设置'
-                                ? _babySettingController.birthday.value
-                                : '${calculateAge(Jiffy.parse(_babySettingController.birthday.value, pattern: 'yyyy-MM-dd'))}(${Jiffy.parse(_babySettingController.birthday.value, pattern: 'yyyy-MM-dd').format(pattern: 'yyyy年M月d日')})',
-                            style: TextStyle(fontSize: 12.sp),
-                          ),
+                          () => _buildTdText(),
                         ),
                         gapWidthNormal(),
                       ],
@@ -160,6 +155,15 @@ class _HomePageState extends State<HomePage> {
           if (body != HeightWeightManagePage()) body
         ],
       ),
+    );
+  }
+
+  TDText _buildTdText() {
+    if (_babySettingController.birthday.value == '未设置')
+      return TDText('未设置', style: TextStyle(fontSize: 12.sp));
+    return TDText(
+      '${calculateAge(Jiffy.parse(_babySettingController.birthday.value, pattern: 'yyyy-MM-dd'))}(${Jiffy.parse(_babySettingController.birthday.value, pattern: 'yyyy-MM-dd').format(pattern: 'yyyy年M月d日')})',
+      style: TextStyle(fontSize: 12.sp),
     );
   }
 }

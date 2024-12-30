@@ -55,7 +55,6 @@ final router = GoRouter(
       return "/welcome";
     }
     var loginFlag = isLogin();
-
     if (!loginFlag) {
       return "/signin";
     }
@@ -64,7 +63,7 @@ final router = GoRouter(
         fullPath == "/familyManager/applyFamilyHistory") {
       return fullPath;
     }
-    if (null == familyLogic.familyRespVo.value) {
+    if (null == familyLogic.get()) {
       if (fullPath == "/familyManager/create") {
         return fullPath;
       }

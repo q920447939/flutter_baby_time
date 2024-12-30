@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../model/baby/BabyInfoRespVO.dart';
+import '../../page/baby_info/baby_info_create_page.dart';
 import '../../page/base/auth/views/login_screen.dart';
 import '../../page/base/auth/views/password_recovery_screen.dart';
 import '../../page/base/auth/views/signup_screen.dart';
@@ -95,5 +96,14 @@ class FamilyApplyHistoryPageRouter extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return FamilyApplyHistoryPage();
+  }
+}
+
+@TypedGoRoute<BabyInfoCreatePageRouter>(path: '/babyInfo/create')
+@immutable
+class BabyInfoCreatePageRouter extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return BabyInfoCreatePage();
   }
 }

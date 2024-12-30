@@ -11,6 +11,7 @@ import 'package:tdesign_flutter/tdesign_flutter.dart';
 import '../../dao/family/family_dao.dart';
 import '../../getx/controller/manager_gex_controller.dart';
 import '../../model/baby/BabyInfoRespVO.dart';
+import '../../utils/family_helper.dart';
 import '../../widget/button/default_button.dart';
 import '../../widget/container/container_wrapper_card.dart';
 import '../../widget/future/future_.dart';
@@ -63,7 +64,7 @@ class _FamilySelectExistsPageState extends State<FamilySelectExistsPage> {
   ContainerWrapperCard buildFamilyItem(e) {
     return ContainerWrapperCard(
       padding: EdgeInsets.all(10.r),
-      height: 162.h,
+      height: 172.h,
       width: 400.w,
       decoration: BoxDecoration(
         color: Colors.grey.withOpacity(0.3),
@@ -82,7 +83,7 @@ class _FamilySelectExistsPageState extends State<FamilySelectExistsPage> {
           ),
           gapHeightSmall(),
           TDText(
-            '您的角色:${e.familyName!}',
+            '您的角色:${e.roleName!}',
           ),
           gapHeightNormal(),
           DefaultButton(
@@ -100,7 +101,7 @@ class _FamilySelectExistsPageState extends State<FamilySelectExistsPage> {
                 );
               });
               if (res) {
-                familyLogic.updateRx(e);
+                await bindFamily(e);
                 if (mounted) {
                   context.go("/");
                 }

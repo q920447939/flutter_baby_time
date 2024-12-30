@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import '../../../../constants.dart';
+import '../../../../dao/base/auth/auth_dao.dart';
 import 'components/sign_up_form.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -24,7 +25,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: Column(
           children: [
             Image.asset(
-              "assets/images/signUp_dark.png",
+              "assets/img/register_background.jpeg",
               height: MediaQuery.of(context).size.height * 0.35,
               width: double.infinity,
               fit: BoxFit.cover,
@@ -59,7 +60,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         },
                       ),
                       TDInput(
-                        leftIcon: const Icon(TDIcons.photo),
+                        leftIcon: const Icon(TDIcons.pin),
                         leftLabel: '密码',
                         controller: _passwordController,
                         backgroundColor: Colors.white,
@@ -76,7 +77,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ],
                   ),
                   const SizedBox(height: defaultPadding),
-                  Row(
+                  /* Row(
                     children: [
                       Checkbox(
                         onChanged: (value) {},
@@ -90,8 +91,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               TextSpan(
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
-                                    /*Navigator.pushNamed(
-                                        context, termsOfServicesScreenRoute);*/
+                                    */ /*Navigator.pushNamed(
+                                        context, termsOfServicesScreenRoute);*/ /*
                                   },
                                 text: " 团队服务条款 ",
                                 style: const TextStyle(
@@ -108,10 +109,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       )
                     ],
                   ),
-                  const SizedBox(height: defaultPadding * 2),
+                  const SizedBox(height: defaultPadding * 2),*/
                   Center(
                     child: TDButton(
-                      text: '登录',
+                      text: '注册',
                       disabled: _usernameController.text.isEmpty ||
                           _passwordController.text.isEmpty,
                       size: TDButtonSize.medium,
@@ -119,18 +120,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       shape: TDButtonShape.rectangle,
                       theme: TDButtonTheme.primary,
                       onTap: () async {
-                        /*var b = await AuthDao.login({
-                        "userName": userName,
-                        "password": password,
-                        "registerChannel": 3,
-                        "inviteMemberSimpleId": 0,
-                        "verificationCode": "1111"
-                      });
-                      if (b) {
-                        await dialogSuccess('登录成功', onDismiss: () {
-                          context.go("/");
+/*                        var b = await AuthDao.login({
+                          "userName": userName,
+                          "password": password,
+                          "registerChannel": 3,
+                          "inviteMemberSimpleId": 0,
+                          "verificationCode": "1111"
                         });
-                      }*/
+                        if (b) {
+                          await dialogSuccess('登录成功', onDismiss: () {
+                            context.go("/");
+                          });
+                        }*/
                       },
                     ),
                   ),

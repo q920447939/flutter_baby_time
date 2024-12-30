@@ -195,7 +195,7 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel>
           height: len > 6 ? 360.h : (len > 3 ? 250.h : 120.h),
           child: GridView.builder(
             //取消滚动
-            physics: const NeverScrollableScrollPhysics(),
+            //physics: const NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
               mainAxisSpacing: 8.0,
@@ -387,7 +387,7 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel>
               ),
             ),
             gapWidthLarge(),
-            GestureDetector(
+/*            GestureDetector(
               onTap: () {
                 // 接上面滚动生成的文件，直接调用分享即可
                 try {
@@ -406,7 +406,7 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel>
                 width: 22.w,
               ),
             ),
-            gapWidthLarge(),
+            gapWidthLarge(),*/
           ],
         ),
         gapWidthSmall(),

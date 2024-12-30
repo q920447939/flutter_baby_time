@@ -31,4 +31,15 @@ class MemberRespVo {
       createTime: DateTime.tryParse(json["createTime"] ?? ""),
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "registerChannel": registerChannel,
+        "memberCode": memberCode,
+        "memberNickName": memberNickName,
+        "memberSimpleId": memberSimpleId,
+        "inviteMemberSimpleId": inviteMemberSimpleId,
+        "avatar": avatar,
+        "createTime": createTime?.toIso8601String(),
+      };
 }

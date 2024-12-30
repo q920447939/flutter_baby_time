@@ -18,4 +18,19 @@ class AuthDao {
     await MemberDao.get();
     return true;
   }
+
+  static Future<bool> register(params) async {
+    var data = await HiNet.getInstance().fire(AnonymousRequest(
+      method: HttpMethod.POST,
+      path: "/api/authentication/login",
+      needLogin: true,
+      needToken: true,
+    ).setBody(params));
+    if (null == data) {
+      return false;
+    }
+    await saveToken(data['token']);
+    await MemberDao.get();
+    return true;
+  }
 }
