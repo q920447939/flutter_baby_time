@@ -17,6 +17,9 @@ List<RouteBase> get $appRoutes => [
       $familyApplyPageRouter,
       $familyApplyHistoryPageRouter,
       $babyInfoCreatePageRouter,
+      $babyManagerPageRouter,
+      $babyCreatePageRouter,
+      $babySelectExistsPageRouter,
     ];
 
 RouteBase get $onBordingScreenRouter => GoRouteData.$route(
@@ -240,6 +243,75 @@ extension $BabyInfoCreatePageRouterExtension on BabyInfoCreatePageRouter {
 
   String get location => GoRouteData.$location(
         '/babyInfo/create',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $babyManagerPageRouter => GoRouteData.$route(
+      path: '/babyManager',
+      factory: $BabyManagerPageRouterExtension._fromState,
+    );
+
+extension $BabyManagerPageRouterExtension on BabyManagerPageRouter {
+  static BabyManagerPageRouter _fromState(GoRouterState state) =>
+      BabyManagerPageRouter();
+
+  String get location => GoRouteData.$location(
+        '/babyManager',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $babyCreatePageRouter => GoRouteData.$route(
+      path: '/babyManager/create',
+      factory: $BabyCreatePageRouterExtension._fromState,
+    );
+
+extension $BabyCreatePageRouterExtension on BabyCreatePageRouter {
+  static BabyCreatePageRouter _fromState(GoRouterState state) =>
+      BabyCreatePageRouter();
+
+  String get location => GoRouteData.$location(
+        '/babyManager/create',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $babySelectExistsPageRouter => GoRouteData.$route(
+      path: '/babyManager/selectExists',
+      factory: $BabySelectExistsPageRouterExtension._fromState,
+    );
+
+extension $BabySelectExistsPageRouterExtension on BabySelectExistsPageRouter {
+  static BabySelectExistsPageRouter _fromState(GoRouterState state) =>
+      BabySelectExistsPageRouter();
+
+  String get location => GoRouteData.$location(
+        '/babyManager/selectExists',
       );
 
   void go(BuildContext context) => context.go(location);

@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../model/baby/BabyInfoRespVO.dart';
 import '../../page/baby_info/baby_info_create_page.dart';
+import '../../page/baby_info/baby_manager_page.dart';
+import '../../page/baby_info/baby_select_exists_page.dart';
 import '../../page/base/auth/views/login_screen.dart';
 import '../../page/base/auth/views/password_recovery_screen.dart';
 import '../../page/base/auth/views/signup_screen.dart';
@@ -105,5 +107,32 @@ class BabyInfoCreatePageRouter extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return BabyInfoCreatePage();
+  }
+}
+
+@TypedGoRoute<BabyManagerPageRouter>(path: '/babyManager')
+@immutable
+class BabyManagerPageRouter extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return BabyManagerPage();
+  }
+}
+
+@TypedGoRoute<BabyCreatePageRouter>(path: '/babyManager/create')
+@immutable
+class BabyCreatePageRouter extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return BabyInfoCreatePage();
+  }
+}
+
+@TypedGoRoute<BabySelectExistsPageRouter>(path: '/babyManager/selectExists')
+@immutable
+class BabySelectExistsPageRouter extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return BabySelectExistsPage();
   }
 }

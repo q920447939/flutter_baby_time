@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_baby_time/page/heightWeight/extension_datetime.dart';
 import 'package:flutter_baby_time/page/my/baby_setting/sex_enums.dart';
 import 'package:flutter_baby_time/widget/base_stack/base_stack.dart';
 import 'package:flutter_baby_time/widget/container/container_wrapper_card.dart';
@@ -13,9 +15,12 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
+import '../../../dao/baby/baby_dao.dart';
+import '../../../getx/controller/manager_gex_controller.dart';
+import '../../../utils/datime_helper.dart';
 import '../../../widget/pick/pick_image_single/image_pick_wrap.dart';
 import '../../../widget/pick/pick_image_single/image_pick_wrap_new.dart';
-import 'baby_setting_controller.dart';
+import '../../../getx/controller/baby/baby_setting_controller.dart';
 
 class BabySetting extends StatefulWidget {
   const BabySetting({Key? key}) : super(key: key);
@@ -25,8 +30,6 @@ class BabySetting extends StatefulWidget {
 }
 
 class _BabySettingState extends State<BabySetting> {
-  BabySettingController _babyController = Get.find();
-
   String selected_6 = '';
   var weekDayList = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
   TextEditingController controller = TextEditingController();
@@ -51,17 +54,18 @@ class _BabySettingState extends State<BabySetting> {
             height: 200.h,
             child: Center(
               child: Obx(
-                () => TDAvatar(
-                  size: TDAvatarSize.large,
-                  type: TDAvatarType.normal,
-                  shape: TDAvatarShape.circle,
-                  //defaultUrl: _babyController.babyNameAvatar.value,
-                  avatarUrl: _babyController.babyNameAvatar.value,
-                  backgroundColor: Colors.transparent,
-                  onTap: () {
-                    _changeBabyAvatar();
-                  },
-                ),
+                () => GestureDetector(
+                    onTap: () {
+                      _changeBabyAvatar();
+                    },
+                    child: SizedBox(
+                      height: 150.h,
+                      width: 150.w,
+                      child: CircleAvatar(
+                        child: CachedNetworkImage(
+                            imageUrl: babyController.get()!.avatarUrl!),
+                      ),
+                    )),
               ),
             ),
           ),
@@ -76,8 +80,7 @@ class _BabySettingState extends State<BabySetting> {
                   },
                   child: buildRow(
                     '宝宝昵称',
-                    rightWidget:
-                        Obx(() => TDText(_babyController.babyName.value)),
+                    rightWidget: Obx(() => TDText(babyController.get()!.name)),
                   ),
                 ),
                 SizedBox(
@@ -93,8 +96,9 @@ class _BabySettingState extends State<BabySetting> {
                   },
                   child: buildRow(
                     '宝宝性别',
-                    rightWidget:
-                        Obx(() => TDText(_babyController.sex.value.label)),
+                    rightWidget: Obx(() => TDText(SexEnums.fromString(
+                            babyController.get()!.sex!.toString())
+                        .label)),
                   ),
                 ),
                 SizedBox(
@@ -107,15 +111,28 @@ class _BabySettingState extends State<BabySetting> {
                 GestureDetector(
                   onTap: () {
                     TDPicker.showDatePicker(context, title: '选择出生日期',
-                        onConfirm: (selected) {
+                        onConfirm: (selected) async {
                       if (selected.isNotEmpty) {
-                        selected_6 =
-                            '${selected['year'].toString().padLeft(4, '0')}-'
-                            '${selected['month'].toString().padLeft(2, '0')}-'
-                            '${selected['day'].toString().padLeft(2, '0')} ';
-                        _babyController.changeBirthday(selected_6);
+                        setState(() {
+                          selected_6 =
+                              '${selected['year'].toString().padLeft(4, '0')}-'
+                              '${selected['month'].toString().padLeft(2, '0')}-'
+                              '${selected['day'].toString().padLeft(2, '0')} ';
+                        });
+                        var babyInfoRespVo = babyController.get();
+                        await BabyDao.updateInfo({
+                          "id": babyInfoRespVo!.id!,
+                          "familyId": familyLogic.get()!.id!,
+                          "name": babyInfoRespVo.name,
+                          "avatarUrl": babyInfoRespVo.avatarUrl,
+                          "sex": babyInfoRespVo.sex,
+                          "birthday": selected_6
+                        });
+                        await BabyDao.get();
                       }
-                      Navigator.of(context).pop();
+                      if (mounted) {
+                        Navigator.of(context).pop();
+                      }
                     }, useWeekDay: true, dateStart: [
                       1979,
                       01,
@@ -125,18 +142,20 @@ class _BabySettingState extends State<BabySetting> {
                       jiffy.month,
                       jiffy.daysInMonth
                     ], initialDate: [
-                      lastYearDate.year,
-                      lastYearDate.month,
-                      lastYearDate.daysInMonth
+                      babyController.get()!.birthday!.year,
+                      babyController.get()!.birthday!.month,
+                      babyController.get()!.birthday!.daysInMonth()
                     ]);
                   },
                   child: buildRow(
                     '宝宝出生日',
-                    rightWidget: Obx(() => TDText(_babyController
-                                .birthday.value ==
-                            '未设置'
-                        ? _babyController.birthday.value
-                        : formatChineseDate(_babyController.birthday.value))),
+                    rightWidget: Obx(
+                      () => TDText(
+                        formatChineseDate(
+                          formatDate(babyController.get()!.birthday!),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -241,9 +260,18 @@ class _BabySettingState extends State<BabySetting> {
   Widget _radioStatus(BuildContext context) {
     return TDRadioGroup(
       contentDirection: TDContentDirection.right,
-      selectId: _babyController.sex.value.value,
-      onRadioGroupChange: (selectedId) {
-        _babyController.changeSex(selectedId ?? SexEnums.female.value);
+      selectId: babyController.get()!.sex!.toString(),
+      onRadioGroupChange: (selectedId) async {
+        var babyInfoRespVo = babyController.get();
+        await BabyDao.updateInfo({
+          "id": babyInfoRespVo!.id!,
+          "familyId": familyLogic.get()!.id!,
+          "name": babyInfoRespVo.name,
+          "avatarUrl": babyInfoRespVo.avatarUrl,
+          "sex": selectedId ?? SexEnums.female.value,
+          "birthday": formatDate(babyInfoRespVo.birthday!)
+        });
+        await BabyDao.get();
         SmartDialog.dismiss(
             tag: "_changeRadio", force: true, result: selectedId);
       },
@@ -316,7 +344,19 @@ class _BabySettingState extends State<BabySetting> {
           );
         });
     if (result != null && result != "") {
-      _babyController.babyName.value = result;
+      var babyInfoRespVo = babyController.get();
+      var b = await BabyDao.updateInfo({
+        "id": babyInfoRespVo!.id!,
+        "familyId": familyLogic.get()!.id!,
+        "name": result,
+        "avatarUrl": babyInfoRespVo.avatarUrl,
+        "sex": babyInfoRespVo.sex,
+        "birthday": formatDate(babyInfoRespVo.birthday!)
+      });
+      if (null != b && b) {
+        await BabyDao.get();
+        await dialogSuccess('修改成功');
+      }
     }
   }
 

@@ -70,6 +70,16 @@ final router = GoRouter(
       //还没有绑定到家庭
       return "/familyManager";
     }
+    if (fullPath == "/babyManager/create" ||
+        fullPath == "/babyManager/selectExists") {
+      return fullPath;
+    }
+    if ('/' == fullPath) {
+      if (null == babyController.get()) {
+        //还没有选择宝宝信息
+        return "/babyManager";
+      }
+    }
 
     return fullPath;
   },

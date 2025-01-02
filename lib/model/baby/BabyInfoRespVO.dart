@@ -17,26 +17,6 @@ class BabyInfoRespVo {
   final DateTime? createTime;
   final FamilyRespVo? familyRespVo;
 
-  BabyInfoRespVo copyWith({
-    int? id,
-    String? name,
-    String? avatarUrl,
-    int? sex,
-    DateTime? birthday,
-    DateTime? createTime,
-    FamilyRespVo? familyRespVo,
-  }) {
-    return BabyInfoRespVo(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      avatarUrl: avatarUrl ?? this.avatarUrl,
-      sex: sex ?? this.sex,
-      birthday: birthday ?? this.birthday,
-      createTime: createTime ?? this.createTime,
-      familyRespVo: familyRespVo ?? this.familyRespVo,
-    );
-  }
-
   factory BabyInfoRespVo.fromJson(Map<String, dynamic> json) {
     return BabyInfoRespVo(
       id: json["id"],
@@ -56,7 +36,8 @@ class BabyInfoRespVo {
         "name": name,
         "avatarUrl": avatarUrl,
         "sex": sex,
-        "birthday": birthday,
+        "birthday":
+            "${birthday?.year.toString().padLeft(4, '0')}-${birthday?.month.toString().padLeft(2, '0')}-${birthday?.day.toString().padLeft(2, '0')}",
         "createTime": createTime?.toIso8601String(),
         "familyRespVO": familyRespVo?.toJson(),
       };
@@ -70,6 +51,7 @@ class FamilyRespVo {
     required this.createTime,
     required this.roleId,
     required this.roleName,
+    required this.familyBackgroundUrl,
   });
 
   final int? id;
@@ -78,6 +60,7 @@ class FamilyRespVo {
   final DateTime? createTime;
   final int? roleId;
   final String? roleName;
+  final String? familyBackgroundUrl;
 
   factory FamilyRespVo.fromJson(Map<String, dynamic> json) {
     return FamilyRespVo(
@@ -87,6 +70,7 @@ class FamilyRespVo {
       createTime: DateTime.tryParse(json["createTime"] ?? ""),
       roleId: json["roleId"],
       roleName: json["roleName"],
+      familyBackgroundUrl: json["familyBackgroundUrl"],
     );
   }
 
@@ -97,5 +81,6 @@ class FamilyRespVo {
         "createTime": createTime?.toIso8601String(),
         "roleId": roleId,
         "roleName": roleName,
+        "familyBackgroundUrl": familyBackgroundUrl,
       };
 }

@@ -3,7 +3,7 @@ import 'package:get/get_core/src/get_main.dart';
 
 import '../../model/height_record/BabyHeightRecordRespVO.dart';
 import '../../model/height_record/BabyHeightRecordStandardRelationRespVO.dart';
-import '../../page/my/baby_setting/baby_setting_controller.dart';
+import '../../getx/controller/baby/baby_setting_controller.dart';
 import '../../utils/datime_helper.dart';
 import '../http/core/hi_net.dart';
 import '../http/request/base_request.dart';
@@ -17,7 +17,7 @@ class HeightRecordDao {
       path: "/api/babyHeightRecord/getAllRecord",
       needLogin: true,
       needToken: true,
-    ).add("babyId", babyController.babyId.value));
+    ).add("babyId", babyController.get()!.id!));
     if (null == data) {
       return null;
     }
@@ -36,7 +36,7 @@ class HeightRecordDao {
       needLogin: true,
       needToken: true,
     ).setBody({
-      'babyId': babyController.babyId.value,
+      'babyId': babyController.get()!.id!,
       'recordTime': formatDate(recordTime),
       'height': height,
     }));
@@ -52,7 +52,7 @@ class HeightRecordDao {
           "/api/babyHeightRecordStandard/getBabyHeightRecordStandardCountryCode",
       needLogin: true,
       needToken: true,
-    ).add("babyId", babyController.babyId.value).add("countryCode", 'CN_ZH'));
+    ).add("babyId", babyController.get()!.id!).add("countryCode", 'CN_ZH'));
     if (null == data) {
       return null;
     }

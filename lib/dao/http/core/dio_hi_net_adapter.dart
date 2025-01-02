@@ -57,7 +57,7 @@ class DioHiNetAdapter extends HiNetAdapter {
           });
         case HttpMethod.PUT:
           return await getDioInstance()
-              .put(request.url(), options: options)
+              .put(request.url(), options: options, data: request.body)
               .then((result) {
             if (ServerConfig().isDebug) {
               if (kDebugMode) {

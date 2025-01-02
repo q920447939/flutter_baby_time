@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
-import '../../page/my/baby_setting/baby_setting_controller.dart';
+import 'baby/baby_setting_controller.dart';
 import 'family/family_logic.dart';
 import 'member/member_logic.dart';
 

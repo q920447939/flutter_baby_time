@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_baby_time/widget/base_stack/base_stack.dart';
@@ -11,6 +12,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import '../../dao/family/family_dao.dart';
+import '../../widget/image_pick/ImagePickerType.dart';
 
 class FamilyCreatePage extends StatefulWidget {
   const FamilyCreatePage({super.key});
@@ -21,6 +23,7 @@ class FamilyCreatePage extends StatefulWidget {
 
 class _FamilyCreatePageState extends State<FamilyCreatePage> {
   TextEditingController _textEditingController = TextEditingController();
+  String backgroundUrl = '';
 
   @override
   Widget build(BuildContext context) {
@@ -42,11 +45,20 @@ class _FamilyCreatePageState extends State<FamilyCreatePage> {
                   setState(() {});
                 },
               ),
-              SizedBox(
-                height: 20.h,
-                child: Container(
+              gapHeightLarge(),
+              GestureDetector(
+                onTap: () async {
+                  var list = await ImagePickerHelper.pickAndUploadImages(
+                      type: ImagePickerType.gallery);
+                  if (list.isNotEmpty) {
+                    setState(() {
+                      backgroundUrl = list.first;
+                    });
+                  }
+                },
+                child: Align(
                   alignment: Alignment.center,
-                  child: const TDDivider(),
+                  child: buildBackGround(),
                 ),
               ),
               Spacer(),
@@ -54,13 +66,20 @@ class _FamilyCreatePageState extends State<FamilyCreatePage> {
                 title: '确认',
                 allowClick: _textEditingController.value.text.isNotEmpty,
                 onPressed: () async {
+                  if (backgroundUrl.isEmpty) {
+                    await dialogFailure('家庭背景图不能为空');
+                    return;
+                  }
                   var res = await FamilyDao.create(
-                      {"familyName": _textEditingController.value.text});
+                    {
+                      "familyName": _textEditingController.value.text,
+                      "familyBackgroundUrl": backgroundUrl,
+                    },
+                  );
                   if (null != res && res > 0) {
-                    await dialogSuccess('创建家庭成功');
-                    if (mounted) {
+                    dialogSuccess('创建家庭成功', onDismiss: () {
                       context.go("/familyManager");
-                    }
+                    });
                   }
                 },
               ),
@@ -69,6 +88,38 @@ class _FamilyCreatePageState extends State<FamilyCreatePage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildBackGround() {
+    if (backgroundUrl.isEmpty) {
+      return Stack(
+        children: [
+          Container(
+            width: 350.w,
+            height: 150.h,
+            decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.2),
+            ),
+            child: Center(
+              child: TDText('家庭背景图'),
+            ),
+          ),
+          Positioned(
+            bottom: 5,
+            right: 10,
+            child: Icon(
+              TDIcons.photo,
+              size: 40,
+            ),
+          ),
+        ],
+      );
+    }
+    return Container(
+      width: 350.w,
+      height: 150.h,
+      child: CachedNetworkImage(imageUrl: backgroundUrl),
     );
   }
 }

@@ -21,7 +21,7 @@ import '../../router/not_bottom_navigator/no_shell_default_router.dart';
 import '../../utils/family_helper.dart';
 import '../baby_info/baby_info_create_page.dart';
 import '../home/view_model_controller.dart';
-import 'baby_setting/baby_setting_controller.dart';
+import '../../getx/controller/baby/baby_setting_controller.dart';
 import 'global_setting/global_setting_controller.dart';
 
 class MyPage extends StatefulWidget {
@@ -46,37 +46,29 @@ class _MyPageState extends State<MyPage> {
         scrollDirection: Axis.vertical,
         children: [
           gapHeightLarge(),
-          Align(
-            alignment: Alignment.center,
-            child: SizedBox(
-              width: 80.w,
-              height: 100.h,
-              child: TDAvatar(
-                avatarUrl: memberLogic.memberInfo.value!.avatar!,
-                size: TDAvatarSize.large,
-                type: TDAvatarType.normal,
-                shape: TDAvatarShape.circle,
-                //defaultUrl: 'assets/img/baby_avator.jpeg',
-                backgroundColor: Colors.transparent,
-              ),
+          SizedBox(
+            width: 560.w,
+            height: 150.h,
+            child: TDImage(
+              imgUrl: familyLogic.familyRespVo.value!.familyBackgroundUrl!,
             ),
           ),
           gapHeightNormal(),
           _buildPersonInfo(),
           gapHeightSmall(),
-          homeViewModel(context),
-          gapHeightSmall(),
+          /*homeViewModel(context),
+          gapHeightSmall(),*/
           _babySetting(),
           gapHeightSmall(),
-          _buildGlobalBackgroundImage(),
-          gapHeightSmall(),
+          /* _buildGlobalBackgroundImage(),
+          gapHeightSmall(),*/
           _buildTag(),
           gapHeightSmall(),
           _buildFamilySelect(),
           gapHeightSmall(),
-          _buildLogout(),
-          gapHeightSmall(),
           _buildAddBaby(),
+          gapHeightSmall(),
+          _buildLogout(),
         ],
       ),
     );

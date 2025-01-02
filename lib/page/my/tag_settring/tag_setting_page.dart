@@ -111,7 +111,7 @@ class _TagSettingPageState extends State<TagSettingPage> {
                         }
                         tagNameList.add(newTag);
                         var b = await UploadListDao.addTag({
-                          "babyId": babyController.babyId.value,
+                          "babyId": babyController.get()!.id!,
                           "tagName": newTag
                         });
 

@@ -37,7 +37,7 @@ class UploadListDao {
       path: "/api/babyUploadTag/getBabyUploadTagAll",
       needLogin: true,
       needToken: true,
-    ).add("babyId", babyController.babyId.value));
+    ).add("babyId", babyController.get()!.id!));
     if (null == data) {
       return null;
     }

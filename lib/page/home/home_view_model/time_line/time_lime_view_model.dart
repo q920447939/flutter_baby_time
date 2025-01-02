@@ -26,7 +26,7 @@ import '../../../../widget/easy_refresh/easy_refresh_wrapper.dart';
 import '../../../../widget/future/future_.dart';
 import '../../../../widget/gap/gap_height.dart';
 import '../../../../widget/gap/gap_width.dart';
-import '../../../my/baby_setting/baby_setting_controller.dart';
+import '../../../../getx/controller/baby/baby_setting_controller.dart';
 
 class TimeLimeViewModel extends StatefulWidget {
   double height;
@@ -180,7 +180,7 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel>
               baseline: 18,
               baselineType: TextBaseline.alphabetic,
               child: TDText(
-                '${calculateAge(Jiffy.parse(_babyController.birthday.value, pattern: 'yyyy-MM-dd'))}',
+                '${calculateAge(Jiffy.parse(formatDate(babyController.get()!.birthday!), pattern: 'yyyy-MM-dd'))}',
                 style: TextStyle(
                   fontSize: 12.sp,
                   color: Colors.grey.withOpacity(0.9),
@@ -349,7 +349,7 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel>
                     });
                 if (result != null && result != "") {
                   var b = await UploadListDao.discuss({
-                    "babyId": _babyController.babyId.value,
+                    "babyId": babyController.get()!.id!,
                     "uploadId": uploadInfo.id,
                     "content": result as String
                   });
@@ -360,7 +360,7 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel>
                       var curMemberId = memberLogic.memberInfo.value!.id!;
                       discussList.add(UploadDiscussRespVo.fromJson({
                         "id": -1,
-                        "babyId": _babyController.babyId.value,
+                        "babyId": babyController.get()!.id!,
                         "discussMemberId": curMemberId,
                         "uploadId": curMemberId,
                         "content": result,
@@ -680,14 +680,9 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel>
                   //已选择的标签
                   gapHeightNormal(),
                   TDDivider(),
-                  TDText(
-                    '已选择的标签',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  gapHeightSmall(),
-                  buildSelectTag(key),
+                  if (null != uploadListTagMap[key] &&
+                      uploadListTagMap[key]!.isNotEmpty)
+                    _buildSelectedTags(key),
                 ],
               );
             });
@@ -761,6 +756,21 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel>
           size: TDTagSize.large,
         );
       }).toList(),
+    );
+  }
+
+  _buildSelectedTags(String key) {
+    return Column(
+      children: [
+        TDText(
+          '已选择的标签',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        gapHeightSmall(),
+        buildSelectTag(key),
+      ],
     );
   }
 }

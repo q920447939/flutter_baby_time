@@ -7,11 +7,13 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 import '../../dao/height_record/height_dao.dart';
+import '../../getx/controller/manager_gex_controller.dart';
 import '../../model/height_record/BabyHeightRecordRespVO.dart';
 import '../../model/height_record/BabyHeightRecordStandardRelationRespVO.dart';
 import '../../utils/datime_helper.dart';
 import '../../widget/chart/dual_line_chart.dart';
-import '../my/baby_setting/baby_setting_controller.dart';
+import '../../getx/controller/baby/baby_setting_controller.dart';
+import '../my/baby_setting/sex_enums.dart';
 
 class HeightRecordBodyPage1 extends StatefulWidget {
   const HeightRecordBodyPage1({super.key});
@@ -79,7 +81,8 @@ class _HeightRecordBodyPage1State extends State<HeightRecordBodyPage1> {
       child: DualLineChart(
         data: chartData,
         primaryName: '身高',
-        secondaryName: '标准身高(${_babyController.sex.value.label})',
+        secondaryName:
+            '标准身高(${SexEnums.fromString(babyController.get()!.sex!.toString()).label})',
         yAxisTitle: '身高(cm)',
         yAxisTitleStyle: TextStyle(
           fontSize: 14,

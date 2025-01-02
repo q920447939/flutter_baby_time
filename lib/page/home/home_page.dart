@@ -16,12 +16,13 @@ import '../../model/baby/BabyInfoRespVO.dart';
 import '../../model/uploadList/UploadListRespVO.dart';
 import '../../router/has_bottom_navigator/shell_default_router.dart';
 import '../../utils/calculate_age_helper.dart';
+import '../../utils/datime_helper.dart';
 import '../../widget/container/container_wrapper_card.dart';
 import '../../widget/future/future_.dart';
 import '../../widget/gap/gap_height.dart';
 import '../../widget/gap/gap_width.dart';
 import '../heightWeight/height_weight_manage_page.dart';
-import '../my/baby_setting/baby_setting_controller.dart';
+import '../../getx/controller/baby/baby_setting_controller.dart';
 import 'home_view_model/fall/fall_load_view_model.dart';
 
 class HomePage extends StatefulWidget {
@@ -32,7 +33,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  ViewModeController _viewModeController = Get.find();
   BabySettingController _babySettingController = Get.find();
   int currentIndex = 0;
   late Widget body;
@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Obx(
                           () => TDText(
-                            _babySettingController.babyName.value,
+                            babyController.get()!.name,
                             style: TextStyle(
                               fontSize: 18.sp,
                             ),
@@ -159,10 +159,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   TDText _buildTdText() {
-    if (_babySettingController.birthday.value == '未设置')
-      return TDText('未设置', style: TextStyle(fontSize: 12.sp));
     return TDText(
-      '${calculateAge(Jiffy.parse(_babySettingController.birthday.value, pattern: 'yyyy-MM-dd'))}(${Jiffy.parse(_babySettingController.birthday.value, pattern: 'yyyy-MM-dd').format(pattern: 'yyyy年M月d日')})',
+      '${calculateAge(Jiffy.parse(formatDate(babyController.get()!.birthday!), pattern: 'yyyy-MM-dd'))}(${Jiffy.parse(formatDate(babyController.get()!.birthday!), pattern: 'yyyy-MM-dd').format(pattern: 'yyyy年M月d日')})',
       style: TextStyle(fontSize: 12.sp),
     );
   }

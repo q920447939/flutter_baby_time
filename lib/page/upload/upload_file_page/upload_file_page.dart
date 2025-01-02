@@ -12,6 +12,7 @@ import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import '../../../dao/image/image_dao.dart';
 import '../../../dao/upload_list/upload_list_dao.dart';
+import '../../../getx/controller/manager_gex_controller.dart';
 import '../../../utils/datime_helper.dart';
 import '../../../widget/base_stack/base_stack.dart';
 import '../../../widget/container/container_wrapper_card.dart';
@@ -23,7 +24,7 @@ import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 import '../../../widget/pick/pick_image_by_wechat/image_bean.dart';
 import '../../../widget/pick/pick_image_by_wechat/picture_utils.dart';
-import '../../my/baby_setting/baby_setting_controller.dart';
+import '../../../getx/controller/baby/baby_setting_controller.dart';
 
 class UploadFilePage extends StatefulWidget {
   const UploadFilePage({Key? key}) : super(key: key);
@@ -232,12 +233,12 @@ class _UploadFilePageState extends State<UploadFilePage> {
               //SmartDialog.showToast('获取到图片,共${_imageFiles.length}张');
               var imageUrls = await ImageDao.uploadImageByFiles(_imageFiles);
               var b = await UploadListDao.uploadList({
-                "babyId": _babyController.babyId.value,
+                "babyId": babyController.get()!.id!,
                 "uploadType": 1,
                 "uploadTime": selected_6,
                 "remark": remarkController.text,
                 "uploadImageAddReqVO": {
-                  "babyId": _babyController.babyId.value,
+                  "babyId": babyController.get()!.id!,
                   "imageUrls": imageUrls
                 }
               });

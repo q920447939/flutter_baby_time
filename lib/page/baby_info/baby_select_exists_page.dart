@@ -9,37 +9,40 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
+import '../../dao/baby/baby_dao.dart';
 import '../../dao/family/family_dao.dart';
 import '../../getx/controller/manager_gex_controller.dart';
 import '../../model/baby/BabyInfoRespVO.dart';
+import '../../utils/baby_helper.dart';
+import '../../utils/datime_helper.dart';
 import '../../utils/family_helper.dart';
 import '../../widget/button/default_button.dart';
 import '../../widget/container/container_wrapper_card.dart';
 import '../../widget/future/future_.dart';
 import '../../widget/gap/gap_height.dart';
 
-class FamilySelectExistsPage extends StatefulWidget {
-  FamilySelectExistsPage({super.key});
+class BabySelectExistsPage extends StatefulWidget {
+  BabySelectExistsPage({super.key});
 
   @override
-  State<FamilySelectExistsPage> createState() => _FamilySelectExistsPageState();
+  State<BabySelectExistsPage> createState() => _BabySelectExistsPageState();
 }
 
-class _FamilySelectExistsPageState extends State<FamilySelectExistsPage> {
-  Future<List<FamilyRespVo>?> fetch() async {
-    return await FamilyDao.get();
+class _BabySelectExistsPageState extends State<BabySelectExistsPage> {
+  Future<List<BabyInfoRespVo>?> fetch() async {
+    return await BabyDao.fetchAllBaby();
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureLoading(
       future: fetch(),
-      builder: (c, List<FamilyRespVo>? data) {
+      builder: (c, List<BabyInfoRespVo>? data) {
         if ((data ?? []).isEmpty) {
           return NoData();
         }
         return GreyBaseScaffoldStack(
-          title: '选择家庭',
+          title: '选择宝宝',
           showBackIcon: false,
           child: ContainerWrapperCard(
               padding: EdgeInsets.all(
@@ -49,20 +52,20 @@ class _FamilySelectExistsPageState extends State<FamilySelectExistsPage> {
               child: Wrap(
                 spacing: 20,
                 runSpacing: 20,
-                children: _buildExistsFamily(data!),
+                children: _buildExistsBaby(data!),
               )),
         );
       },
     );
   }
 
-  List<Widget> _buildExistsFamily(List<FamilyRespVo> data) {
+  List<Widget> _buildExistsBaby(List<BabyInfoRespVo> data) {
     return data.map((e) {
-      return buildFamilyItem(e);
+      return buildItem(e);
     }).toList();
   }
 
-  ContainerWrapperCard buildFamilyItem(FamilyRespVo e) {
+  ContainerWrapperCard buildItem(BabyInfoRespVo e) {
     return ContainerWrapperCard(
       padding: EdgeInsets.all(10.r),
       height: 172.h,
@@ -73,7 +76,7 @@ class _FamilySelectExistsPageState extends State<FamilySelectExistsPage> {
           Radius.circular(8.r),
         ),
         image: DecorationImage(
-          image: CachedNetworkImageProvider(e.familyBackgroundUrl!),
+          image: CachedNetworkImageProvider(e.avatarUrl!),
           fit: BoxFit.cover,
           colorFilter: ColorFilter.mode(
             Colors.white.withOpacity(0.2),
@@ -86,7 +89,7 @@ class _FamilySelectExistsPageState extends State<FamilySelectExistsPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TDText(
-            e.familyName!,
+            e.name,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 24.sp,
@@ -94,15 +97,15 @@ class _FamilySelectExistsPageState extends State<FamilySelectExistsPage> {
           ),
           gapHeightSmall(),
           TDText(
-            '您的角色:${e.roleName!}',
+            '创建时间:${formatDate(e.createTime!)}',
           ),
           gapHeightNormal(),
           DefaultButton(
-            title: '进入家庭',
+            title: '选择宝宝',
             onPressed: () async {
               var res = await SmartDialog.show(builder: (_) {
                 return TDAlertDialog(
-                  content: '确定选择[${e.familyName!}]家庭吗?',
+                  content: '确定选择[${e.name!}]宝宝吗?',
                   leftBtnAction: () {
                     SmartDialog.dismiss(result: false);
                   },
@@ -112,7 +115,7 @@ class _FamilySelectExistsPageState extends State<FamilySelectExistsPage> {
                 );
               });
               if (res) {
-                await bindFamily(e);
+                await bindBaby(e);
                 if (mounted) {
                   context.go("/");
                 }

@@ -1,12 +1,10 @@
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:jiffy/jiffy.dart';
 
 import '../../getx/controller/manager_gex_controller.dart';
 import '../../model/baby/BabyInfoRespVO.dart';
 import '../../model/uploadList/UploadListRespVO.dart';
-import '../../page/my/baby_setting/baby_setting_controller.dart';
 import '../../page/my/baby_setting/sex_enums.dart';
+import '../../utils/response/response_utils.dart';
 import '../http/core/hi_net.dart';
 import '../http/request/base_request.dart';
 
@@ -17,18 +15,12 @@ class BabyDao {
       path: "/api/baby/info/get",
       needLogin: true,
       needToken: true,
-    ).add("id", babyController.babyId.value));
+    ).add("id", babyController.get()!.id!));
     if (null == data) {
       return null;
     }
     var babyInfoRespVo = BabyInfoRespVo.fromJson(data);
-    babyController.babyNameAvatar.value = babyInfoRespVo.avatarUrl!;
-    babyController.babyName.value = babyInfoRespVo.name!;
-    babyController.birthday.value =
-        Jiffy.parseFromDateTime(babyInfoRespVo.birthday!)
-            .format(pattern: 'yyyy-MM-dd');
-    babyController.sex.value =
-        babyInfoRespVo.sex! == 1 ? SexEnums.man : SexEnums.female;
+    babyController.updateRx(babyInfoRespVo);
     return babyInfoRespVo;
   }
 
@@ -42,7 +34,7 @@ class BabyDao {
     )
         .add("pageNo", pageNo)
         .add("pageSize", pageSize)
-        .add("babyId", babyController.babyId.value);
+        .add("babyId", babyController.get()!.id!);
     if (queryCollect) {
       baseRequest.add("isCollect", isCollect!);
     }
@@ -55,5 +47,35 @@ class BabyDao {
     List<UploadListRespVo> resultList =
         list.map((json) => UploadListRespVo.fromJson(json)).toList();
     return resultList;
+  }
+
+  static Future<int?> create(params) async {
+    var data = await HiNet.getInstance().fire(AnonymousRequest(
+      method: HttpMethod.POST,
+      path: "/api/baby/info/create",
+      needLogin: true,
+      needToken: true,
+    ).setBody(params));
+    return data;
+  }
+
+  static Future<bool?> updateInfo(params) async {
+    var data = await HiNet.getInstance().fire(AnonymousRequest(
+      method: HttpMethod.PUT,
+      path: "/api/baby/info/update",
+      needLogin: true,
+      needToken: true,
+    ).setBody(params));
+    return data;
+  }
+
+  static Future<List<BabyInfoRespVo>?> fetchAllBaby() async {
+    var data = await HiNet.getInstance().fire(AnonymousRequest(
+      method: HttpMethod.GET,
+      path: "/api/baby/info/fetchAllBaby",
+      needLogin: true,
+      needToken: true,
+    ).add("familyId", familyLogic.get()!.id!));
+    return toObjList(data, BabyInfoRespVo.fromJson);
   }
 }

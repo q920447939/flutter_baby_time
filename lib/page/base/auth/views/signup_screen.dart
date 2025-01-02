@@ -5,6 +5,9 @@ import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import '../../../../constants.dart';
 import '../../../../dao/base/auth/auth_dao.dart';
+import '../../../../router/not_bottom_navigator/no_shell_default_router.dart';
+import '../../../../utils/PhoneValidator.dart';
+import '../../../../widget/smart_dialog/smart_dialog_helper.dart';
 import 'components/sign_up_form.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -15,7 +18,7 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
   @override
@@ -49,14 +52,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       TDInput(
                         leftIcon: const Icon(TDIcons.mobile),
                         leftLabel: '手机号',
-                        controller: _usernameController,
+                        controller: _phoneController,
                         backgroundColor: Colors.white,
                         hintText: '请输入手机号',
+                        maxLength: 30,
                         onChanged: (text) {
                           setState(() {});
                         },
                         onClearTap: () {
-                          setState(() {});
+                          setState(() {
+                            _phoneController.clear();
+                          });
                         },
                       ),
                       TDInput(
@@ -65,12 +71,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         controller: _passwordController,
                         backgroundColor: Colors.white,
                         obscureText: true,
-                        hintText: '请输入密码',
+                        hintText: '请输入密码(不少于6位)',
+                        maxLength: 30,
                         onChanged: (text) {
                           setState(() {});
                         },
                         onClearTap: () {
-                          setState(() {});
+                          setState(() {
+                            _passwordController.clear();
+                          });
                         },
                       ),
                       const SizedBox(height: defaultPadding),
@@ -113,25 +122,40 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Center(
                     child: TDButton(
                       text: '注册',
-                      disabled: _usernameController.text.isEmpty ||
+                      disabled: _phoneController.text.isEmpty ||
                           _passwordController.text.isEmpty,
                       size: TDButtonSize.medium,
                       type: TDButtonType.fill,
                       shape: TDButtonShape.rectangle,
                       theme: TDButtonTheme.primary,
                       onTap: () async {
-/*                        var b = await AuthDao.login({
-                          "userName": userName,
-                          "password": password,
+                        if (_phoneController.text.length != 11) {
+                          await dialogFailure('请输入11位的手机号!');
+                          return;
+                        }
+                        if (_passwordController.text.length < 6) {
+                          await dialogFailure('密码长度不足6位!');
+                          return;
+                        }
+                        bool isValid = PhoneValidator.isChinaMainlandPhone(
+                            _phoneController.text);
+                        if (!isValid) {
+                          await dialogFailure('请输入正确的手机号!');
+                          return;
+                        }
+
+                        var b = await AuthDao.register({
+                          "userName": _phoneController.text,
+                          "password": _passwordController.text,
                           "registerChannel": 3,
                           "inviteMemberSimpleId": 0,
-                          "verificationCode": "1111"
+                          "verificationCode": "1234"
                         });
                         if (b) {
-                          await dialogSuccess('登录成功', onDismiss: () {
-                            context.go("/");
+                          await dialogSuccess('注册成功', onDismiss: () {
+                            SignInScreenRouter().pushReplacement(context);
                           });
-                        }*/
+                        }
                       },
                     ),
                   ),

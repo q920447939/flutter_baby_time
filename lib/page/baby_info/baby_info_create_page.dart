@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_baby_time/config/material_app_config.dart';
@@ -5,15 +6,18 @@ import 'package:flutter_baby_time/widget/base_stack/base_stack.dart';
 import 'package:flutter_baby_time/widget/button/default_button.dart';
 import 'package:flutter_baby_time/widget/container/container_wrapper_card.dart';
 import 'package:flutter_baby_time/widget/gap/gap_height.dart';
+import 'package:flutter_baby_time/widget/smart_dialog/smart_dialog_helper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:go_router/go_router.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
+import '../../dao/baby/baby_dao.dart';
 import '../../getx/controller/manager_gex_controller.dart';
 import '../../utils/datime_helper.dart';
 import '../../widget/gap/gap_width.dart';
+import '../../widget/image_pick/ImagePickerType.dart';
 import '../my/baby_setting/sex_enums.dart';
 
 class BabyInfoCreatePage extends StatefulWidget {
@@ -30,6 +34,17 @@ class _BabyInfoCreatePageState extends State<BabyInfoCreatePage> {
   DateTime birthDate = DateTime.now();
 
   var jiffy = Jiffy.now();
+
+  String avatar = '';
+
+  String selected_6 = '';
+
+  @override
+  void initState() {
+    selected_6 = formatDate(birthDate);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GreyBaseScaffoldStack(
@@ -42,32 +57,18 @@ class _BabyInfoCreatePageState extends State<BabyInfoCreatePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             GestureDetector(
-              onTap: () {},
+              onTap: () async {
+                var list = await ImagePickerHelper.pickAndUploadImages(
+                    type: ImagePickerType.gallery);
+                if (list.isNotEmpty) {
+                  setState(() {
+                    avatar = list.first;
+                  });
+                }
+              },
               child: Align(
                 alignment: Alignment.center,
-                child: Stack(
-                  children: [
-                    Container(
-                      width: 120.w,
-                      height: 120.h,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(0.2),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Center(
-                        child: TDText('头像'),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 5,
-                      right: 10,
-                      child: Icon(
-                        TDIcons.photo,
-                        size: 40,
-                      ),
-                    ),
-                  ],
-                ),
+                child: buildAvatar(),
               ),
             ),
             gapHeightLarge(),
@@ -127,10 +128,12 @@ class _BabyInfoCreatePageState extends State<BabyInfoCreatePage> {
                   TDPicker.showDatePicker(context, title: '选择出生日期',
                       onConfirm: (selected) {
                     if (selected.isNotEmpty) {
-                      /*selected_6 =
-                          '${selected['year'].toString().padLeft(4, '0')}-'
-                          '${selected['month'].toString().padLeft(2, '0')}-'
-                          '${selected['day'].toString().padLeft(2, '0')} ';*/
+                      setState(() {
+                        selected_6 =
+                            '${selected['year'].toString().padLeft(4, '0')}-'
+                            '${selected['month'].toString().padLeft(2, '0')}-'
+                            '${selected['day'].toString().padLeft(2, '0')} ';
+                      });
                     }
                     Navigator.of(context).pop();
                   }, useWeekDay: true, dateStart: [
@@ -150,7 +153,7 @@ class _BabyInfoCreatePageState extends State<BabyInfoCreatePage> {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      TDText(formatDate(birthDate)),
+                      TDText(selected_6),
                       Icon(Icons.arrow_right_outlined),
                     ]),
               ),
@@ -163,9 +166,66 @@ class _BabyInfoCreatePageState extends State<BabyInfoCreatePage> {
               ),
             ),
             Spacer(),
-            DefaultButton(title: '保存', onPressed: () {}),
+            DefaultButton(
+                title: '保存',
+                onPressed: () async {
+                  if (avatar.isEmpty) {
+                    await dialogFailure('头像不能为空');
+                    return;
+                  }
+                  var res = await BabyDao.create({
+                    "familyId": familyLogic.familyRespVo.value!.id,
+                    "name": _nickNameController.text,
+                    "avatarUrl": avatar,
+                    "sex": sex.value,
+                    "birthday": selected_6
+                  });
+                  if (null != res && res > 0) {
+                    await dialogSuccess('新增宝宝信息成功', onDismiss: () {
+                      context.go("/");
+                    });
+                  }
+                }),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget buildAvatar() {
+    if (avatar.isEmpty) {
+      return Stack(
+        children: [
+          Container(
+            width: 120.w,
+            height: 120.h,
+            decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.2),
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: TDText('头像'),
+            ),
+          ),
+          Positioned(
+            bottom: 5,
+            right: 10,
+            child: Icon(
+              TDIcons.photo,
+              size: 40,
+            ),
+          ),
+        ],
+      );
+    }
+    return Container(
+      width: 120.w,
+      height: 120.h,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+      ),
+      child: CircleAvatar(
+        child: CachedNetworkImage(imageUrl: avatar),
       ),
     );
   }
@@ -201,14 +261,18 @@ class _BabyInfoCreatePageState extends State<BabyInfoCreatePage> {
             ),
           );
         });
+    if (null != result) {
+      setState(() {
+        sex = SexEnums.fromString(result);
+      });
+    }
   }
 
   Widget _radioStatus(BuildContext context) {
     return TDRadioGroup(
       contentDirection: TDContentDirection.right,
-      selectId: babyController.sex.value.value,
+      selectId: SexEnums.female.value,
       onRadioGroupChange: (selectedId) {
-        babyController.changeSex(selectedId ?? SexEnums.female.value);
         SmartDialog.dismiss(
             tag: "_changeRadio", force: true, result: selectedId);
       },
