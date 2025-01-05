@@ -16,6 +16,7 @@ import 'package:tdesign_flutter/tdesign_flutter.dart';
 import '../../dao/baby/baby_dao.dart';
 import '../../getx/controller/manager_gex_controller.dart';
 import '../../utils/datime_helper.dart';
+import '../../utils/premission/premission_helper.dart';
 import '../../widget/gap/gap_width.dart';
 import '../../widget/image_pick/ImagePickerType.dart';
 import '../my/baby_setting/sex_enums.dart';
@@ -43,6 +44,10 @@ class _BabyInfoCreatePageState extends State<BabyInfoCreatePage> {
   void initState() {
     selected_6 = formatDate(birthDate);
     super.initState();
+    // 在初始化时检查权限
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      requestPermission(context);
+    });
   }
 
   @override

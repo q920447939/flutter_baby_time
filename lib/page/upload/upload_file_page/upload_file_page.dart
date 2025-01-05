@@ -14,6 +14,7 @@ import '../../../dao/image/image_dao.dart';
 import '../../../dao/upload_list/upload_list_dao.dart';
 import '../../../getx/controller/manager_gex_controller.dart';
 import '../../../utils/datime_helper.dart';
+import '../../../utils/premission/premission_helper.dart';
 import '../../../widget/base_stack/base_stack.dart';
 import '../../../widget/container/container_wrapper_card.dart';
 
@@ -48,6 +49,10 @@ class _UploadFilePageState extends State<UploadFilePage> {
   @override
   void initState() {
     super.initState();
+    // 在初始化时检查权限
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      requestPermission(context);
+    });
   }
 
   _changeDisable() {
