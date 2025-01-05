@@ -128,7 +128,7 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel>
         return uploadInfo.uploadDiscussRespVo;
       });
       _likeMapColor.putIfAbsent(key, () {
-        return Colors.amberAccent;
+        return null;
       });
       if (uploadInfo.babyUploadTagRespVos.isNotEmpty) {
         uploadListTag = uploadInfo.babyUploadTagRespVos;
@@ -209,25 +209,31 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel>
                   imgUrl: uploadInfo.uploadImageRespVo[index].imageUrl!,
                 );
               } else {
-                widget = Stack(
-                  fit: StackFit.expand,
-                  alignment: Alignment.center,
-                  children: [
-                    TDImage(
-                      imgUrl: uploadInfo.uploadImageRespVo[index].imageUrl!,
-                    ),
-                    Center(
-                      child: TDText(
-                        '+${len - 9}',
-                        style: TextStyle(
-                          fontSize: 25.sp,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                if (len - 9 == 0) {
+                  widget = TDImage(
+                    imgUrl: uploadInfo.uploadImageRespVo[index].imageUrl!,
+                  );
+                } else {
+                  widget = Stack(
+                    fit: StackFit.expand,
+                    alignment: Alignment.center,
+                    children: [
+                      TDImage(
+                        imgUrl: uploadInfo.uploadImageRespVo[index].imageUrl!,
                       ),
-                    )
-                  ],
-                );
+                      Center(
+                        child: TDText(
+                          '+${len - 9}',
+                          style: TextStyle(
+                            fontSize: 25.sp,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )
+                    ],
+                  );
+                }
               }
               var imageUrls =
                   uploadInfo.uploadImageRespVo.map((e) => e.imageUrl!).toList();

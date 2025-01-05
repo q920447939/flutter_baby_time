@@ -123,8 +123,13 @@ class _MyAppState extends State<MyApp> {
     TDTheme.needMultiTheme();
     // 适配3.16的字体居中前,先禁用字体居中功能
     // kTextForceVerticalCenterEnable = false;
-    var delegate = IntlResourceDelegate(context);
+    // var delegate = IntlResourceDelegate(context);
     bool isFirstUse = _isFirstUse();
-    return buildMaterialApp(isFirstUse, _themeData, context, locale, delegate);
+    return buildMaterialApp(
+      isFirstUse,
+      _themeData,
+      context,
+      locale, /*delegate*/
+    );
   }
 }

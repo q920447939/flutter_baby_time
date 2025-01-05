@@ -31,7 +31,7 @@ class _SignUpFormState extends State<SignUpForm> {
           },
         ),
         TDInput(
-          leftIcon: const Icon(TDIcons.photo),
+          leftIcon: const Icon(TDIcons.logo_adobe_photoshop_filled),
           leftLabel: '手机号',
           //controller: controller[10],
           backgroundColor: Colors.white,

@@ -11,7 +11,7 @@ import '../intl/intl_resource_delegate.dart';
 import 'go_router_config.dart';
 
 Widget buildMaterialApp(bool isFirstUse, TDThemeData themeData,
-    BuildContext context, Locale? locale, IntlResourceDelegate delegate) {
+    BuildContext context, Locale? locale /*, IntlResourceDelegate delegate*/) {
   // here
   final initSmartDialog = FlutterSmartDialog.init();
   //填入设计稿中设备的屏幕尺寸,单位dp
@@ -19,8 +19,8 @@ Widget buildMaterialApp(bool isFirstUse, TDThemeData themeData,
     designSize: const Size(412, 892),
     builder: (context, child) {
       // 设置文案代理,国际化需要在MaterialApp初始化完成之后才生效,而且需要每次更新context
-      TDTheme.setResourceBuilder((context) => delegate..updateContext(context),
-          needAlwaysBuild: true);
+      /* TDTheme.setResourceBuilder((context) => delegate..updateContext(context),
+          needAlwaysBuild: true);*/
       return MediaQuery(
         data:
             MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(1.0)),

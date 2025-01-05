@@ -151,7 +151,7 @@ dependencies:
     git:
       url: https://github.com/hbolin/flutter_upgrade_dialog
   easy_url_launcher: ^0.0.7
-  tdesign_flutter: ^0.1.6
+  tdesign_flutter: ^0.1.8
   #轮播图组件
   flutter_swiper_null_safety: ^1.0.2
   get: ^4.6.6

@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
@@ -139,3 +140,4 @@ class IntlResourceDelegate extends TDResourceDelegate {
   @override
   String get cascadeLabel =>  AppLocalizations.of(context)!.cascadeLabel;
 }
+*/

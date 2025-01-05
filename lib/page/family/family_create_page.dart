@@ -109,7 +109,7 @@ class _FamilyCreatePageState extends State<FamilyCreatePage> {
             bottom: 5,
             right: 10,
             child: Icon(
-              TDIcons.photo,
+              TDIcons.logo_adobe_photoshop_filled,
               size: 40,
             ),
           ),

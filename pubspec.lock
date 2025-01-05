@@ -957,10 +957,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_slidable
-      sha256: "673403d2eeef1f9e8483bd6d8d92aae73b1d8bd71f382bc3930f699c731bc27c"
+      sha256: a857de7ea701f276fd6a6c4c67ae885b60729a3449e42766bb0e655171042801
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "3.1.0"
+    version: "3.1.2"
   flutter_smart_dialog:
     dependency: "direct main"
     description:
@@ -1320,10 +1320,10 @@ packages:
     dependency: "direct main"
     description:
       name: image_picker
-      sha256: "021834d9c0c3de46bf0fe40341fa07168407f694d9b2bb18d532dc1261867f7a"
+      sha256: "1f498d086203360cca099d20ffea2963f48c39ce91bdd8a3b6d4a045786b02c8"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.1.2"
+    version: "1.0.8"
   image_picker_android:
     dependency: transitive
     description:
@@ -2269,10 +2269,10 @@ packages:
     dependency: "direct main"
     description:
       name: tdesign_flutter
-      sha256: b960244357f223e8e9136ab0b9aa9a0994f62379e62c8d0e75448eb805f590f6
+      sha256: "1c14d57d68a73bb23df2f7443cbbe8513b999f42241399b9aa617084de9d859c"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.1.7"
+    version: "0.1.8"
   term_glyph:
     dependency: transitive
     description:

@@ -36,40 +36,18 @@ class UploadFilePage extends StatefulWidget {
 class _UploadFilePageState extends State<UploadFilePage> {
   String selected_6 = "请选择上传时间";
 
-  List<ImageBean> _imageList = [];
+  List<TDUploadFile> files2 = [];
 
   List<File> _imageFiles = [];
   int moveAction = MotionEvent.actionUp;
   bool _canDelete = false;
   bool _disable = true;
 
-  BabySettingController _babyController = Get.find();
-
   TextEditingController remarkController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-  }
-
-  selectPictures() async {
-    final List<AssetEntity>? entitys = await AssetPicker.pickAssets(
-      context,
-      pickerConfig: AssetPickerConfig(maxAssets: 9 - _imageFiles.length),
-    );
-    if (entitys == null) return;
-    //遍历
-    for (var entity in entitys) {
-      File? imgFile = await entity.file;
-
-      if (imgFile != null) {
-        setState(() {
-          _imageFiles.add(imgFile);
-          _imageList = PictureUtils.getImageBean(_imageFiles);
-        });
-      }
-      _changeDisable();
-    }
   }
 
   _changeDisable() {
@@ -81,11 +59,6 @@ class _UploadFilePageState extends State<UploadFilePage> {
         _disable = false;
       }
     });
-  }
-
-  _loadAssets(BuildContext context) {
-    // pick Images.
-    PictureUtils.showSnackBar(context, "pick Images.");
   }
 
   @override
@@ -153,72 +126,14 @@ class _UploadFilePageState extends State<UploadFilePage> {
           ContainerWrapperCard(
             height: 400.h,
             child: SingleChildScrollView(
-              child: DragSortView(
-                _imageList,
-                space: 5,
-                margin: EdgeInsets.all(10.w),
-                itemBuilder: (BuildContext context, int index) {
-                  ImageBean bean = _imageList[index];
-                  // It is recommended to use a thumbnail picture
-                  return PictureUtils.getWidget(bean.thumbPath!);
-                },
-                initBuilder: (BuildContext context) {
-                  return InkWell(
-                    onTap: () {
-                      selectPictures();
-                    },
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        color: Color(0xFFF0F0F0),
-                        child: Center(
-                          child: Icon(
-                            Icons.add,
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-                onDragListener: (MotionEvent event, double itemWidth) {
-                  switch (event.action) {
-                    case MotionEvent.actionDown:
-                      moveAction = event.action!;
-                      setState(() {});
-                      break;
-                    case MotionEvent.actionMove:
-                      double x = event.globalX! + itemWidth;
-                      double y = event.globalY! + itemWidth;
-                      double maxX = MediaQuery.of(context).size.width - 1 * 100;
-                      double maxY =
-                          MediaQuery.of(context).size.height - 1 * 100;
-                      //print('Sky24n maxX: $maxX, maxY: $maxY, x: $x, y: $y');
-                      if (_canDelete && (x < maxX || y < maxY)) {
-                        setState(() {
-                          _canDelete = false;
-                        });
-                      } else if (!_canDelete && x > maxX && y > maxY) {
-                        setState(() {
-                          _canDelete = true;
-                        });
-                      }
-                      break;
-                    case MotionEvent.actionUp:
-                      moveAction = event.action!;
-                      if (_canDelete) {
-                        setState(() {
-                          _canDelete = false;
-                        });
-                        return true;
-                      } else {
-                        setState(() {});
-                      }
-                      break;
-                  }
-                  return false;
-                },
-              ),
-            ),
+                child: TDUpload(
+              files: files2,
+              multiple: true,
+              max: 3,
+              onError: print,
+              onValidate: print,
+              onChange: ((files, type) => onValueChanged(files2, files, type)),
+            )),
           ),
           //Spacer(),
           TDButton(
@@ -231,7 +146,9 @@ class _UploadFilePageState extends State<UploadFilePage> {
             disabled: _disable,
             onTap: () async {
               //SmartDialog.showToast('获取到图片,共${_imageFiles.length}张');
+              dialogLoading();
               var imageUrls = await ImageDao.uploadImageByFiles(_imageFiles);
+              SmartDialog.dismiss();
               var b = await UploadListDao.uploadList({
                 "babyId": babyController.get()!.id!,
                 "uploadType": 1,
@@ -248,8 +165,8 @@ class _UploadFilePageState extends State<UploadFilePage> {
                   selected_6 = "请选择上传时间";
                   remarkController.text = '';
                   _imageFiles = [];
-                  _imageList = [];
                   _disable = true;
+                  files2 = [];
                 });
               } else {
                 await dialogWarning('上传失败');
@@ -260,6 +177,26 @@ class _UploadFilePageState extends State<UploadFilePage> {
         ],
       )),
     );
+  }
+
+  void onValueChanged(List<TDUploadFile> fileList, List<TDUploadFile> value,
+      TDUploadType event) {
+    switch (event) {
+      case TDUploadType.add:
+        setState(() {
+          fileList.addAll(value);
+          _imageFiles = fileList.map((e) => e.file!).toList();
+          _changeDisable();
+        });
+        break;
+      case TDUploadType.remove:
+        setState(() {
+          fileList.removeWhere((element) => element.key == value[0].key);
+          _imageFiles = fileList.map((e) => e.file!).toList();
+          _changeDisable();
+        });
+        break;
+    }
   }
 
   void _selectUploadTime() {

@@ -32,8 +32,9 @@ class ImagePickerHelper {
         }
       } else {
         // 相册模式，直接限制最大选择数量
-        images = await _picker.pickMultiImage(limit: maxImages // 在选择时就限制数量
-            );
+        //TODO
+        /*images = await _picker.pickMultiImage(limit: maxImages // 在选择时就限制数量
+            );*/
       }
     } else {
       // 弹出选择方式的对话框
@@ -45,7 +46,8 @@ class ImagePickerHelper {
             await _picker.pickImage(source: ImageSource.camera);
         images = image != null ? [image] : null;
       } else {
-        images = await _picker.pickMultiImage(limit: maxImages);
+        //TODO
+        //images = await _picker.pickMultiImage(limit: maxImages);
       }
     }
 
