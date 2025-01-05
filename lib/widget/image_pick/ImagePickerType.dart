@@ -115,8 +115,6 @@ class ImagePickerHelper {
       final bytes = await image.length();
       return bytes / (1024 * 1024) <= maxSize;
     } else {
-      await dialogSuccess('获取到的文件路径:${image.path}');
-
       // 移动端环境
       File file = File(image.path);
       int sizeInBytes = await file.length();

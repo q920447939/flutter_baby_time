@@ -70,6 +70,7 @@ class UploadFileRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
+    bottomBarIndexLogic.setCurrIndex(1);
     return UploadFilePage();
   }
 }

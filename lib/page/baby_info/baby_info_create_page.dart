@@ -223,14 +223,12 @@ class _BabyInfoCreatePageState extends State<BabyInfoCreatePage> {
         ],
       );
     }
-    return Container(
-      width: 120.w,
-      height: 120.h,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-      ),
+    return SizedBox(
+      height: 150.h,
+      width: 150.w,
       child: CircleAvatar(
-        child: CachedNetworkImage(imageUrl: avatar),
+        backgroundImage: CachedNetworkImageProvider(avatar),
+        radius: 75.w,
       ),
     );
   }

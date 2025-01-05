@@ -134,7 +134,7 @@ class _UploadFilePageState extends State<UploadFilePage> {
               child: TDUpload(
                 files: files2,
                 multiple: true,
-                max: 3,
+                max: 999,
                 onError: print,
                 onValidate: print,
                 onChange: ((files, type) =>

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_baby_time/page/home/home_view_model/time_line/time_lime_view_model.dart';
@@ -39,7 +40,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     fetch();
     body = TimeLimeViewModel(
-      height: 660.h,
+      height: 650.h,
     );
     super.initState();
   }
@@ -64,13 +65,11 @@ class _HomePageState extends State<HomePage> {
                   alignment: Alignment.centerLeft,
                   child: SizedBox(
                     width: 61.w,
-                    child: TDAvatar(
-                      size: TDAvatarSize.medium,
-                      type: TDAvatarType.normal,
-                      shape: TDAvatarShape.circle,
-                      avatarUrl: babyController.get()!.avatarUrl!,
-                      //avatarUrl: memberLogic.get()!.avatar!,
-                      backgroundColor: Colors.transparent,
+                    child: CircleAvatar(
+                      backgroundImage: CachedNetworkImageProvider(
+                        babyController.get()!.avatarUrl!,
+                      ),
+                      radius: 30.w,
                     ),
                   ),
                 ),
@@ -144,7 +143,7 @@ class _HomePageState extends State<HomePage> {
                     currentIndex = 1;
                     body = TimeLimeViewModel(
                       key: UniqueKey(),
-                      height: 660.h,
+                      height: 650.h,
                       queryCollect: true,
                       isCollect: true,
                     );

@@ -52,6 +52,7 @@ class _MyPageState extends State<MyPage> {
             height: 150.h,
             child: CachedNetworkImage(
               imageUrl: familyLogic.familyRespVo.value!.familyBackgroundUrl!,
+              fit: BoxFit.cover,
             ),
           ),
           gapHeightNormal(),

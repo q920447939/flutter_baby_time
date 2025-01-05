@@ -55,17 +55,19 @@ class _BabySettingState extends State<BabySetting> {
             child: Center(
               child: Obx(
                 () => GestureDetector(
-                    onTap: () {
-                      _changeBabyAvatar();
-                    },
-                    child: SizedBox(
-                      height: 150.h,
-                      width: 150.w,
-                      child: CircleAvatar(
-                        child: CachedNetworkImage(
-                            imageUrl: babyController.get()!.avatarUrl!),
-                      ),
-                    )),
+                  onTap: () {
+                    _changeBabyAvatar();
+                  },
+                  child: SizedBox(
+                    height: 150.h,
+                    width: 150.w,
+                    child: CircleAvatar(
+                      backgroundImage: CachedNetworkImageProvider(
+                          babyController.get()!.avatarUrl!),
+                      radius: 75.w,
+                    ),
+                  ),
+                ),
               ),
             ),
           ),

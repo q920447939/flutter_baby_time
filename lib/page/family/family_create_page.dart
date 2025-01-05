@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import '../../dao/family/family_dao.dart';
+import '../../getx/controller/manager_gex_controller.dart';
 import '../../utils/premission/premission_helper.dart';
 import '../../widget/image_pick/ImagePickerType.dart';
 
@@ -119,17 +122,39 @@ class _FamilyCreatePageState extends State<FamilyCreatePage> {
             bottom: 5,
             right: 10,
             child: Icon(
-              TDIcons.logo_adobe_photoshop_filled,
-              size: 40,
+              TDIcons.browse_gallery_filled,
+              size: 20.w,
             ),
           ),
         ],
       );
     }
-    return Container(
-      width: 350.w,
-      height: 150.h,
-      child: CachedNetworkImage(imageUrl: backgroundUrl),
+    return Stack(
+      children: [
+        // 背景层：模糊的放大图片
+        Container(
+          width: 350.w,
+          height: 150.h,
+          child: ClipRect(
+            child: ImageFiltered(
+              imageFilter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+              child: CachedNetworkImage(
+                imageUrl: backgroundUrl,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        ),
+        // 前景层：完整显示的图片
+        Container(
+          width: 350.w,
+          height: 150.h,
+          child: CachedNetworkImage(
+            imageUrl: backgroundUrl,
+            fit: BoxFit.contain,
+          ),
+        ),
+      ],
     );
   }
 }
