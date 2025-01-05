@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable_richtext/expandable_rich_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,6 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel>
   Map<String, Color?> _likeMapColor = {};
   Map<String, List<UploadDiscussRespVo>> discussMap = {};
   Map<String, List<BabyUploadTagRespVo>> uploadListTagMap = {};
-  BabySettingController _babyController = Get.find();
 
   int? curYear;
   List<UploadListRespVo> uploadList = [];
@@ -205,21 +205,20 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel>
             itemBuilder: (context, index) {
               Widget widget;
               if (index < 8) {
-                widget = TDImage(
-                  imgUrl: uploadInfo.uploadImageRespVo[index].imageUrl!,
-                );
+                widget = CachedNetworkImage(
+                    imageUrl: uploadInfo.uploadImageRespVo[index].imageUrl!);
               } else {
                 if (len - 9 == 0) {
-                  widget = TDImage(
-                    imgUrl: uploadInfo.uploadImageRespVo[index].imageUrl!,
+                  widget = CachedNetworkImage(
+                    imageUrl: uploadInfo.uploadImageRespVo[index].imageUrl!,
                   );
                 } else {
                   widget = Stack(
                     fit: StackFit.expand,
                     alignment: Alignment.center,
                     children: [
-                      TDImage(
-                        imgUrl: uploadInfo.uploadImageRespVo[index].imageUrl!,
+                      CachedNetworkImage(
+                        imageUrl: uploadInfo.uploadImageRespVo[index].imageUrl!,
                       ),
                       Center(
                         child: TDText(

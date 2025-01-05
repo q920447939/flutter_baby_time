@@ -131,14 +131,16 @@ class _UploadFilePageState extends State<UploadFilePage> {
           ContainerWrapperCard(
             height: 400.h,
             child: SingleChildScrollView(
-                child: TDUpload(
-              files: files2,
-              multiple: true,
-              max: 3,
-              onError: print,
-              onValidate: print,
-              onChange: ((files, type) => onValueChanged(files2, files, type)),
-            )),
+              child: TDUpload(
+                files: files2,
+                multiple: true,
+                max: 3,
+                onError: print,
+                onValidate: print,
+                onChange: ((files, type) =>
+                    onValueChanged(files2, files, type)),
+              ),
+            ),
           ),
           //Spacer(),
           TDButton(

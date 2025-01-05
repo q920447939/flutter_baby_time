@@ -12,6 +12,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import '../../dao/family/family_dao.dart';
+import '../../utils/premission/premission_helper.dart';
 import '../../widget/image_pick/ImagePickerType.dart';
 
 class FamilyCreatePage extends StatefulWidget {
@@ -24,6 +25,15 @@ class FamilyCreatePage extends StatefulWidget {
 class _FamilyCreatePageState extends State<FamilyCreatePage> {
   TextEditingController _textEditingController = TextEditingController();
   String backgroundUrl = '';
+
+  @override
+  void initState() {
+    super.initState();
+    // 在初始化时检查权限
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      requestPermission(context);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

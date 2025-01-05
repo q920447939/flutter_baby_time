@@ -15,7 +15,7 @@ class ImagePickerHelper {
   static Future<List<String>> pickAndUploadImages({
     ImagePickerType type = ImagePickerType.both,
     int maxImages = 1,
-    int maxSize = 5,
+    int maxSize = 10,
     List<String> allowedExtensions = const ['jpg', 'jpeg', 'png'],
   }) async {
     List<XFile>? images;
@@ -57,10 +57,10 @@ class ImagePickerHelper {
     List<XFile> validFiles = [];
     for (var image in images) {
       // 检查文件格式
-      String extension = image.name.split('.').last.toLowerCase();
+/*      String extension = image.name.split('.').last.toLowerCase();
       if (!allowedExtensions.contains(extension)) {
         continue;
-      }
+      }*/
 
       // 检查文件大小
       if (await checkFileSize(image, maxSize)) {
@@ -69,6 +69,7 @@ class ImagePickerHelper {
         dialogFailure('选择的图片不能超过${maxSize}M!');
         return [];
       }
+      validFiles.add(image);
     }
 
     if (validFiles.isEmpty) {
@@ -114,6 +115,8 @@ class ImagePickerHelper {
       final bytes = await image.length();
       return bytes / (1024 * 1024) <= maxSize;
     } else {
+      await dialogSuccess('获取到的文件路径:${image.path}');
+
       // 移动端环境
       File file = File(image.path);
       int sizeInBytes = await file.length();

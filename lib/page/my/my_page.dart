@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_baby_time/config/go_router_config.dart';
@@ -49,8 +50,8 @@ class _MyPageState extends State<MyPage> {
           SizedBox(
             width: 560.w,
             height: 150.h,
-            child: TDImage(
-              imgUrl: familyLogic.familyRespVo.value!.familyBackgroundUrl!,
+            child: CachedNetworkImage(
+              imageUrl: familyLogic.familyRespVo.value!.familyBackgroundUrl!,
             ),
           ),
           gapHeightNormal(),
