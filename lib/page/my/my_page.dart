@@ -18,6 +18,7 @@ import '../../getx/controller/manager_gex_controller.dart';
 import '../../handle/token_manager/token_manager.dart';
 import '../../router/has_bottom_navigator/shell_default_router.dart';
 import '../../router/not_bottom_navigator/no_shell_default_router.dart';
+import '../../utils/baby_helper.dart';
 import '../../utils/family_helper.dart';
 import '../baby_info/baby_info_create_page.dart';
 import '../home/view_model_controller.dart';
@@ -33,7 +34,6 @@ class MyPage extends StatefulWidget {
 
 class _MyPageState extends State<MyPage> {
   ViewModeController _viewModeController = Get.find();
-  BabySettingController _babyController = Get.find();
   GlobalSettingController _globalSettingController = Get.find();
 
   @override
@@ -67,6 +67,8 @@ class _MyPageState extends State<MyPage> {
           _buildFamilySelect(),
           gapHeightSmall(),
           _buildAddBaby(),
+          gapHeightSmall(),
+          _buildFamilyApplyHandle(),
           gapHeightSmall(),
           _buildLogout(),
         ],
@@ -265,6 +267,7 @@ class _MyPageState extends State<MyPage> {
       });
       if (res == true) {
         await unbindFamily();
+        await unbindBaby();
         await dialogSuccess('退出当前家庭成功', onDismiss: () async {
           if (context.mounted) {
             FamilyManagerPageRouter().replace(context);
@@ -280,6 +283,12 @@ class _MyPageState extends State<MyPage> {
   _buildAddBaby() {
     return _buildRowInfo('新增宝宝资料', () async {
       BabyInfoCreatePageRouter().push(context);
+    });
+  }
+
+  _buildFamilyApplyHandle() {
+    return _buildRowInfo('家庭申请审核', () async {
+      FamilyApplyHandlePageRoute().push(context);
     });
   }
 }

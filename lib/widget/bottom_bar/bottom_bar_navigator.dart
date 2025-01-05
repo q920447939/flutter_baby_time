@@ -11,6 +11,7 @@ import 'package:go_router/go_router.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
+import '../../getx/controller/manager_gex_controller.dart';
 import '../../model/app_config/navigator/app_navigator_config_model.dart';
 
 class BottomBarNavigator extends StatefulWidget {
@@ -62,6 +63,7 @@ class _BottomBarNavigatorState extends State<BottomBarNavigator> {
     return TDBottomTabBar(
       TDBottomTabBarBasicType.iconText,
       useVerticalDivider: false,
+      currentIndex: bottomBarIndexLogic.getCurrIndex(),
       navigationTabs: [
         TDBottomTabBarTabConfig(
           tabText: '首页',

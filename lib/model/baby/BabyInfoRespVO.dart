@@ -52,6 +52,7 @@ class FamilyRespVo {
     required this.roleId,
     required this.roleName,
     required this.familyBackgroundUrl,
+    required this.familyCode,
   });
 
   final int? id;
@@ -61,6 +62,7 @@ class FamilyRespVo {
   final int? roleId;
   final String? roleName;
   final String? familyBackgroundUrl;
+  final String? familyCode;
 
   factory FamilyRespVo.fromJson(Map<String, dynamic> json) {
     return FamilyRespVo(
@@ -71,6 +73,7 @@ class FamilyRespVo {
       roleId: json["roleId"],
       roleName: json["roleName"],
       familyBackgroundUrl: json["familyBackgroundUrl"],
+      familyCode: json["familyCode"],
     );
   }
 
@@ -82,5 +85,6 @@ class FamilyRespVo {
         "roleId": roleId,
         "roleName": roleName,
         "familyBackgroundUrl": familyBackgroundUrl,
+        "familyCode": familyCode,
       };
 }

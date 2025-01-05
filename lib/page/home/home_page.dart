@@ -33,7 +33,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  BabySettingController _babySettingController = Get.find();
   int currentIndex = 0;
   late Widget body;
   @override
@@ -69,41 +68,52 @@ class _HomePageState extends State<HomePage> {
                       size: TDAvatarSize.medium,
                       type: TDAvatarType.normal,
                       shape: TDAvatarShape.circle,
-                      //defaultUrl: 'assets/img/baby_avator.jpeg',
-                      avatarUrl: memberLogic.get()!.avatar!,
+                      avatarUrl: babyController.get()!.avatarUrl!,
+                      //avatarUrl: memberLogic.get()!.avatar!,
                       backgroundColor: Colors.transparent,
                     ),
                   ),
                 ),
                 gapHeightNormal(),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Obx(
-                          () => TDText(
-                            babyController.get()!.name,
-                            style: TextStyle(
-                              fontSize: 18.sp,
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: 5.w,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Obx(
+                            () => TDText(
+                              babyController.get()!.name,
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Obx(
-                          () => _buildTdText(),
-                        ),
-                        gapWidthNormal(),
-                      ],
-                    )
-                  ],
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Obx(
+                            () => _buildTdText(),
+                          ),
+                          gapWidthNormal(),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
+                Spacer(),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child:
+                      TDText('家庭成员:${familyLogic.get()!.familyMemberCount!}人'),
+                )
               ],
             ),
           ),

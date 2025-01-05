@@ -35,16 +35,18 @@ class FamilyDao {
     return data;
   }
 
-  static Future<List<FamilyApplyRespVo>?> applyPage(
-      int pageNo, int pageSize) async {
-    var data = await HiNet.getInstance().fire(
-      AnonymousRequest(
-        method: HttpMethod.GET,
-        path: "/api/familyApply/page",
-        needLogin: true,
-        needToken: true,
-      ).add("pageNo", pageNo).add("pageSize", pageSize),
-    );
+  static Future<List<FamilyApplyRespVo>?> applyPage(int pageNo, int pageSize,
+      {String? applyFamilyCode}) async {
+    var request = AnonymousRequest(
+      method: HttpMethod.GET,
+      path: "/api/familyApply/page",
+      needLogin: true,
+      needToken: true,
+    ).add("pageNo", pageNo).add("pageSize", pageSize);
+    if (null != applyFamilyCode) {
+      request.add("applyFamilyCode", applyFamilyCode);
+    }
+    var data = await HiNet.getInstance().fire(request);
     var list = pageResToObjList(data, FamilyApplyRespVo.fromJson);
     return list;
   }

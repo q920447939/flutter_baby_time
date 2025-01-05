@@ -36,4 +36,11 @@ class MemberLogic extends GetxController {
   MemberRespVo? get() {
     return memberInfo.value;
   }
+
+  Future<void> clean() async {
+    memberInfo.value = null;
+    await SP.remove('token');
+    await SP.remove('isLogin');
+    await SP.remove(_Key);
+  }
 }

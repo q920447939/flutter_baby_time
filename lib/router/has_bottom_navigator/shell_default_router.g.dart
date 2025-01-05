@@ -15,6 +15,7 @@ List<RouteBase> get $appRoutes => [
       $tagSettingRoute,
       $myProfileRoute,
       $heightWeightManageRoute,
+      $familyApplyHandlePageRoute,
     ];
 
 RouteBase get $homeRoute => GoRouteData.$route(
@@ -215,6 +216,29 @@ extension $HeightWeightManageRouteExtension on HeightWeightManageRoute {
 
   String get location => GoRouteData.$location(
         '/height-weight-manage',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $familyApplyHandlePageRoute => GoRouteData.$route(
+      path: '/family/familyApply',
+      factory: $FamilyApplyHandlePageRouteExtension._fromState,
+    );
+
+extension $FamilyApplyHandlePageRouteExtension on FamilyApplyHandlePageRoute {
+  static FamilyApplyHandlePageRoute _fromState(GoRouterState state) =>
+      FamilyApplyHandlePageRoute();
+
+  String get location => GoRouteData.$location(
+        '/family/familyApply',
       );
 
   void go(BuildContext context) => context.go(location);

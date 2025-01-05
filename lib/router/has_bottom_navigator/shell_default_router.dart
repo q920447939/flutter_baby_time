@@ -7,6 +7,8 @@ import 'package:flutter_baby_time/widget/container/container_wrapper_card.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
+import '../../getx/controller/manager_gex_controller.dart';
+import '../../page/family/family_apply_handle_page.dart';
 import '../../page/heightWeight/height_weight_manage_page.dart';
 import '../../page/home/home_page.dart';
 import '../../page/my/baby_setting/baby_setting.dart';
@@ -27,6 +29,7 @@ class HomeRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
+    bottomBarIndexLogic.setCurrIndex(0);
     return const HomePage();
   }
 }
@@ -40,6 +43,7 @@ class MyRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
+    bottomBarIndexLogic.setCurrIndex(2);
     return const MyPage();
   }
 }
@@ -130,5 +134,16 @@ class HeightWeightManageRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return HeightWeightManagePage();
+  }
+}
+
+@TypedGoRoute<FamilyApplyHandlePageRoute>(
+  path: '/family/familyApply',
+)
+@immutable
+class FamilyApplyHandlePageRoute extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return FamilyApplyHandlePage();
   }
 }
