@@ -13,6 +13,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import '../../dao/family/family_dao.dart';
+import '../../getx/controller/manager_gex_controller.dart';
 import '../../model/baby/BabyInfoRespVO.dart';
 import '../../router/not_bottom_navigator/no_shell_default_router.dart';
 
@@ -80,6 +81,16 @@ class _FamilyCreateOrAddManagerPageState
                     FamilySelectExistsPageRouter().push(context);
                   },
                 ),
+              DefaultButton(
+                title: '切换账号',
+                color: Color(0x9FEC133B),
+                onPressed: () async {
+                  await memberLogic.clean();
+                  if (mounted) {
+                    context.go("/");
+                  }
+                },
+              ),
             ],
           ),
         ),

@@ -32,4 +32,18 @@ class MemberDao {
     await get();
     return true;
   }
+
+  static Future<bool> updateAvatar(String avatarUrl) async {
+    var data = await HiNet.getInstance().fire(AnonymousRequest(
+      method: HttpMethod.GET,
+      path: "/api/member/updateAvatar",
+      needLogin: true,
+      needToken: true,
+    ).add("avatarUrl", avatarUrl));
+    if (null == data) {
+      return false;
+    }
+    await get();
+    return true;
+  }
 }

@@ -16,6 +16,7 @@ import 'package:tdesign_flutter/tdesign_flutter.dart';
 import '../../dao/family/family_dao.dart';
 import '../../model/baby/BabyInfoRespVO.dart';
 import '../../router/not_bottom_navigator/no_shell_default_router.dart';
+import '../../utils/family_member_role_helper.dart';
 
 class BabyCreateOrAddManagerPage extends StatefulWidget {
   List<BabyInfoRespVo> data;
@@ -30,9 +31,28 @@ class BabyCreateOrAddManagerPage extends StatefulWidget {
 class _BabyCreateOrAddManagerPageState
     extends State<BabyCreateOrAddManagerPage> {
   @override
+  void initState() {
+    super.initState();
+    check();
+  }
+
+  Future<void> check() async {
+    if (!familyMemberRoleHasAdmin() && widget.data.isEmpty) {
+      //不是管理员,并且没有宝宝信息
+      await dialogFailure('管理员未添加宝宝信息,请等待管理员添加!');
+      await dialogFailure('即将回到登录页');
+      await memberLogic.clean();
+      if (mounted) {
+        context.go("/");
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     var len = widget.data.length;
     var notBaby = len == 0;
+
     return GreyBaseScaffoldStack(
       showBackIcon: false,
       title: '',
@@ -49,7 +69,7 @@ class _BabyCreateOrAddManagerPageState
               TDText(
                 notBaby
                     ? '您当前还未添加宝宝信息'
-                    : '当前家庭[${familyLogic.get()!.familyName}],您当前添加$len个宝宝',
+                    : '当前家庭[${familyLogic.get()!.familyName}],您当前拥有$len个宝宝',
                 style: TextStyle(
                   fontSize: 22.sp,
                   fontWeight: FontWeight.bold,
@@ -58,11 +78,13 @@ class _BabyCreateOrAddManagerPageState
               gapHeightSmall(),
               TDText(notBaby ? '新增宝宝信息' : '选择宝宝信息'),
               Gap(50.h),
-              DefaultButton(
+              if (familyMemberRoleHasAdmin())
+                DefaultButton(
                   title: '新增宝宝信息',
                   onPressed: () async {
                     context.push('/babyManager/create');
-                  }),
+                  },
+                ),
               gapHeightSmall(),
               if (!notBaby)
                 DefaultButton(
@@ -72,6 +94,16 @@ class _BabyCreateOrAddManagerPageState
                     BabySelectExistsPageRouter().push(context);
                   },
                 ),
+              DefaultButton(
+                title: '切换账号',
+                color: Color(0x9FEC133B),
+                onPressed: () async {
+                  await memberLogic.clean();
+                  if (mounted) {
+                    context.go("/");
+                  }
+                },
+              ),
             ],
           ),
         ),

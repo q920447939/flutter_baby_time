@@ -14,13 +14,18 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
+import '../../dao/base/member/member_dao.dart';
+import '../../dao/family/family_dao.dart';
 import '../../design_pattern/view_model/ViewModel.dart';
 import '../../getx/controller/manager_gex_controller.dart';
 import '../../handle/token_manager/token_manager.dart';
+import '../../model/baby/BabyInfoRespVO.dart';
 import '../../router/has_bottom_navigator/shell_default_router.dart';
 import '../../router/not_bottom_navigator/no_shell_default_router.dart';
 import '../../utils/baby_helper.dart';
 import '../../utils/family_helper.dart';
+import '../../utils/family_member_role_helper.dart';
+import '../../widget/image_pick/ImagePickerType.dart';
 import '../baby_info/baby_info_create_page.dart';
 import '../home/view_model_controller.dart';
 import '../../getx/controller/baby/baby_setting_controller.dart';
@@ -36,6 +41,11 @@ class MyPage extends StatefulWidget {
 class _MyPageState extends State<MyPage> {
   ViewModeController _viewModeController = Get.find();
   GlobalSettingController _globalSettingController = Get.find();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,20 +68,11 @@ class _MyPageState extends State<MyPage> {
           gapHeightNormal(),
           _buildPersonInfo(),
           gapHeightSmall(),
-          /*homeViewModel(context),
-          gapHeightSmall(),*/
-          _babySetting(),
-          gapHeightSmall(),
-          /* _buildGlobalBackgroundImage(),
-          gapHeightSmall(),*/
-          _buildTag(),
+          _buildPersonAvatar(),
           gapHeightSmall(),
           _buildFamilySelect(),
           gapHeightSmall(),
-          _buildAddBaby(),
-          gapHeightSmall(),
-          _buildFamilyApplyHandle(),
-          gapHeightSmall(),
+          _buildAdminPremissionHandle(),
           _buildLogout(),
         ],
       ),
@@ -196,11 +197,43 @@ class _MyPageState extends State<MyPage> {
   }
 
   _buildPersonInfo() {
-    return _buildRowInfo('昵称', () {
-      const MyProfileRoute().push(context);
-    },
-        rightWidget:
-            Obx(() => TDText(memberLogic.memberInfo.value!.memberNickName)));
+    return _buildRowInfo(
+      '昵称',
+      () {
+        const MyProfileRoute().push(context);
+      },
+      rightWidget: Obx(
+        () => TDText(
+            null == memberLogic.get() ? '' : memberLogic.get()!.memberNickName),
+      ),
+    );
+  }
+
+  _buildPersonAvatar() {
+    return _buildRowInfo(
+      '头像',
+      () async {
+        var list = await ImagePickerHelper.pickAndUploadImages(
+            type: ImagePickerType.gallery);
+        if (list.isNotEmpty) {
+          var b = await MemberDao.updateAvatar(list.first);
+          if (b) {
+            await dialogSuccess('更换头像成功');
+          }
+        }
+      },
+      rightWidget: Obx(
+        () => SizedBox(
+          width: 30.w,
+          child: null == memberLogic.get()
+              ? Container()
+              : CachedNetworkImage(
+                  imageUrl: memberLogic.get()!.avatar!,
+                  fit: BoxFit.contain,
+                ),
+        ),
+      ),
+    );
   }
 
   _buildRowInfo(String leftText, GestureTapCallback onTap,
@@ -292,5 +325,35 @@ class _MyPageState extends State<MyPage> {
     return _buildRowInfo('家庭申请审核', () async {
       FamilyApplyHandlePageRoute().push(context);
     });
+  }
+
+  _buildAdminPremissionHandle() {
+    if (!familyMemberRoleHasAdmin()) {
+      return Container();
+    }
+    return Column(
+      children: [
+        _babySetting(),
+        gapHeightSmall(),
+        _buildTag(),
+        gapHeightSmall(),
+        _buildAddBaby(),
+        gapHeightSmall(),
+        _buildFamilyApplyHandle(),
+        gapHeightSmall(),
+      ],
+    );
+  }
+
+  _buildBabySettingHandle() {
+    if (!familyMemberRoleHasAdmin()) {
+      return Container();
+    }
+    return Column(
+      children: [
+        _babySetting(),
+        gapHeightSmall(),
+      ],
+    );
   }
 }

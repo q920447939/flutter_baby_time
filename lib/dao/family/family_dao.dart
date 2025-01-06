@@ -50,4 +50,14 @@ class FamilyDao {
     var list = pageResToObjList(data, FamilyApplyRespVo.fromJson);
     return list;
   }
+
+  static Future<bool?> updateApplyStatus(int id, applyStatus) async {
+    var data = await HiNet.getInstance().fire(AnonymousRequest(
+      method: HttpMethod.PUT,
+      path: "/api/familyApply/updateApplyStatus",
+      needLogin: true,
+      needToken: true,
+    ).add("id", id).add("applyStatus", applyStatus));
+    return data;
+  }
 }

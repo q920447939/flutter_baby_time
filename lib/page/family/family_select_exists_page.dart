@@ -13,6 +13,7 @@ import '../../dao/family/family_dao.dart';
 import '../../getx/controller/manager_gex_controller.dart';
 import '../../model/baby/BabyInfoRespVO.dart';
 import '../../utils/family_helper.dart';
+import '../../utils/family_member_role_helper.dart';
 import '../../widget/button/default_button.dart';
 import '../../widget/container/container_wrapper_card.dart';
 import '../../widget/future/future_.dart';
@@ -113,6 +114,7 @@ class _FamilySelectExistsPageState extends State<FamilySelectExistsPage> {
               });
               if (res) {
                 await bindFamily(e);
+                setRole(e);
                 if (mounted) {
                   context.go("/");
                 }

@@ -9,7 +9,10 @@ import 'dart:typed_data' as ty;
 import '../http/request/base_request.dart';
 
 class ImageDao {
-  static Future<List<String>> uploadImageByFiles(List<File> files) async {
+  static Future<List<String>> uploadImageByFiles(
+    List<File> files, {
+    bool compress = true,
+  }) async {
     List<String> urls = [];
     for (var file in files) {
       var map = await uploadFile(await file.readAsBytes(), "test.png") as Map;
@@ -19,7 +22,11 @@ class ImageDao {
     return urls;
   }
 
-  static Future<dynamic> uploadFile(List<int> bytes, String fileName) async {
+  static Future<dynamic> uploadFile(
+    List<int> bytes,
+    String fileName, {
+    bool compress = true,
+  }) async {
     var data = await HiNet.getInstance().fire(
         AnonymousRequest(
                 method: HttpMethod.POST,

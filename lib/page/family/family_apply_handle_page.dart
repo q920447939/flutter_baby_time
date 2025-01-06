@@ -5,6 +5,7 @@ import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_baby_time/getx/controller/manager_gex_controller.dart';
+import 'package:flutter_baby_time/widget/smart_dialog/smart_dialog_helper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
@@ -13,6 +14,8 @@ import '../../../widget/no_data.dart';
 import '../../../widget/refresh/simple_easy_refresher.dart';
 import '../../dao/family/family_dao.dart';
 import '../../model/family/FamilyApplyRespVO.dart';
+import '../../utils/family_helper.dart';
+import '../../utils/family_member_role_helper.dart';
 import '../../widget/base_stack/base_stack.dart';
 
 /**
@@ -200,6 +203,22 @@ class _FamilyApplyHandlePageState extends State<FamilyApplyHandlePage>
             shape: TDButtonShape.rectangle,
             theme: TDButtonTheme.primary,
             text: '通过',
+            onTap: () async {
+              var b = await FamilyDao.updateApplyStatus(data.id!, 2);
+              if (null != b && b) {
+                dialogSuccess('处理成功');
+                FamilyDao.get().then((res) async {
+                  //查询新的 家庭信息,并进行绑定
+                  var e = res!.where((e) {
+                    return e.id == familyLogic.get()!.id;
+                  }).first;
+                  await bindFamily(e);
+                  setRole(e);
+                });
+                setState(() {});
+                _refresh();
+              }
+            },
           ),
           TDButton(
             size: TDButtonSize.medium,
@@ -208,6 +227,14 @@ class _FamilyApplyHandlePageState extends State<FamilyApplyHandlePage>
             theme: TDButtonTheme.primary,
             text: '拒绝',
             textStyle: TextStyle(color: Colors.red),
+            onTap: () async {
+              var b = await FamilyDao.updateApplyStatus(data.id!, 3);
+              if (null != b && b) {
+                dialogSuccess('拒绝成功');
+                setState(() {});
+                _refresh();
+              }
+            },
           ),
         ],
       );

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_baby_time/router/has_bottom_navigator/shell_default_router.dart';
 import 'package:flutter_baby_time/widget/gap/gap_height.dart';
+import 'package:flutter_baby_time/widget/smart_dialog/smart_dialog_helper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -13,6 +14,7 @@ import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import '../../getx/controller/manager_gex_controller.dart';
 import '../../model/app_config/navigator/app_navigator_config_model.dart';
+import '../../utils/family_member_role_helper.dart';
 
 class BottomBarNavigator extends StatefulWidget {
   BottomBarNavigator({super.key});
@@ -93,7 +95,11 @@ class _BottomBarNavigatorState extends State<BottomBarNavigator> {
               size: 19.w,
               color: Colors.red,
             ),
-            onTap: () {
+            onTap: () async {
+              if (!familyMemberRoleHasAdmin()) {
+                await dialogFailure('您没有权限!');
+                return;
+              }
               Navigator.of(context).push(
                 TDSlidePopupRoute(
                     modalBarrierColor: TDTheme.of(context).fontGyColor2,

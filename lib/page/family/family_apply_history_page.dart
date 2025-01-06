@@ -110,36 +110,6 @@ class _FamilyApplyHistoryPageState extends State<FamilyApplyHistoryPage> {
                             thickness: 1.0,
                             height: 1.0,
                           ),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 16.0.w,
-                                vertical: 8.0.h,
-                              ),
-                              child: Column(children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      '申请原因:${data.applyFamilyCode}',
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        left: 5,
-                                      ),
-                                      child: Text(
-                                        '12312321',
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                if (null != data.failReason)
-                                  Text(
-                                    '拒绝原因:${data.failReason}',
-                                  ),
-                              ]),
-                            ),
-                          ),
                         ],
                       ),
                     );

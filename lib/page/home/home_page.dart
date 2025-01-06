@@ -130,7 +130,6 @@ class _HomePageState extends State<HomePage> {
                   setState(() {
                     currentIndex = 0;
                     body = TimeLimeViewModel(
-                      key: UniqueKey(),
                       height: 660.h,
                     );
                   });
@@ -142,7 +141,6 @@ class _HomePageState extends State<HomePage> {
                   setState(() {
                     currentIndex = 1;
                     body = TimeLimeViewModel(
-                      key: UniqueKey(),
                       height: 650.h,
                       queryCollect: true,
                       isCollect: true,

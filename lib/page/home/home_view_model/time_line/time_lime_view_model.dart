@@ -34,10 +34,7 @@ class TimeLimeViewModel extends StatefulWidget {
   bool queryCollect;
   bool isCollect;
   TimeLimeViewModel(
-      {super.key,
-      this.height = 300,
-      this.queryCollect = false,
-      this.isCollect = false});
+      {this.height = 300, this.queryCollect = false, this.isCollect = false});
 
   @override
   State<TimeLimeViewModel> createState() => _TimeLimeViewModelState();
@@ -607,13 +604,9 @@ class _TimeLimeViewModelState extends State<TimeLimeViewModel>
                     children: [
                       SizedBox(
                         width: 30.w,
-                        child: TDAvatar(
-                          avatarUrl: discuss.memberSimpleResVo!.avatar!,
-                          size: TDAvatarSize.medium,
-                          type: TDAvatarType.normal,
-                          shape: TDAvatarShape.circle,
-                          //defaultUrl: 'assets/img/baby_avator.jpeg',
-                          backgroundColor: Colors.transparent,
+                        child: CachedNetworkImage(
+                          imageUrl: discuss.memberSimpleResVo!.avatar!,
+                          fit: BoxFit.contain,
                         ),
                       ),
                       gapWidthSmall(),
