@@ -286,6 +286,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.8.5"
+  cli_util:
+    dependency: transitive
+    description:
+      name: cli_util
+      sha256: ff6785f7e9e3c38ac98b2fb035701789de90154024a75b6cb926445e83197d1c
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.4.2"
   clipboard:
     dependency: "direct main"
     description:
@@ -860,6 +868,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.0"
+  flutter_launcher_icons:
+    dependency: "direct dev"
+    description:
+      name: flutter_launcher_icons
+      sha256: "31cd0885738e87c72d6f055564d37fabcdacee743b396b78c7636c169cac64f5"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.14.2"
   flutter_link_previewer:
     dependency: transitive
     description:
@@ -1268,14 +1284,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "4.0.2"
-  icons_launcher:
-    dependency: "direct dev"
-    description:
-      name: icons_launcher
-      sha256: "9b514ffed6ed69b232fd2bf34c44878c8526be71fc74129a658f35c04c9d4a9d"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.1.7"
   image:
     dependency: "direct main"
     description:

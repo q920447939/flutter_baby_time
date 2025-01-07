@@ -187,7 +187,9 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   json_serializable: ^6.7.1 # dart run build_runner build
   build_runner: ^2.0.0 #   flutter pub run build_runner build
-  icons_launcher: ^2.1.7 #修改启动图标 命令 dart run icons_launcher:create --path icons_launcher.yaml
+  flutter_launcher_icons: ^0.14.2
+  #修改图标 1.运行 dart run flutter_launcher_icons:generate 生成配置文件(flutter_launcher_icons.yaml) ,
+  #2.在配置文件中修改好 image_path 和 adaptive_icon_foreground ,注意 adaptive_icon_background 要设置成#ffffff 然后运行 dart run flutter_launcher_icons
   launcher_name: ^1.0.2 #修改应用名称 dart run launcher_name:main   名字可以在 launcher_name.default节点修改
   flutter_native_splash: ^2.3.9
 
@@ -259,3 +261,6 @@ flutter:
       fonts:
         - asset: assets/fonts/PingFang-SC-Bold.ttf
         - asset: assets/fonts/PingFang-SC-Regular.ttf
+
+launcher_name:
+  default: "宝宝时光机"
