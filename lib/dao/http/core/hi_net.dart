@@ -41,7 +41,7 @@ class HiNet {
               code == 42100010 ||
               code == 50007 ||
               code == 50008) {
-            loginOut();
+            await loginOut();
             await SmartDialog.showNotify(
                 msg: '登录已过期,请重新登录！', notifyType: NotifyType.failure);
             return;

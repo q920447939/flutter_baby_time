@@ -114,7 +114,7 @@ class _FamilySelectExistsPageState extends State<FamilySelectExistsPage> {
               });
               if (res) {
                 await bindFamily(e);
-                setRole(e);
+                await FamilyMemberRoleHelper.setRole(e);
                 if (mounted) {
                   context.go("/");
                 }

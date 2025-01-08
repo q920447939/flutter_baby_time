@@ -16,6 +16,7 @@ List<RouteBase> get $appRoutes => [
       $myProfileRoute,
       $heightWeightManageRoute,
       $familyApplyHandlePageRoute,
+      $familyManagerMemberPageRoute,
     ];
 
 RouteBase get $homeRoute => GoRouteData.$route(
@@ -239,6 +240,30 @@ extension $FamilyApplyHandlePageRouteExtension on FamilyApplyHandlePageRoute {
 
   String get location => GoRouteData.$location(
         '/family/familyApply',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $familyManagerMemberPageRoute => GoRouteData.$route(
+      path: '/family-manager/familyManagerMemberPage',
+      factory: $FamilyManagerMemberPageRouteExtension._fromState,
+    );
+
+extension $FamilyManagerMemberPageRouteExtension
+    on FamilyManagerMemberPageRoute {
+  static FamilyManagerMemberPageRoute _fromState(GoRouterState state) =>
+      FamilyManagerMemberPageRoute();
+
+  String get location => GoRouteData.$location(
+        '/family-manager/familyManagerMemberPage',
       );
 
   void go(BuildContext context) => context.go(location);

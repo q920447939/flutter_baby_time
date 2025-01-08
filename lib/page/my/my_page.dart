@@ -27,6 +27,7 @@ import '../../utils/family_helper.dart';
 import '../../utils/family_member_role_helper.dart';
 import '../../widget/image_pick/ImagePickerType.dart';
 import '../baby_info/baby_info_create_page.dart';
+import '../family/family_manger/family_manager_member_page.dart';
 import '../home/view_model_controller.dart';
 import '../../getx/controller/baby/baby_setting_controller.dart';
 import 'global_setting/global_setting_controller.dart';
@@ -328,7 +329,7 @@ class _MyPageState extends State<MyPage> {
   }
 
   _buildAdminPremissionHandle() {
-    if (!familyMemberRoleHasAdmin()) {
+    if (!FamilyMemberRoleHelper.familyMemberRoleHasAdmin()) {
       return Container();
     }
     return Column(
@@ -341,19 +342,15 @@ class _MyPageState extends State<MyPage> {
         gapHeightSmall(),
         _buildFamilyApplyHandle(),
         gapHeightSmall(),
+        _buildFamilyMemberManager(),
+        gapHeightSmall(),
       ],
     );
   }
 
-  _buildBabySettingHandle() {
-    if (!familyMemberRoleHasAdmin()) {
-      return Container();
-    }
-    return Column(
-      children: [
-        _babySetting(),
-        gapHeightSmall(),
-      ],
-    );
+  _buildFamilyMemberManager() {
+    return _buildRowInfo('家庭成员管理', () async {
+      FamilyManagerMemberPageRoute().push(context);
+    });
   }
 }

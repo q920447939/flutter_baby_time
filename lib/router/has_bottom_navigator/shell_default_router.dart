@@ -9,6 +9,7 @@ import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import '../../getx/controller/manager_gex_controller.dart';
 import '../../page/family/family_apply_handle_page.dart';
+import '../../page/family/family_manger/family_manager_member_page.dart';
 import '../../page/heightWeight/height_weight_manage_page.dart';
 import '../../page/home/home_page.dart';
 import '../../page/my/baby_setting/baby_setting.dart';
@@ -146,5 +147,16 @@ class FamilyApplyHandlePageRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return FamilyApplyHandlePage();
+  }
+}
+
+@TypedGoRoute<FamilyManagerMemberPageRoute>(
+  path: '/family-manager/familyManagerMemberPage',
+)
+@immutable
+class FamilyManagerMemberPageRoute extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return FamilyManagerMemberPage();
   }
 }

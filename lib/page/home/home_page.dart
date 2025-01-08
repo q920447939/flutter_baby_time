@@ -60,6 +60,7 @@ class _HomePageState extends State<HomePage> {
           ContainerWrapperCard(
             margin: EdgeInsets.only(top: 10.h, left: 10.w, right: 10.w),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Align(
                   alignment: Alignment.centerLeft,

@@ -96,7 +96,7 @@ class _BottomBarNavigatorState extends State<BottomBarNavigator> {
               color: Colors.red,
             ),
             onTap: () async {
-              if (!familyMemberRoleHasAdmin()) {
+              if (!FamilyMemberRoleHelper.familyMemberRoleHasAdmin()) {
                 await dialogFailure('您没有权限!');
                 return;
               }

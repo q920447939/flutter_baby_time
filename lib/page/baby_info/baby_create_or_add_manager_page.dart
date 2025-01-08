@@ -37,7 +37,8 @@ class _BabyCreateOrAddManagerPageState
   }
 
   Future<void> check() async {
-    if (!familyMemberRoleHasAdmin() && widget.data.isEmpty) {
+    if (!FamilyMemberRoleHelper.familyMemberRoleHasAdmin() &&
+        widget.data.isEmpty) {
       //不是管理员,并且没有宝宝信息
       await dialogFailure('管理员未添加宝宝信息,请等待管理员添加!');
       await dialogFailure('即将回到登录页');
@@ -78,7 +79,7 @@ class _BabyCreateOrAddManagerPageState
               gapHeightSmall(),
               TDText(notBaby ? '新增宝宝信息' : '选择宝宝信息'),
               Gap(50.h),
-              if (familyMemberRoleHasAdmin())
+              if (FamilyMemberRoleHelper.familyMemberRoleHasAdmin())
                 DefaultButton(
                   title: '新增宝宝信息',
                   onPressed: () async {

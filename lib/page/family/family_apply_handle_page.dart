@@ -213,7 +213,7 @@ class _FamilyApplyHandlePageState extends State<FamilyApplyHandlePage>
                     return e.id == familyLogic.get()!.id;
                   }).first;
                   await bindFamily(e);
-                  setRole(e);
+                  await FamilyMemberRoleHelper.setRole(e);
                 });
                 setState(() {});
                 _refresh();
