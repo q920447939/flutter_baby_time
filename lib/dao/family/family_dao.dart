@@ -1,5 +1,8 @@
+import 'package:flutter_baby_time/getx/controller/manager_gex_controller.dart';
+
 import '../../model/baby/BabyInfoRespVO.dart';
 import '../../model/family/FamilyApplyRespVO.dart';
+import '../../model/family/FamilyRelationRespVO.dart';
 import '../../utils/response/response_utils.dart';
 import '../http/core/hi_net.dart';
 import '../http/request/base_request.dart';
@@ -59,5 +62,42 @@ class FamilyDao {
       needToken: true,
     ).add("id", id).add("applyStatus", applyStatus));
     return data;
+  }
+
+  static Future<List<FamilyRelationRespVo>?> familyManager() async {
+    var request = AnonymousRequest(
+      method: HttpMethod.GET,
+      path: "/api/baby/family/familyManager",
+      needLogin: true,
+      needToken: true,
+    ).add("familyId", familyLogic.get()!.id!);
+    var data = await HiNet.getInstance().fire(request);
+    var list = toObjList(data, FamilyRelationRespVo.fromJson);
+    return list;
+  }
+
+  static Future<bool?> removeFamilyMember(int memberId) async {
+    var request = AnonymousRequest(
+      method: HttpMethod.GET,
+      path: "/api/baby/family/removeFamilyMember",
+      needLogin: true,
+      needToken: true,
+    ).add("familyId", familyLogic.get()!.id!).add("memberId", memberId);
+    var data = await HiNet.getInstance().fire(request);
+    return null != data && data;
+  }
+
+  static Future<bool?> setFamilyMemberRole(int memberId, int roleId) async {
+    var request = AnonymousRequest(
+      method: HttpMethod.GET,
+      path: "/api/baby/family/setFamilyMemberRole",
+      needLogin: true,
+      needToken: true,
+    )
+        .add("familyId", familyLogic.get()!.id!)
+        .add("memberId", memberId)
+        .add("roleId", roleId);
+    var data = await HiNet.getInstance().fire(request);
+    return null != data && data;
   }
 }
