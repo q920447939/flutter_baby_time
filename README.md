@@ -8,29 +8,30 @@ Baby Time 是一款专为家庭人员设计的宝宝记录和管理应用，帮�
 
 ## 效果图
 
-<img src="./img/Screenshot_1736512837.png" width="400"/>
+<center class="half">
+    <img src="./img/Screenshot_1736512837.png" width="400"/>  <img src="./img/Screenshot_1736512874.png" width="400"/>
+</center>
+
+<center class="half">
+    <img src="./img/Screenshot_1736512874.png" width="400"/>  <img src="./img/Screenshot_1736512954.png" width="400"/>
+</center>
+
+<center class="half">
+    <img src="./img/Screenshot_1736514918.png" width="400"/>  <img src="./img/Screenshot_1736515100.png" width="400"/>
+</center>
+
+<center class="half">
+    <img src="./img/Screenshot_1736516161.png" width="400"/>  <img src="./img/Screenshot_1736512837.png" width="400"/>
+</center>
 
 
-<img src="./img/Screenshot_1736512874.png" width="400"/>
+<center class="half">
+    <img src="./img/Screenshot_1736516222.png" width="400"/>  <img src="./img/Screenshot_1736516404.png" width="400"/>
+</center>
 
 
-<img src="./img/Screenshot_1736512954.png" width="400"/>
+<img src="./img/Screenshot_1736512874.png" />
 
-
-<img src="./img/Screenshot_1736514918.png" width="400"/>
-
-
-<img src="./img/Screenshot_1736515100.png" width="400"/>
-
-
-<img src="./img/Screenshot_1736516161.png" width="400"/>
-
-
-
-<img src="./img/Screenshot_1736516222.png" width="400"/>
-
-
-<img src="./img/Screenshot_1736516404.png" width="400"/>
 
 
 
