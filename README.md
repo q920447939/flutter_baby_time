@@ -9,7 +9,7 @@ Baby Time 是一款专为家庭人员设计的宝宝记录和管理应用，帮�
 ## 效果图
 
 <center class="half">
-    <img src="./img/Screenshot_1736512837.png" width="400"/>  <img src="./img/Screenshot_1736512874.png" width="400"/>
+    <img src="./img/Screenshot_1736512837.png" width="200"/>  <img src="./img/Screenshot_1736512874.png" width="200"/>
 </center>
 
 <center class="half">
