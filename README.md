@@ -5,6 +5,40 @@
 Baby Time 是一款专为家庭人员设计的宝宝记录和管理应用，帮助家长轻松追踪和记录宝宝的成长点滴。
 
 
+
+## 效果图
+
+<img src="./img/Screenshot_1736512837.png" width="400"/>
+
+
+<img src="./img/Screenshot_1736512874.png" width="400"/>
+
+
+<img src="./img/Screenshot_1736512954.png" width="400"/>
+
+
+<img src="./img/Screenshot_1736514918.png" width="400"/>
+
+
+<img src="./img/Screenshot_1736515100.png" width="400"/>
+
+
+<img src="./img/Screenshot_1736516161.png" width="400"/>
+
+
+<img src="./img/Screenshot_1736512837.png" width="400"/>
+
+
+<img src="./img/Screenshot_1736516222.png" width="400"/>
+
+
+<img src="./img/Screenshot_1736516404.png" width="400"/>
+
+
+<img src="./img/Screenshot_1736512874.png" width="400"/>
+
+
+
 ## 功能特点 (Features)
 
 - 成长日记：记录宝宝的重要时刻和可爱瞬间
