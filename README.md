@@ -93,3 +93,7 @@ flutter run
 
 - Flutter 团队
 - 所有为项目做出贡献的开发者和测试者
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=q920447939/flutter_baby_time&type=Date)](https://star-history.com/#q920447939/flutter_baby_time&Date)
